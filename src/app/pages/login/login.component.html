@@ -1,7 +1,7 @@
 <div class="container">
     <mat-toolbar>
         <mat-toolbar-row>
-            <h4>Brujula Coworking</h4>
+            <h4 class="white-color">Brujula Coworking</h4>
         </mat-toolbar-row>
     </mat-toolbar>
     <form [formGroup]="loginForm" class="example-form">
@@ -9,7 +9,6 @@
             <mat-form-field class="example-full-width">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email" id="email">
-
             </mat-form-field>
             <div *ngIf="loginForm.controls.email.invalid && (loginForm.controls.email.dirty || loginForm.controls.email.touched)"
                 class="alert alert-danger">
@@ -30,8 +29,11 @@
                 </div>
             </div>
         </div>
-        <div class="input-container"><button mat-raised-button type="submit" (click)='onSubmit()'>Ingresar</button>
-        </div>
+        <button mat-raised-button type="submit" class="accent white-color" [disabled]='isLoading' (click)='onSubmit()'>
+            <span>
+                Ingresar
+            </span>
+        </button>
 
     </form>
 </div>

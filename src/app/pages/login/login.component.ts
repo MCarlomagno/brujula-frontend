@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   email = '';
   password = '';
+  isLoading = false;
 
   constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
 
@@ -29,14 +30,17 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
+      this.isLoading = true;
       const user = { email: this.loginForm.value.email, password: this.loginForm.value.password };
       this.authService.signIn(user).subscribe((result) => {
+        this.isLoading = false;
         localStorage.setItem('token', result.token);
         this.router.navigate(['dashboard']);
       },
         (error) => {
           console.log('error');
           console.log(error);
+          this.isLoading = false;
         });
     }
   }
