@@ -1,14 +1,87 @@
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+// Import _variables.css to the component's sass file where you want to use it.
+@import "./theme.scss";
 
-/* You can add global styles to this file, and also import other style files */
+
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: $accent-light; }
+mat-toolbar-row { background: $accent; }
+.mat-drawer-inner-container{ background: $accent; }
 
 .container {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
+}
+
+
+.flexExpand {
+    flex: 1 1 auto;
+  }
+
+.primary {
+  background: $primary;
+}
+
+.primary-light {
+  background: $primary-light;
+}
+
+.accent {
+  background: $accent;
+}
+
+.accent-light {
+  background: $accent-light;
+}
+
+.warn {
+  background:$warn;
+}
+
+.white-background {
+  background: white;
+}
+
+.white-color {
+  color: white;
+}
+
+.input-container {
+  background: #455a64;
+  padding-inline: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.alert {
+  background: #f44336;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+}
+
+.mat-spinner-wrapper {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+table {
+  width: 100%;
+}
+
+.table-wrapper {
+  width: 90%;
+  padding: 20px;
+  margin: auto;
+}
+
+.fab{
+  right: 40px;
+  bottom: 40px;
+  position: fixed !important;
 }

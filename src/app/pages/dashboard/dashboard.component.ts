@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,10 +7,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  public innerWidth: any;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.innerWidth = window.innerWidth;
   }
 
+  logout(): void {
+    this.authService.logout();
+  }
+
+  getDrawerModeByWidth(): string {
+    if (this.innerWidth < 1024) {
+      return 'over';
+    }else {
+      return 'side';
+    }
+  }
 }

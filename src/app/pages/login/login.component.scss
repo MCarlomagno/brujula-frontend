@@ -1,9 +1,10 @@
 
 .example-form {
     height: 100%;
+    min-width: 100px;
+    max-width: 500px;
     text-align: center;
     margin: auto;
-    width: 50%;
     padding-top: 100px;
 }
 
@@ -11,8 +12,13 @@
     width: 100%;
 }
 
-.input-container {
-    min-width: 150px;
-    max-width: 500px;
-    
+// .input-container {
+//     position: relative;
+//     margin-inline: auto;
+//     margin-top: 10px;
+//     width: 100%;
+// }
+
+.form-button {
+    margin: 20px;
 }

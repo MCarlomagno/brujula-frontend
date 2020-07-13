@@ -1,9 +1,32 @@
-<mat-toolbar>
-    <mat-toolbar-row>
-        <h4>Brujula Coworking</h4>
-        
-    </mat-toolbar-row>
-</mat-toolbar>
-<div class="center">
-    <h4>Dashboard</h4>
+<div class="flex">
+    <mat-drawer-container>
+        <mat-drawer #drawer [mode]="getDrawerModeByWidth()" >
+            <mat-nav-list class="navigation-list">
+            <a class="navigation-item" mat-list-item routerLink="groups" (click)="drawer.close()" routerLinkActive="active">
+                Administrar Grupos
+            </a>
+            <a class="navigation-item" mat-list-item routerLink="coworkers" (click)="drawer.close()" routerLinkActive="active">
+                Administrar Coworkers
+            </a>
+        </mat-nav-list>
+        </mat-drawer>
+        <mat-drawer-content>
+            <mat-toolbar>
+                <mat-toolbar-row>
+                    <button *ngIf="!drawer.opened" mat-icon-button (click)='drawer.open()'>
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <button *ngIf="drawer.opened" mat-icon-button (click)='drawer.close()'>
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <h4 class="title">Brujula Coworking</h4>
+                    <span class="flexExpand"></span>
+                    <a mat-raised-button (click)='logout()' class="primary" routerLinkActive="active">Cerrar Sesión</a>
+                </mat-toolbar-row>
+            </mat-toolbar>
+            <body>
+                <router-outlet></router-outlet> 
+            </body>
+        </mat-drawer-content>
+    </mat-drawer-container>
 </div>
