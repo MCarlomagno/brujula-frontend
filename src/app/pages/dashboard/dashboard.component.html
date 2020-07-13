@@ -1,31 +1,31 @@
 <div class="flex">
     <mat-drawer-container>
-        <mat-drawer #drawer mode="side">
+        <mat-drawer #drawer [mode]="getDrawerModeByWidth()" >
             <mat-nav-list class="navigation-list">
-            <a class="navigation-item" mat-list-item routerLink="#" routerLinkActive="active">
+            <a class="navigation-item" mat-list-item routerLink="groups" (click)="drawer.close()" routerLinkActive="active">
                 Administrar Grupos
             </a>
-            <a class="navigation-item" mat-list-item routerLink="#" routerLinkActive="active">
+            <a class="navigation-item" mat-list-item routerLink="coworkers" (click)="drawer.close()" routerLinkActive="active">
                 Administrar Coworkers
             </a>
         </mat-nav-list>
         </mat-drawer>
         <mat-drawer-content>
             <mat-toolbar>
-                <mat-toolbar-row class="primary">
+                <mat-toolbar-row>
                     <button *ngIf="!drawer.opened" mat-icon-button (click)='drawer.open()'>
-                        <mat-icon class="white-color">menu</mat-icon>
+                        <mat-icon>menu</mat-icon>
                     </button>
                     <button *ngIf="drawer.opened" mat-icon-button (click)='drawer.close()'>
-                        <mat-icon class="white-color">arrow_back</mat-icon>
+                        <mat-icon>arrow_back</mat-icon>
                     </button>
-                    <h4 class="title white-color">Brujula Coworking</h4>
+                    <h4 class="title">Brujula Coworking</h4>
                     <span class="flexExpand"></span>
-                    <a mat-raised-button (click)='logout()' class="accent white-color" routerLinkActive="active">Cerrar Sesión</a>
+                    <a mat-raised-button (click)='logout()' class="primary" routerLinkActive="active">Cerrar Sesión</a>
                 </mat-toolbar-row>
             </mat-toolbar>
-            <body class="primary-light">
-
+            <body>
+                <router-outlet></router-outlet> 
             </body>
         </mat-drawer-content>
     </mat-drawer-container>

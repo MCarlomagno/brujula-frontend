@@ -4,6 +4,8 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuardGuard } from './guards/auth-guard.guard';
+import { CoworkersComponent } from './pages/coworkers/coworkers.component';
+import { GroupsComponent } from './pages/groups/groups.component';
 
 const routes: Routes = [
   {
@@ -16,7 +18,17 @@ const routes: Routes = [
   }, {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuardGuard]
+    canActivate: [AuthGuardGuard],
+    children: [
+      {
+        path: 'coworkers',
+        component: CoworkersComponent,
+      },
+      {
+        path: 'groups',
+        component: GroupsComponent,
+      }
+    ]
   }
 ];
 

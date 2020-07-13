@@ -1,18 +1,18 @@
 <div class="container">
     <mat-toolbar>
         <mat-toolbar-row>
-            <h4 class="white-color">Brujula Coworking</h4>
+            <h4>Brujula Coworking</h4>
         </mat-toolbar-row>
     </mat-toolbar>
-    <form [formGroup]="loginForm" class="example-form">
+    <form [formGroup]="loginForm" #formDir="ngForm" class="example-form">
         <div class="input-container">
             <mat-form-field class="example-full-width">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email" id="email">
             </mat-form-field>
-            <div *ngIf="loginForm.controls.email.invalid && (loginForm.controls.email.dirty || loginForm.controls.email.touched)"
-                class="alert alert-danger">
-                <div *ngIf="loginForm.controls.email.errors.required">
+            <div *ngIf="loginForm.controls.email.invalid && (formDir.submitted || loginForm.controls.email.dirty || loginForm.controls.email.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.email.errors.required" class="white-color">
                     Email requerido
                 </div>
             </div>
@@ -22,14 +22,14 @@
                 <mat-label>Contraseña</mat-label>
                 <input matInput type="password" formControlName="password" id="password">
             </mat-form-field>
-            <div *ngIf="loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)"
-                class="alert alert-danger">
+            <div *ngIf="loginForm.controls.password.invalid && (formDir.submitted || loginForm.controls.password.dirty || loginForm.controls.password.touched)"
+                class="alert white-color">
                 <div *ngIf="loginForm.controls.password.errors.required">
                     Contraseña requerida
                 </div>
             </div>
         </div>
-        <button mat-raised-button type="submit" class="accent white-color" [disabled]='isLoading' (click)='onSubmit()'>
+        <button mat-raised-button type="submit" class="primary form-button" [disabled]='isLoading' (click)='onSubmit()'>
             <span>
                 Ingresar
             </span>

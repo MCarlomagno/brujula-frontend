@@ -22,7 +22,9 @@ import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuardGuard } from './guards/auth-guard.guard';
 import { TokenInterceptorService } from '../app/services/token-interceptor.service';
-
+import { CoworkersComponent } from './pages/coworkers/coworkers.component';
+import { GroupsComponent } from './pages/groups/groups.component';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { TokenInterceptorService } from '../app/services/token-interceptor.servi
     HomeComponent,
     LoginComponent,
     DashboardComponent,
+    CoworkersComponent,
+    GroupsComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +48,8 @@ import { TokenInterceptorService } from '../app/services/token-interceptor.servi
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatTableModule
   ],
   providers: [AuthGuardGuard,
     {

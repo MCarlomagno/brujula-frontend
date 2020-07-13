@@ -13,7 +13,6 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   signIn(user: any): Observable<any> {
-    console.log('enta a sign in');
     return this.http.post(this.url + '/users/login', user);
   }
 
