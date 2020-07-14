@@ -48,20 +48,14 @@ mat-toolbar-row { background: $accent; }
   color: white;
 }
 
-.input-container {
-  background: #455a64;
-  padding-inline: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 5px;
-  margin-top: 10px;
-}
 
 .alert {
   background: #f44336;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .mat-spinner-wrapper {
@@ -81,7 +75,26 @@ table {
 }
 
 .fab{
-  right: 40px;
-  bottom: 40px;
+  right: 20px;
+  bottom: 20px;
   position: fixed !important;
+}
+
+.mat-dialog-container {
+  background: $accent !important;
+  min-width: 300px;
+  min-height: 300px;
+  width: 100vw;
+}
+
+mat-dialog-actions {
+  justify-content: end;
+}
+
+.example-full-width {
+  padding-inline: 10px;
+}
+
+.mat-option {
+  background: $accent !important;
 }

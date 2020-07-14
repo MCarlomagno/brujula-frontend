@@ -1,0 +1,130 @@
+<h2 mat-dialog-title>Agregar Coworker</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="createCoworkerForm" #formDir="ngForm" class="example-form">
+        <h4 mat-dialog-title>Datos personales</h4>
+        <div>
+            <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" id="nombre">
+            </mat-form-field>
+            <!-- <div *ngIf="loginForm.controls.email.invalid && (formDir.submitted || loginForm.controls.email.dirty || loginForm.controls.email.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.email.errors.required" class="white-color">
+                    Email requerido
+                </div>
+            </div> -->
+
+            <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Apellido</mat-label>
+                <input matInput formControlName="apellido" id="apellido">
+            </mat-form-field>
+            <!-- <div *ngIf="loginForm.controls.password.invalid && (formDir.submitted || loginForm.controls.password.dirty || loginForm.controls.password.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.password.errors.required">
+                    Contraseña requerida
+                </div>
+            </div> -->
+
+            <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" id="email">
+            </mat-form-field>
+            <!-- <div *ngIf="loginForm.controls.password.invalid && (formDir.submitted || loginForm.controls.password.dirty || loginForm.controls.password.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.password.errors.required">
+                    Contraseña requerida
+                </div>
+            </div> -->
+        </div>
+        <h4 mat-dialog-title>Plan</h4>
+        <div>
+            <mat-form-field appearance="fill" style="display: block;">
+                <mat-label>Plan</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="fill" style="display: block;">
+                <mat-label>Equipo</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="fill" style="display: block;">
+                <mat-label>Rol</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <h4 mat-dialog-title>Fechas/horarios</h4>
+        <div>
+            <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Hora desde</mat-label>
+                <input matInput formControlName="nombre" id="nombre">
+            </mat-form-field>
+            <!-- <div *ngIf="loginForm.controls.email.invalid && (formDir.submitted || loginForm.controls.email.dirty || loginForm.controls.email.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.email.errors.required" class="white-color">
+                    Email requerido
+                </div>
+            </div> -->
+
+            <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Hora hasta</mat-label>
+                <input matInput formControlName="apellido" id="apellido">
+            </mat-form-field>
+            <!-- <div *ngIf="loginForm.controls.password.invalid && (formDir.submitted || loginForm.controls.password.dirty || loginForm.controls.password.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.password.errors.required">
+                    Contraseña requerida
+                </div>
+            </div> -->
+        </div>
+        <div>
+            <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Fecha desde</mat-label>
+                <input matInput formControlName="email" id="email">
+            </mat-form-field>
+            <!-- <div *ngIf="loginForm.controls.password.invalid && (formDir.submitted || loginForm.controls.password.dirty || loginForm.controls.password.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.password.errors.required">
+                    Contraseña requerida
+                </div>
+            </div> -->
+            <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Fecha hasta (Opcional)</mat-label>
+                <input matInput formControlName="email" id="email">
+            </mat-form-field>
+            <!-- <div *ngIf="loginForm.controls.password.invalid && (formDir.submitted || loginForm.controls.password.dirty || loginForm.controls.password.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.password.errors.required">
+                    Contraseña requerida
+                </div>
+            </div> -->
+        </div>
+        <section class="example-section">
+            <mat-checkbox class="example-margin" color='primary'>Lunes</mat-checkbox>
+            <mat-checkbox class="example-margin" color='primary'>Martes</mat-checkbox>
+            <mat-checkbox class="example-margin" color='primary'>Miercoles</mat-checkbox>
+            <mat-checkbox class="example-margin" color='primary'>Jueves</mat-checkbox>
+            <mat-checkbox class="example-margin" color='primary'>Viernes</mat-checkbox>
+          </section>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-button" (click)="close()">Cerrar</button>
+    <button class="mat-raised-button primary" (click)="submit()">Guardar</button>
+</mat-dialog-actions>
