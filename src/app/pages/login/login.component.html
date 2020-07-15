@@ -29,11 +29,13 @@
                 </div>
             </div>
         </div>
-        <button mat-raised-button type="submit" class="primary form-button" [disabled]='isLoading' (click)='onSubmit()'>
-            <span>
+        <button mat-raised-button type="submit" class="primary form-button" *ngIf='!isLoading' [disabled]='isLoading' (click)='onSubmit()'>
+            
                 Ingresar
-            </span>
         </button>
+        <span *ngIf='isLoading' class="mat-spinner-wrapper">
+            <mat-spinner [diameter]="30"></mat-spinner>
+        </span>
 
     </form>
 </div>

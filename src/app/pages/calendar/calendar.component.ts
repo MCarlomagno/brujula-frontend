@@ -11,6 +11,7 @@ export class CalendarComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
     locales: [esLocale],
+    contentHeight: 'auto',
     dateClick: this.handleDateClick.bind(this),
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
     timeZone: 'UTC',
