@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Grupo } from '../../models/group.model';
 import { GroupsService } from '../../services/groups.service';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { CreateGroupComponent } from './create-group/create-group.component';
 
 
 const ELEMENT_DATA: Grupo[] = [
@@ -19,7 +21,7 @@ export class GroupsComponent implements OnInit {
   loading = false;
   dataSource: Grupo[];
 
-  constructor(private groupsService: GroupsService) { }
+  constructor(private groupsService: GroupsService, private matDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -31,6 +33,12 @@ export class GroupsComponent implements OnInit {
       console.log('error: ' + err);
       this.loading = true;
     });
+  }
+
+  openDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = { name: 'some name'};
+    this.matDialog.open(CreateGroupComponent, dialogConfig);
   }
 
 }

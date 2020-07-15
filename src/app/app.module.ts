@@ -9,6 +9,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 // end material modules
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,13 +23,29 @@ import { HomeComponent } from './pages/home/home.component';
 
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthGuardGuard } from './guards/auth-guard.guard';
 import { TokenInterceptorService } from '../app/services/token-interceptor.service';
 import { CoworkersComponent } from './pages/coworkers/coworkers.component';
 import { GroupsComponent } from './pages/groups/groups.component';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { CreateCoworkerComponent } from './pages/coworkers/create-coworker/create-coworker.component';
+import { CreateGroupComponent } from './pages/groups/create-group/create-group.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarComponent } from './pages/calendar/calendar.component';
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
+
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  interactionPlugin,
+  resourceTimelinePlugin,
+  resourceTimeGridPlugin
+]);
+
 
 @NgModule({
   declarations: [
@@ -33,7 +54,10 @@ import {MatTableModule} from '@angular/material/table';
     LoginComponent,
     DashboardComponent,
     CoworkersComponent,
-    GroupsComponent
+    GroupsComponent,
+    CreateCoworkerComponent,
+    CreateGroupComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +73,13 @@ import {MatTableModule} from '@angular/material/table';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatTableModule
+    MatTableModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    FullCalendarModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [AuthGuardGuard,
     {
@@ -58,6 +88,7 @@ import {MatTableModule} from '@angular/material/table';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CreateCoworkerComponent, CreateGroupComponent]
 })
 export class AppModule { }

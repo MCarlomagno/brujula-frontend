@@ -1,0 +1,108 @@
+<div>
+<h2 mat-dialog-title>Agregar Coworker</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="createCoworkerForm" #formDir="ngForm" class="example-form">
+        <h4 mat-dialog-title>Datos personales</h4>
+        <div>
+            <mat-form-field appearance="fill" class="padding-inline-10">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" id="nombre">
+            </mat-form-field>
+            <!-- <div *ngIf="loginForm.controls.email.invalid && (formDir.submitted || loginForm.controls.email.dirty || loginForm.controls.email.touched)"
+                class="alert white-color">
+                <div *ngIf="loginForm.controls.email.errors.required" class="white-color">
+                    Email requerido
+                </div>
+            </div> -->
+
+            <mat-form-field appearance="fill" class="padding-inline-10">
+                <mat-label>Apellido</mat-label>
+                <input matInput formControlName="apellido" id="apellido">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="padding-inline-10">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" id="email">
+            </mat-form-field>
+
+        </div>
+        <h4 mat-dialog-title>Plan</h4>
+        <div>
+            <mat-form-field appearance="fill" class="padding-inline-10">
+                <mat-label>Plan</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="fill" class="padding-inline-10">
+                <mat-label>Equipo</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="padding-inline-10">
+                <mat-label>Rol</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <h4 mat-dialog-title>Fechas/horarios</h4>
+        <div>
+            <div>
+                <mat-form-field appearance="fill" class="padding-inline-10">
+                    <mat-label>Hora desde</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let date of dates" [value]="date.value">
+                            {{date.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="padding-inline-10">
+                    <mat-label>Hora hasta</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let date of dates" [value]="date.value">
+                            {{date.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div>
+            <mat-form-field appearance="fill" class="padding-inline-10">
+                <mat-label>Fecha desde</mat-label>
+                <input matInput [matDatepicker]="pickerDesde">
+                <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDesde></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="padding-inline-10">
+                <mat-label>Fecha hasta (Opcional)</mat-label>
+                <input matInput [matDatepicker]="pickerHasta">
+                <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+                <mat-datepicker #pickerHasta></mat-datepicker>
+              </mat-form-field>
+        </div>
+        <section>
+            <mat-checkbox class="example-margin" color='primary'>Lunes</mat-checkbox>
+            <mat-checkbox class="example-margin" color='primary'>Martes</mat-checkbox>
+            <mat-checkbox class="example-margin" color='primary'>Miercoles</mat-checkbox>
+            <mat-checkbox class="example-margin" color='primary'>Jueves</mat-checkbox>
+            <mat-checkbox class="example-margin" color='primary'>Viernes</mat-checkbox>
+          </section>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-button" (click)="close()">Cerrar</button>
+    <button class="mat-raised-button primary" (click)="submit()">Guardar</button>
+</mat-dialog-actions></div>

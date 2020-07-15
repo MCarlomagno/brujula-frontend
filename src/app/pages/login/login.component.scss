@@ -6,6 +6,7 @@
     text-align: center;
     margin: auto;
     padding-top: 100px;
+    padding-inline: 20px;
 }
 
 .example-full-width {
@@ -21,4 +22,8 @@
 
 .form-button {
     margin: 20px;
+}
+
+mat-form-field {
+    color: white;
 }

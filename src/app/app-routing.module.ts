@@ -6,6 +6,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuardGuard } from './guards/auth-guard.guard';
 import { CoworkersComponent } from './pages/coworkers/coworkers.component';
 import { GroupsComponent } from './pages/groups/groups.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,11 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuardGuard],
     children: [
+      {
+        path: '',
+        component: CalendarComponent,
+        pathMatch: 'full'
+      },
       {
         path: 'coworkers',
         component: CoworkersComponent,

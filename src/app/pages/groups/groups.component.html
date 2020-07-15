@@ -25,7 +25,7 @@
   <div *ngIf="loading" class="mat-spinner-wrapper">
     <mat-spinner [diameter]="50"></mat-spinner>
   </div>
-  <button mat-fab color="primary" class="fab">
+  <button mat-fab color="primary" class="fab" (click)='openDialog()'>
     <mat-icon>add</mat-icon>
   </button>
 </div>
