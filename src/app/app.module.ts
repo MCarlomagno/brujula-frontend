@@ -30,6 +30,20 @@ import { GroupsComponent } from './pages/groups/groups.component';
 import { MatTableModule } from '@angular/material/table';
 import { CreateCoworkerComponent } from './pages/coworkers/create-coworker/create-coworker.component';
 import { CreateGroupComponent } from './pages/groups/create-group/create-group.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarComponent } from './pages/calendar/calendar.component';
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
+
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  interactionPlugin,
+  resourceTimelinePlugin,
+  resourceTimeGridPlugin
+]);
+
 
 @NgModule({
   declarations: [
@@ -40,7 +54,8 @@ import { CreateGroupComponent } from './pages/groups/create-group/create-group.c
     CoworkersComponent,
     GroupsComponent,
     CreateCoworkerComponent,
-    CreateGroupComponent
+    CreateGroupComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +74,8 @@ import { CreateGroupComponent } from './pages/groups/create-group/create-group.c
     MatTableModule,
     MatDialogModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FullCalendarModule
   ],
   providers: [AuthGuardGuard,
     {

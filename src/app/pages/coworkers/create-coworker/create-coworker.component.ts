@@ -24,6 +24,10 @@ export class CreateCoworkerComponent implements OnInit {
     {value: 'tacos-3', viewValue: 'Oficina privada'}
   ];
 
+  checked = false;
+  indeterminate = false;
+  disabled = false;
+
   constructor(public dialogRef: MatDialogRef<CreateCoworkerComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
