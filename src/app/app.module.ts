@@ -12,6 +12,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 // end material modules
 
 import { AppRoutingModule } from './app-routing.module';
@@ -75,7 +77,9 @@ FullCalendarModule.registerPlugins([
     MatDialogModule,
     MatSelectModule,
     MatCheckboxModule,
-    FullCalendarModule
+    FullCalendarModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [AuthGuardGuard,
     {

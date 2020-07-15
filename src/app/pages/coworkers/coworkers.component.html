@@ -1,47 +1,51 @@
-<div class="table-wrapper">
-<table mat-table *ngIf="!loading" [dataSource]="dataSource" class="mat-elevation-z8 accent">
-  
-    <!-- Nombre Column -->
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-    </ng-container>
-  
-    <!-- apellido Column -->
-    <ng-container matColumnDef="apellido">
-      <th mat-header-cell *matHeaderCellDef> Apellido </th>
-      <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
-    </ng-container>
-  
-    <!-- email Column -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-    </ng-container>
-  
-    <!-- horas_sala Column -->
-    <ng-container matColumnDef="horas_sala">
-      <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala </th>
-      <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala}} </td>
-    </ng-container>
+<div class="container">
+  <div class="table-wrapper">
+    <table mat-table *ngIf="!loading" [dataSource]="dataSource" class="mat-elevation-z8 accent">
 
-    <!-- horas_sala Column -->
-    <ng-container matColumnDef="horas_sala_consumidas">
-      <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala consumidas </th>
-      <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala_consumidas}} </td>
-    </ng-container>
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+      </ng-container>
 
-    <!-- horas_sala Column -->
-    <ng-container matColumnDef="horas_sala_disponibles" >
-      <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala disponibles </th>
-      <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala - element.horas_sala_consumidas}} </td>
-    </ng-container>
+      <!-- apellido Column -->
+      <ng-container matColumnDef="apellido">
+        <th mat-header-cell *matHeaderCellDef> Apellido </th>
+        <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <div *ngIf="loading" class="mat-spinner-wrapper">
-    <mat-spinner [diameter]="50"></mat-spinner>
+      <!-- email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <!-- horas_sala Column -->
+      <ng-container matColumnDef="horas_sala">
+        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala </th>
+        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala}} </td>
+      </ng-container>
+
+      <!-- horas_sala Column -->
+      <ng-container matColumnDef="horas_sala_consumidas">
+        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala consumidas </th>
+        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala_consumidas}} </td>
+      </ng-container>
+
+      <!-- horas_sala Column -->
+      <ng-container matColumnDef="horas_sala_disponibles">
+        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala disponibles </th>
+        <td mat-cell *matCellDef="let element" style="text-align: right;">
+          {{element.horas_sala - element.horas_sala_consumidas}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div *ngIf="loading" class="mat-spinner-wrapper">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+
   </div>
   <button mat-fab color="primary" class="fab" (click)='openDialog()'>
     <mat-icon>add</mat-icon>

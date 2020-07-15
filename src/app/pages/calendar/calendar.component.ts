@@ -19,7 +19,7 @@ export class CalendarComponent implements OnInit {
     headerToolbar: {
       left: 'prev,next',
       center: 'title',
-      right: 'resourceTimeGridDay,resourceTimeGridWeek'
+      right: 'resourceTimeGridDay,timeGridWeek'
     },
   };
 
