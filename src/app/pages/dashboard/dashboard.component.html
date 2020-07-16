@@ -1,17 +1,20 @@
 <div class="flex">
     <mat-drawer-container>
-        <mat-drawer #drawer [mode]="getDrawerModeByWidth()" >
+        <mat-drawer #drawer [mode]="getDrawerModeByWidth()">
             <mat-nav-list class="navigation-list">
-            <a class="navigation-item" mat-list-item [routerLink]="['./']" (click)="drawer.close()" routerLinkActive="active">
-                Administrar Calendario
-            </a>
-            <a class="navigation-item" mat-list-item routerLink="groups" (click)="drawer.close()" routerLinkActive="active">
-                Administrar Grupos
-            </a>
-            <a class="navigation-item" mat-list-item routerLink="coworkers" (click)="drawer.close()" routerLinkActive="active">
-                Administrar Coworkers
-            </a>
-        </mat-nav-list>
+                <a class="navigation-item" mat-list-item [routerLink]="['./']" (click)="drawer.close()"
+                    routerLinkActive="active">
+                    Administrar Calendario
+                </a>
+                <a class="navigation-item" mat-list-item routerLink="groups" (click)="drawer.close()"
+                    routerLinkActive="active">
+                    Administrar Grupos
+                </a>
+                <a class="navigation-item" mat-list-item routerLink="coworkers" (click)="drawer.close()"
+                    routerLinkActive="active">
+                    Administrar Coworkers
+                </a>
+            </mat-nav-list>
         </mat-drawer>
         <mat-drawer-content>
             <mat-toolbar>
@@ -27,8 +30,9 @@
                     <a mat-raised-button (click)='logout()' class="primary" routerLinkActive="active">Cerrar Sesión</a>
                 </mat-toolbar-row>
             </mat-toolbar>
+
             <body>
-                <router-outlet></router-outlet> 
+                <router-outlet></router-outlet>
             </body>
         </mat-drawer-content>
     </mat-drawer-container>
