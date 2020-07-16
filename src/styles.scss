@@ -1,6 +1,8 @@
 // Import _variables.css to the component's sass file where you want to use it.
 @import "./theme.scss";
 
+// Import bootstrap css globally
+@import "~bootstrap/dist/css/bootstrap.css";
 
 
 html, body { height: 100%; }
@@ -10,12 +12,6 @@ mat-toolbar-row { background: $accent; }
 .mat-drawer-content {background: $accent-light;}
 .mat-calendar { background: $accent-light; }
 .mat-option { background: $accent-light !important; }
-.container {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
 
 
 .flexExpand {
@@ -77,10 +73,13 @@ table {
 }
 
 .fab{
+  top: auto;
   right: 20px;
   bottom: 20px;
+  left: auto;
   position: fixed !important;
 }
+
 
 .mat-dialog-container {
   background: $accent !important;
@@ -97,4 +96,7 @@ mat-dialog-actions {
   padding-inline: 10px;
 }
 
-
+*:focus {
+  outline: none !important;
+  border: 0 !important;
+}

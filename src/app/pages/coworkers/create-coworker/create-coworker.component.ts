@@ -2,17 +2,9 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
-
-interface Plan {
-  value: string;
-  viewValue: string;
-}
-
-interface Times {
-  value: string;
-  viewValue: string;
-}
-
+import { GroupsService } from 'src/app/services/groups.service';
+import { TIMES, ROLES, PLANES, MatSelectOption } from '../../../shared/const';
+import { Coworker } from 'src/app/models/coworker.model';
 
 @Component({
   selector: 'app-create-coworker',
@@ -21,75 +13,116 @@ interface Times {
 })
 export class CreateCoworkerComponent implements OnInit {
 
+  // times with 20min gap from 8 to 20
+  times = TIMES;
+
+  // Actual roles: Lider and Member
+  roles = ROLES;
+
+  // Standard planes, probably will get from DB
+  planes = PLANES;
+
+  // Groups for Mat select
+  grupos: MatSelectOption[] = [];
+
+  // Initial loading
+  loading = false;
+
+  // Submit loading
+  loadingSubmit = false;
+
+  // create coworkers form group
   createCoworkerForm: FormGroup;
-  foods: Plan[] = [
-    {value: 'steak-0', viewValue: 'Movil x 6'},
-    {value: 'pizza-1', viewValue: 'Movil x 12'},
-    {value: 'tacos-2', viewValue: 'Fijo x 12'},
-    {value: 'tacos-3', viewValue: 'Oficina privada'}
-  ];
 
-  dates: Times[] = [
-    {value: '00', viewValue: '8:00'},
-    {value: '01', viewValue: '8:20'},
-    {value: '02', viewValue: '8:40'},
-    {value: '10', viewValue: '9:00'},
-    {value: '11', viewValue: '9:20'},
-    {value: '12', viewValue: '9:40'},
-    {value: '20', viewValue: '10:00'},
-    {value: '21', viewValue: '10:20'},
-    {value: '22', viewValue: '10:40'},
-    {value: '30', viewValue: '11:00'},
-    {value: '31', viewValue: '11:20'},
-    {value: '32', viewValue: '11:40'},
-    {value: '00', viewValue: '12:00'},
-    {value: '01', viewValue: '12:20'},
-    {value: '02', viewValue: '12:40'},
-    {value: '10', viewValue: '13:00'},
-    {value: '11', viewValue: '13:20'},
-    {value: '12', viewValue: '13:40'},
-    {value: '20', viewValue: '14:00'},
-    {value: '21', viewValue: '14:20'},
-    {value: '22', viewValue: '14:40'},
-    {value: '30', viewValue: '15:00'},
-    {value: '31', viewValue: '15:20'},
-    {value: '32', viewValue: '15:40'},
-    {value: '00', viewValue: '16:00'},
-    {value: '01', viewValue: '16:20'},
-    {value: '02', viewValue: '16:40'},
-    {value: '10', viewValue: '17:00'},
-    {value: '11', viewValue: '17:20'},
-    {value: '12', viewValue: '17:40'},
-    {value: '20', viewValue: '18:00'},
-    {value: '21', viewValue: '18:20'},
-    {value: '22', viewValue: '18:40'},
-    {value: '30', viewValue: '19:00'},
-    {value: '31', viewValue: '19:20'},
-    {value: '32', viewValue: '19:40'},
-    {value: '20', viewValue: '20:00'},
-  ];
+  // Conditional form groups
+  planOfiPrivadaSelected = false;
+  planMovilSelected = false;
 
-  checked = false;
-  indeterminate = false;
-  disabled = false;
+  constructor(public dialogRef: MatDialogRef<CreateCoworkerComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private groupsService: GroupsService) {
 
-  constructor(public dialogRef: MatDialogRef<CreateCoworkerComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  }
 
   ngOnInit(): void {
+
+    // for show the spinner
+    this.loading = true;
+
+    // loads the form
     this.createCoworkerForm = new FormGroup({
       nombre: new FormControl(),
       apellido: new FormControl(),
       email: new FormControl(),
       plan: new FormControl()
-   });
+    });
+
+
+    // TODO: instead of load groups on Init, a better approach could be load this when the coworkers list is loaded
+    // them passing the data by MAT_DIALOG_DATA.
+    this.groupsService.getGroups().subscribe((groups) => {
+
+      // sets group backend data in a more readable format for mat select
+      groups.map(group => {
+        this.grupos.push({
+          value: group.id.toString(),
+          viewValue: group.nombre
+        });
+      });
+
+      // hides the spinner
+      this.loading = false;
+    });
+
   }
 
+  // Function performed when the user selects some value in Plans mat select
+  // chagens the UI based on the actual selection.
+  onPlanSelected(value): void {
+    console.log(value);
+    if (value === '3') {
+      this.planOfiPrivadaSelected = true;
+    } else {
+      this.planOfiPrivadaSelected = false;
+    }
+
+    if (value === '0' || value === '1') {
+      this.planMovilSelected = true;
+    } else {
+      this.planMovilSelected = false;
+    }
+  }
+
+  // closes the dialog
   close(): void {
     this.dialogRef.close();
   }
 
+  // Loads the data in the propper structures to send all to backend in order to create
+  // the coworkers, plan (if custom) and users_puestos
   submit(): void {
-    this.dialogRef.close();
+    // we take the planes from a harcoded structure, probably in the future we would get this from backend
+    const selectedPlan = PLANES[this.createCoworkerForm.value.plan - 1];
+
+    // we instantiate the coworker class
+    const coworker: Coworker = {
+      nombre: this.createCoworkerForm.value.nombre,
+      apellido: this.createCoworkerForm.value.apellido,
+      email: this.createCoworkerForm.value.email,
+      horas_sala: selectedPlan.horas_sala,
+      horas_sala_consumidas: 0,
+      is_coworker: true,
+      dni: '23123132123',
+      fecha_nacimiento: new Date(),
+      direccion: 'asdasdasd',
+      celular: 'asdasdasdad',
+      id_plan: this.createCoworkerForm.value.plan,
+    };
+
+    // TODO: form validation
+    // TODO: instantiate users_puestos class
+    // TODO: instantiate plan class if custon plan
+    // TODO: send data to backend
   }
 
 }
