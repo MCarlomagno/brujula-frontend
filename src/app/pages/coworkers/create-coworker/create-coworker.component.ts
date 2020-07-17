@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { GroupsService } from 'src/app/services/groups.service';
 import { TIMES, ROLES, PLANES, MatSelectOption } from '../../../shared/const';
 import { Coworker } from 'src/app/models/coworker.model';
+import { UsersPuestos } from 'src/app/models/users-puestos.model';
 
 @Component({
   selector: 'app-create-coworker',
@@ -38,6 +39,8 @@ export class CreateCoworkerComponent implements OnInit {
   planOfiPrivadaSelected = false;
   planMovilSelected = false;
 
+  selectedDays = [true, true, true, true, true];
+
   constructor(public dialogRef: MatDialogRef<CreateCoworkerComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private groupsService: GroupsService) {
@@ -54,7 +57,17 @@ export class CreateCoworkerComponent implements OnInit {
       nombre: new FormControl(),
       apellido: new FormControl(),
       email: new FormControl(),
-      plan: new FormControl()
+      plan: new FormControl(),
+      dni: new FormControl(),
+      celular: new FormControl(),
+      direccion: new FormControl(),
+      fecha_nacimiento: new FormControl(),
+      grupo: new FormControl(),
+      rol: new FormControl(),
+      hora_desde: new FormControl(),
+      hora_hasta: new FormControl(),
+      fecha_desde: new FormControl(),
+      fecha_hasta: new FormControl(),
     });
 
 
@@ -79,18 +92,22 @@ export class CreateCoworkerComponent implements OnInit {
   // Function performed when the user selects some value in Plans mat select
   // chagens the UI based on the actual selection.
   onPlanSelected(value): void {
-    console.log(value);
-    if (value === '3') {
+    if (value === 4) {
       this.planOfiPrivadaSelected = true;
     } else {
       this.planOfiPrivadaSelected = false;
     }
 
-    if (value === '0' || value === '1') {
+    if (value === 1 || value === 2) {
       this.planMovilSelected = true;
     } else {
       this.planMovilSelected = false;
     }
+  }
+
+  // handles the checkbox press event
+  onCheckboxPressed(index: number): void {
+    this.selectedDays[index] = !this.selectedDays[index];
   }
 
   // closes the dialog
@@ -112,16 +129,27 @@ export class CreateCoworkerComponent implements OnInit {
       horas_sala: selectedPlan.horas_sala,
       horas_sala_consumidas: 0,
       is_coworker: true,
-      dni: '23123132123',
-      fecha_nacimiento: new Date(),
-      direccion: 'asdasdasd',
-      celular: 'asdasdasdad',
+      dni: this.createCoworkerForm.value.dni,
+      fecha_nacimiento: this.createCoworkerForm.value.fecha_nacimiento,
+      direccion: this.createCoworkerForm.value.direccion,
+      celular: this.createCoworkerForm.value.celular,
       id_plan: this.createCoworkerForm.value.plan,
+      id_grupo: this.createCoworkerForm.value.grupo,
+    };
+
+    // for set lider_id in group
+    const isGroupLeader = this.createCoworkerForm.value.rol === '0';
+
+    // Users puestos instance
+    const usersPuestos: UsersPuestos = {
+      hora_desde: { hours: this.createCoworkerForm.value.hora_desde.split(':')[0], minutes: this.createCoworkerForm.value.hora_desde.split(':')[1] },
+      hora_hasta: { hours: this.createCoworkerForm.value.hora_hasta.split(':')[0], minutes: this.createCoworkerForm.value.hora_hasta.split(':')[1] },
+      fecha_desde: this.createCoworkerForm.value.fecha_desde,
+      fecha_hasta: this.createCoworkerForm.value.fecha_hasta,
+      dias: this.selectedDays
     };
 
     // TODO: form validation
-    // TODO: instantiate users_puestos class
-    // TODO: instantiate plan class if custon plan
     // TODO: send data to backend
   }
 

@@ -1,8 +1,9 @@
+// Import bootstrap css globally
+@import "~bootstrap/dist/css/bootstrap.css";
 // Import _variables.css to the component's sass file where you want to use it.
 @import "./theme.scss";
 
-// Import bootstrap css globally
-@import "~bootstrap/dist/css/bootstrap.css";
+
 
 
 html, body { height: 100%; }
@@ -99,4 +100,9 @@ mat-dialog-actions {
 *:focus {
   outline: none !important;
   border: 0 !important;
+}
+
+a:hover {
+  color: white;
+  text-decoration: none;
 }
