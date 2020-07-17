@@ -10,4 +10,5 @@ export interface Coworker {
     direccion: string;
     celular: string;
     id_plan: number;
+    id_grupo: number;
 }

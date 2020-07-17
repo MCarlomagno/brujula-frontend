@@ -45,6 +45,42 @@
                         id_plan: this.createCoworkerForm.value.plan, -->
 
             </div>
+            <div class="row">
+
+                <!-- DNI -->
+                <div class="col-lg-3 col-md-3">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Dni</mat-label>
+                        <input matInput formControlName="dni" id="dni">
+                    </mat-form-field>
+                </div>
+
+                <!-- Direccion -->
+                <div class="col-lg-3 col-md-3">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput formControlName="direccion" id="direccion">
+                    </mat-form-field>
+                </div>
+
+                <!-- Celu -->
+                <div class="col-lg-3 col-md-3">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Celular</mat-label>
+                        <input matInput formControlName="celular" id="celular">
+                    </mat-form-field>
+                </div>
+
+                <!-- Fecha Nac -->
+                <div class="col-lg-3 col-md-3">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Fecha Nacimiento</mat-label>
+                        <input matInput formControlName="fecha_nacimiento" [matDatepicker]="pickerFechaNac">
+                        <mat-datepicker-toggle matSuffix [for]="pickerFechaNac"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFechaNac></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
             <h4 mat-dialog-title>Plan</h4>
 
             <!-- Plan  -->
@@ -67,7 +103,7 @@
                 <div class="col-lg-6 col-md-6">
                     <mat-form-field appearance="fill">
                         <mat-label>Equipo</mat-label>
-                        <mat-select>
+                        <mat-select formControlName="grupo">
                             <mat-option *ngFor="let grupo of grupos" [value]="grupo.value">
                                 {{grupo.viewValue}}
                             </mat-option>
@@ -79,7 +115,7 @@
                 <div class="col-lg-6 col-md-6">
                     <mat-form-field appearance="fill">
                         <mat-label>Rol</mat-label>
-                        <mat-select>
+                        <mat-select formControlName="rol">
                             <mat-option *ngFor="let rol of roles" [value]="rol.value">
                                 {{rol.viewValue}}
                             </mat-option>
@@ -96,7 +132,7 @@
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Hora desde</mat-label>
-                            <mat-select>
+                            <mat-select formControlName="hora_desde">
                                 <mat-option *ngFor="let time of times" [value]="time.value">
                                     {{time.viewValue}}
                                 </mat-option>
@@ -107,7 +143,7 @@
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Hora hasta</mat-label>
-                            <mat-select>
+                            <mat-select formControlName="hora_hasta">
                                 <mat-option *ngFor="let time of times" [value]="time.value">
                                     {{time.viewValue}}
                                 </mat-option>
@@ -120,7 +156,7 @@
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Fecha desde</mat-label>
-                            <input matInput [matDatepicker]="pickerDesde">
+                            <input matInput formControlName="fecha_desde" [matDatepicker]="pickerDesde">
                             <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
                             <mat-datepicker #pickerDesde></mat-datepicker>
                         </mat-form-field>
@@ -128,7 +164,7 @@
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Fecha hasta (Opcional)</mat-label>
-                            <input matInput [matDatepicker]="pickerHasta">
+                            <input matInput formControlName="fecha_hasta" [matDatepicker]="pickerHasta">
                             <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
                             <mat-datepicker #pickerHasta></mat-datepicker>
                         </mat-form-field>
@@ -136,11 +172,11 @@
                 </div>
                 <div *ngIf="planMovilSelected">
                     <section>
-                        <mat-checkbox [checked]="true" class="example-margin" color='primary'>Lunes</mat-checkbox>
-                        <mat-checkbox [checked]="true" class="example-margin" color='primary'>Martes</mat-checkbox>
-                        <mat-checkbox [checked]="true" class="example-margin" color='primary'>Miercoles</mat-checkbox>
-                        <mat-checkbox [checked]="true" class="example-margin" color='primary'>Jueves</mat-checkbox>
-                        <mat-checkbox [checked]="true" class="example-margin" color='primary'>Viernes</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(0)" class="example-margin" color='primary'>Lunes</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(1)" class="example-margin" color='primary'>Martes</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(2)" class="example-margin" color='primary'>Miercoles</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(3)" class="example-margin" color='primary'>Jueves</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(4)" class="example-margin" color='primary'>Viernes</mat-checkbox>
                     </section>
                 </div>
             </div>
@@ -161,6 +197,6 @@
 
     </mat-dialog-actions>
 </div>
-    <div *ngIf="loading" class="mat-spinner-wrapper">
-        <mat-spinner [diameter]="30"></mat-spinner>
-    </div>
+<div *ngIf="loading" class="mat-spinner-wrapper">
+    <mat-spinner [diameter]="30"></mat-spinner>
+</div>
