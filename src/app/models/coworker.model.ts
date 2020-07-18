@@ -11,4 +11,5 @@ export interface Coworker {
     celular: string;
     id_plan: number;
     id_grupo: number;
+    is_leader: boolean;
 }

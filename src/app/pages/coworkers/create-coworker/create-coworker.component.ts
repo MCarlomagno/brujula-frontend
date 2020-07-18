@@ -6,6 +6,7 @@ import { GroupsService } from 'src/app/services/groups.service';
 import { TIMES, ROLES, PLANES, MatSelectOption } from '../../../shared/const';
 import { Coworker } from 'src/app/models/coworker.model';
 import { UsersPuestos } from 'src/app/models/users-puestos.model';
+import { CoworkersService } from 'src/app/services/coworkers.service';
 
 @Component({
   selector: 'app-create-coworker',
@@ -43,7 +44,8 @@ export class CreateCoworkerComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CreateCoworkerComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private groupsService: GroupsService) {
+              private groupsService: GroupsService,
+              private cowortersService: CoworkersService) {
 
   }
 
@@ -118,6 +120,7 @@ export class CreateCoworkerComponent implements OnInit {
   // Loads the data in the propper structures to send all to backend in order to create
   // the coworkers, plan (if custom) and users_puestos
   submit(): void {
+    this.loadingSubmit = true;
     // we take the planes from a harcoded structure, probably in the future we would get this from backend
     const selectedPlan = PLANES[this.createCoworkerForm.value.plan - 1];
 
@@ -135,10 +138,8 @@ export class CreateCoworkerComponent implements OnInit {
       celular: this.createCoworkerForm.value.celular,
       id_plan: this.createCoworkerForm.value.plan,
       id_grupo: this.createCoworkerForm.value.grupo,
+      is_leader: this.createCoworkerForm.value.rol === '0',
     };
-
-    // for set lider_id in group
-    const isGroupLeader = this.createCoworkerForm.value.rol === '0';
 
     // Users puestos instance
     const usersPuestos: UsersPuestos = {
@@ -149,8 +150,13 @@ export class CreateCoworkerComponent implements OnInit {
       dias: this.selectedDays
     };
 
+    this.cowortersService.createCoworker(coworker, usersPuestos).subscribe((response) => {
+      this.loadingSubmit = false;
+      this.dialogRef.close();
+    });
+
     // TODO: form validation
-    // TODO: send data to backend
+    // TODO: snackbar showing success message
   }
 
 }
