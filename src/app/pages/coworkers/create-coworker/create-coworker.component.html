@@ -1,8 +1,8 @@
 <div *ngIf="!loading" class="container">
     <h2 mat-dialog-title>Agregar Coworker</h2>
+    <form [formGroup]="createCoworkerForm" (ngSubmit)="submit()" #formDir="ngForm">
+        <mat-dialog-content>
 
-    <mat-dialog-content>
-        <form [formGroup]="createCoworkerForm" #formDir="ngForm">
             <h4 mat-dialog-title>Datos personales</h4>
             <div class="row">
 
@@ -12,14 +12,13 @@
                         <mat-label>Nombre</mat-label>
                         <input matInput formControlName="nombre" id="nombre">
                     </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.nombre.invalid && (formDir.submitted || createCoworkerForm.controls.nombre.dirty || createCoworkerForm.controls.nombre.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.nombre.errors.required" class="white-color">
+                            Nombre requerido
+                        </div>
+                    </div>
                 </div>
-
-                <!-- <div *ngIf="loginForm.controls.email.invalid && (formDir.submitted || loginForm.controls.email.dirty || loginForm.controls.email.touched)"
-                class="alert white-color">
-                <div *ngIf="loginForm.controls.email.errors.required" class="white-color">
-                    Email requerido
-                </div>
-            </div> -->
 
                 <!-- Apellido -->
                 <div class="col-lg-4 col-md-4">
@@ -27,6 +26,12 @@
                         <mat-label>Apellido</mat-label>
                         <input matInput formControlName="apellido" id="apellido">
                     </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.apellido.invalid && (formDir.submitted || createCoworkerForm.controls.apellido.dirty || createCoworkerForm.controls.apellido.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.apellido.errors.required" class="white-color">
+                            Apellido requerido
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Email -->
@@ -35,15 +40,13 @@
                         <mat-label>Email</mat-label>
                         <input matInput formControlName="email" id="email">
                     </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.email.invalid && (formDir.submitted || createCoworkerForm.controls.email.dirty || createCoworkerForm.controls.email.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.email.errors.required" class="white-color">
+                            Email requerido
+                        </div>
+                    </div>
                 </div>
-
-                <!-- TODO: add:
-                        dni: '23123132123',
-                        fecha_nacimiento: new Date(),
-                        direccion: 'asdasdasd',
-                        celular: 'asdasdasdad',
-                        id_plan: this.createCoworkerForm.value.plan, -->
-
             </div>
             <div class="row">
 
@@ -53,6 +56,12 @@
                         <mat-label>Dni</mat-label>
                         <input matInput formControlName="dni" id="dni">
                     </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.dni.invalid && (formDir.submitted || createCoworkerForm.controls.dni.dirty || createCoworkerForm.controls.dni.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.dni.errors.required" class="white-color">
+                            DNI requerido
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Direccion -->
@@ -61,6 +70,12 @@
                         <mat-label>Dirección</mat-label>
                         <input matInput formControlName="direccion" id="direccion">
                     </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.direccion.invalid && (formDir.submitted || createCoworkerForm.controls.direccion.dirty || createCoworkerForm.controls.direccion.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.direccion.errors.required" class="white-color">
+                            Dirección requerido
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Celu -->
@@ -69,6 +84,12 @@
                         <mat-label>Celular</mat-label>
                         <input matInput formControlName="celular" id="celular">
                     </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.celular.invalid && (formDir.submitted || createCoworkerForm.controls.celular.dirty || createCoworkerForm.controls.celular.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.celular.errors.required" class="white-color">
+                            Celular requerido
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Fecha Nac -->
@@ -79,6 +100,12 @@
                         <mat-datepicker-toggle matSuffix [for]="pickerFechaNac"></mat-datepicker-toggle>
                         <mat-datepicker #pickerFechaNac></mat-datepicker>
                     </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.fecha_nacimiento.invalid && (formDir.submitted || createCoworkerForm.controls.fecha_nacimiento.dirty || createCoworkerForm.controls.fecha_nacimiento.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.fecha_nacimiento.errors.required" class="white-color">
+                            Fecha de Nacimiento requerida
+                        </div>
+                    </div>
                 </div>
             </div>
             <h4 mat-dialog-title>Plan</h4>
@@ -94,6 +121,12 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.plan.invalid && (formDir.submitted || createCoworkerForm.controls.plan.dirty || createCoworkerForm.controls.plan.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.plan.errors.required" class="white-color">
+                            Plan requerido
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -172,30 +205,36 @@
                 </div>
                 <div *ngIf="planMovilSelected">
                     <section>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(0)" class="example-margin" color='primary'>Lunes</mat-checkbox>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(1)" class="example-margin" color='primary'>Martes</mat-checkbox>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(2)" class="example-margin" color='primary'>Miercoles</mat-checkbox>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(3)" class="example-margin" color='primary'>Jueves</mat-checkbox>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(4)" class="example-margin" color='primary'>Viernes</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(0)" class="example-margin"
+                            color='primary'>Lunes</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(1)" class="example-margin"
+                            color='primary'>Martes</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(2)" class="example-margin"
+                            color='primary'>Miercoles</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(3)" class="example-margin"
+                            color='primary'>Jueves</mat-checkbox>
+                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(4)" class="example-margin"
+                            color='primary'>Viernes</mat-checkbox>
                     </section>
                 </div>
             </div>
 
-        </form>
-    </mat-dialog-content>
 
-    <mat-dialog-actions>
-        <div *ngIf="!loadingSubmit">
-            <div class="form-group">
-                <button class="mat-button" (click)="close()">Cerrar</button>
-                <button class="mat-raised-button primary" (click)="submit()">Guardar</button>
+        </mat-dialog-content>
+
+        <mat-dialog-actions>
+            <div *ngIf="!loadingSubmit">
+                <div class="form-group">
+                    <button class="mat-button" (click)="close()">Cerrar</button>
+                    <button type="submit" class="mat-raised-button primary">Guardar</button>
+                </div>
             </div>
-        </div>
-        <div *ngIf="loadingSubmit" class="mat-spinner-wrapper">
-            <mat-spinner [diameter]="25"></mat-spinner>
-        </div>
+            <div *ngIf="loadingSubmit" class="mat-spinner-wrapper spinner-submit-padding">
+                <mat-spinner [diameter]="25"></mat-spinner>
+            </div>
 
-    </mat-dialog-actions>
+        </mat-dialog-actions>
+    </form>
 </div>
 <div *ngIf="loading" class="mat-spinner-wrapper">
     <mat-spinner [diameter]="30"></mat-spinner>

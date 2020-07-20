@@ -5,8 +5,6 @@
 
 
 
-
-html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: $accent-light; }
 mat-toolbar-row { background: $accent; }
 .mat-drawer-inner-container{ background: $accent; }
@@ -105,4 +103,18 @@ mat-dialog-actions {
 a:hover {
   color: white;
   text-decoration: none;
+}
+
+.snackbar {
+  background: $accent-light;
+  color: white;
+}
+
+.spinner-submit-padding {
+  padding: 15px;
+}
+
+.mat-spinner-table {
+  padding: 20px;
+  background: $accent;
 }

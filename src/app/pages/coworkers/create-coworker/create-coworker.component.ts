@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GroupsService } from 'src/app/services/groups.service';
 import { TIMES, ROLES, PLANES, MatSelectOption } from '../../../shared/const';
 import { Coworker } from 'src/app/models/coworker.model';
 import { UsersPuestos } from 'src/app/models/users-puestos.model';
 import { CoworkersService } from 'src/app/services/coworkers.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-coworker',
@@ -40,14 +41,20 @@ export class CreateCoworkerComponent implements OnInit {
   planOfiPrivadaSelected = false;
   planMovilSelected = false;
 
+  // success message
+  successMessage = 'Coworker creado con éxito';
+
+  // error message
+  errorMessage = 'Ocurrió un eror creando al coworker';
+
   selectedDays = [true, true, true, true, true];
 
-  constructor(public dialogRef: MatDialogRef<CreateCoworkerComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private groupsService: GroupsService,
-              private cowortersService: CoworkersService) {
-
-  }
+  constructor(
+    public dialogRef: MatDialogRef<CreateCoworkerComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private groupsService: GroupsService,
+    private cowortersService: CoworkersService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
@@ -56,14 +63,14 @@ export class CreateCoworkerComponent implements OnInit {
 
     // loads the form
     this.createCoworkerForm = new FormGroup({
-      nombre: new FormControl(),
-      apellido: new FormControl(),
-      email: new FormControl(),
-      plan: new FormControl(),
-      dni: new FormControl(),
-      celular: new FormControl(),
-      direccion: new FormControl(),
-      fecha_nacimiento: new FormControl(),
+      nombre: new FormControl('', [Validators.required]),
+      apellido: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
+      plan: new FormControl('', [Validators.required]),
+      dni: new FormControl('', [Validators.required]),
+      celular: new FormControl('', [Validators.required]),
+      direccion: new FormControl('', [Validators.required]),
+      fecha_nacimiento: new FormControl('', [Validators.required]),
       grupo: new FormControl(),
       rol: new FormControl(),
       hora_desde: new FormControl(),
@@ -120,43 +127,80 @@ export class CreateCoworkerComponent implements OnInit {
   // Loads the data in the propper structures to send all to backend in order to create
   // the coworkers, plan (if custom) and users_puestos
   submit(): void {
-    this.loadingSubmit = true;
-    // we take the planes from a harcoded structure, probably in the future we would get this from backend
-    const selectedPlan = PLANES[this.createCoworkerForm.value.plan - 1];
 
-    // we instantiate the coworker class
-    const coworker: Coworker = {
-      nombre: this.createCoworkerForm.value.nombre,
-      apellido: this.createCoworkerForm.value.apellido,
-      email: this.createCoworkerForm.value.email,
-      horas_sala: selectedPlan.horas_sala,
-      horas_sala_consumidas: 0,
-      is_coworker: true,
-      dni: this.createCoworkerForm.value.dni,
-      fecha_nacimiento: this.createCoworkerForm.value.fecha_nacimiento,
-      direccion: this.createCoworkerForm.value.direccion,
-      celular: this.createCoworkerForm.value.celular,
-      id_plan: this.createCoworkerForm.value.plan,
-      id_grupo: this.createCoworkerForm.value.grupo,
-      is_leader: this.createCoworkerForm.value.rol === '0',
-    };
+    console.log('valid: ' + this.createCoworkerForm.valid);
+    console.log('nombre invalid: ' + this.createCoworkerForm.controls.nombre.invalid);
 
-    // Users puestos instance
-    const usersPuestos: UsersPuestos = {
-      hora_desde: { hours: this.createCoworkerForm.value.hora_desde.split(':')[0], minutes: this.createCoworkerForm.value.hora_desde.split(':')[1] },
-      hora_hasta: { hours: this.createCoworkerForm.value.hora_hasta.split(':')[0], minutes: this.createCoworkerForm.value.hora_hasta.split(':')[1] },
-      fecha_desde: this.createCoworkerForm.value.fecha_desde,
-      fecha_hasta: this.createCoworkerForm.value.fecha_hasta,
-      dias: this.selectedDays
-    };
 
-    this.cowortersService.createCoworker(coworker, usersPuestos).subscribe((response) => {
-      this.loadingSubmit = false;
-      this.dialogRef.close();
+    if (this.createCoworkerForm.valid) {
+      this.loadingSubmit = true;
+      // we take the planes from a harcoded structure, probably in the future we would get this from backend
+      const selectedPlan = PLANES[this.createCoworkerForm.value.plan - 1];
+
+      // we instantiate the coworker class
+      const coworker: Coworker = {
+        nombre: this.createCoworkerForm.value.nombre,
+        apellido: this.createCoworkerForm.value.apellido,
+        email: this.createCoworkerForm.value.email,
+        horas_sala: selectedPlan.horas_sala,
+        horas_sala_consumidas: 0,
+        is_coworker: true,
+        dni: this.createCoworkerForm.value.dni,
+        fecha_nacimiento: this.createCoworkerForm.value.fecha_nacimiento,
+        direccion: this.createCoworkerForm.value.direccion,
+        celular: this.createCoworkerForm.value.celular,
+        id_plan: this.createCoworkerForm.value.plan,
+        id_grupo: this.createCoworkerForm.value.grupo,
+        is_leader: this.createCoworkerForm.value.rol === '0',
+      };
+
+      let usersPuestos: UsersPuestos;
+      // Users puestos instance
+      if (selectedPlan.id !== 4) {
+        usersPuestos = {
+          hora_desde: {
+            hours: this.createCoworkerForm.value.hora_desde.split(':')[0],
+            minutes: this.createCoworkerForm.value.hora_desde.split(':')[1]
+          },
+          hora_hasta: {
+            hours: this.createCoworkerForm.value.hora_hasta.split(':')[0],
+            minutes: this.createCoworkerForm.value.hora_hasta.split(':')[1]
+          },
+          fecha_desde: this.createCoworkerForm.value.fecha_desde,
+          fecha_hasta: this.createCoworkerForm.value.fecha_hasta,
+          dias: this.selectedDays
+        };
+      }
+
+
+      this.cowortersService.createCoworker(coworker, usersPuestos).subscribe((response) => {
+        if (!response.success) {
+          this.onError(response.error);
+        } else {
+          this.onSuccess();
+        }
+
+      },
+        (err) => this.onError(err));
+    }
+  }
+
+  onError(err): void {
+    this.loadingSubmit = false;
+    console.log(err);
+    this.snackBar.open(this.errorMessage, 'Cerrar', {
+      duration: 5000,
+      panelClass: ['snackbar']
     });
+  }
 
-    // TODO: form validation
-    // TODO: snackbar showing success message
+  onSuccess(): void {
+    this.loadingSubmit = false;
+    this.dialogRef.close();
+    this.snackBar.open(this.successMessage, 'Cerrar', {
+      duration: 5000,
+      panelClass: ['snackbar']
+    });
   }
 
 }
