@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 // end material modules
 
 import { AppRoutingModule } from './app-routing.module';
@@ -38,6 +39,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -79,7 +82,10 @@ FullCalendarModule.registerPlugins([
     MatCheckboxModule,
     FullCalendarModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [AuthGuardGuard,
     {

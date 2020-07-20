@@ -1,40 +1,40 @@
 <div class="container">
   <div class="table-wrapper">
-    <table mat-table *ngIf="!loading" [dataSource]="dataSource" class="mat-elevation-z8 accent">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="nombre" matSortDirection="asc" class="mat-elevation-z8 accent">
 
       <!-- Nombre Column -->
       <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
         <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
       </ng-container>
 
       <!-- apellido Column -->
       <ng-container matColumnDef="apellido">
-        <th mat-header-cell *matHeaderCellDef> Apellido </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellido </th>
         <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
       </ng-container>
 
       <!-- email Column -->
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
         <td mat-cell *matCellDef="let element"> {{element.email}} </td>
       </ng-container>
 
       <!-- horas_sala Column -->
       <ng-container matColumnDef="horas_sala">
-        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: right;"> Horas sala </th>
         <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala}} </td>
       </ng-container>
 
       <!-- horas_sala Column -->
       <ng-container matColumnDef="horas_sala_consumidas">
-        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala consumidas </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: right;"> Horas sala consumidas </th>
         <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala_consumidas}} </td>
       </ng-container>
 
       <!-- horas_sala Column -->
       <ng-container matColumnDef="horas_sala_disponibles">
-        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala disponibles </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: right;"> Horas sala disponibles </th>
         <td mat-cell *matCellDef="let element" style="text-align: right;">
           {{element.horas_sala - element.horas_sala_consumidas}} </td>
       </ng-container>
@@ -42,9 +42,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <div *ngIf="loading" class="mat-spinner-wrapper">
+    <div *ngIf="dataSource.loading$ | async" class="mat-spinner-wrapper mat-spinner-table">
       <mat-spinner [diameter]="50"></mat-spinner>
     </div>
+    <mat-paginator [length]="coworkers?.length" [pageSize]="10" [pageSizeOptions]="[10, 20]" class="accent" showFirstLastButtons></mat-paginator>
+
+
 
   </div>
   <button mat-fab color="primary" class="fab" (click)='openDialog()'>
