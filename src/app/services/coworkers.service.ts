@@ -14,13 +14,18 @@ export class CoworkersService {
 
   constructor(private http: HttpClient) { }
 
-  getCoworkers(filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 10): Observable<Coworker[]> {
+  getCoworkers(filter = '', sortOrder = 'asc', pageNumber = 1, pageSize = 10): Observable<Coworker[]> {
     return this.http.get<Coworker[]>(this.url + '/coworkers', {
       params: new HttpParams().set('filter', filter)
         .set('sortOrder', sortOrder)
         .set('pageNumber', pageNumber.toString())
         .set('pageSize', pageSize.toString())
     });
+  }
+
+  // gets the number of coworkers
+  getCoworkersCount(): Observable<any> {
+    return this.http.get<any>(this.url + '/coworkers/count');
   }
 
   createCoworker(coworker: Coworker, usersPuestos?: UsersPuestos): Observable<any> {

@@ -6,8 +6,7 @@ import { CreateCoworkerComponent } from './create-coworker/create-coworker.compo
 import { MatPaginator } from '@angular/material/paginator';
 import { CoworkersDataSource } from './coworkers.data-source';
 import { tap } from 'rxjs/operators';
-import { MatSort } from '@angular/material/sort';
-import { merge } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-coworkers',
@@ -18,7 +17,6 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
 
   // view childs
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
 
   // table columns declaration
   displayedColumns: string[] = ['nombre', 'apellido', 'email', 'horas_sala', 'horas_sala_consumidas', 'horas_sala_disponibles'];
@@ -29,9 +27,18 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   // Coworkers list (for future uses)
   coworkers: Coworker[];
 
+  // Total coworkers count
+  coworkersCount: number;
+
+  filterFormControl = new FormControl('');
+
   constructor(private coworkersService: CoworkersService, private matDialog: MatDialog) { }
 
   ngOnInit(): void {
+
+    this.coworkersService.getCoworkersCount().subscribe((totalCoworkers) => {
+      this.coworkersCount = totalCoworkers.count;
+    });
 
     this.dataSource = new CoworkersDataSource(this.coworkersService);
 
@@ -45,12 +52,8 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    // reset the paginator after sorting
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
     // if the pageinator or sort order changes permorms the query
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
+    this.paginator.page.pipe(
         tap(() => this.loadCoworkersPage())
       )
       .subscribe();
@@ -59,8 +62,8 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   // loads the coworkers page with new filter parameters
   loadCoworkersPage(): void {
     this.dataSource.loadCoworkers(
-      '',
-      this.sort.direction,
+      this.filterFormControl.value,
+      'asc',
       this.paginator.pageIndex,
       this.paginator.pageSize);
   }
