@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
 // end material modules
 
 import { AppRoutingModule } from './app-routing.module';
@@ -86,6 +87,7 @@ FullCalendarModule.registerPlugins([
     MatSnackBarModule,
     MatPaginatorModule,
     MatSortModule,
+    MatCardModule,
   ],
   providers: [AuthGuardGuard,
     {

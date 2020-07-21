@@ -24,6 +24,7 @@ export class CoworkersDataSource implements DataSource<Coworker> {
     loadCoworkers(filter = '', sortDirection = 'asc', pageIndex = 0, pageSize = 10): void {
 
         this.loadingSubject.next(true);
+        this.coworkersSubject.next([]);
 
         this.coworkersService.getCoworkers(filter, sortDirection,
             pageIndex, pageSize).subscribe((coworkers: Coworker[]) => {
