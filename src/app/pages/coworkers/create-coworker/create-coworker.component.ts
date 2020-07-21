@@ -121,7 +121,7 @@ export class CreateCoworkerComponent implements OnInit {
 
   // closes the dialog
   close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 
   // Loads the data in the propper structures to send all to backend in order to create
@@ -196,7 +196,7 @@ export class CreateCoworkerComponent implements OnInit {
 
   onSuccess(): void {
     this.loadingSubmit = false;
-    this.dialogRef.close();
+    this.dialogRef.close(true);
     this.snackBar.open(this.successMessage, 'Cerrar', {
       duration: 5000,
       panelClass: ['snackbar']

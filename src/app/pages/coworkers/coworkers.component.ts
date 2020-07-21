@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Coworker } from '../../models/coworker.model';
 import { CoworkersService } from '../../services/coworkers.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { CreateCoworkerComponent } from './create-coworker/create-coworker.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { CoworkersDataSource } from './coworkers.data-source';
@@ -72,7 +72,12 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   openDialog(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = { name: 'some name' };
-    this.matDialog.open(CreateCoworkerComponent, dialogConfig);
+    const ref: MatDialogRef<CreateCoworkerComponent> = this.matDialog.open(CreateCoworkerComponent, dialogConfig);
+    ref.afterClosed().subscribe((result) => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
   }
 
 }
