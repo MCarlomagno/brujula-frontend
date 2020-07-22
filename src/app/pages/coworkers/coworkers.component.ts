@@ -19,7 +19,7 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   // table columns declaration
-  displayedColumns: string[] = ['nombre', 'apellido', 'email', 'horas_sala', 'horas_sala_consumidas', 'horas_sala_disponibles'];
+  displayedColumns: string[] = ['email', 'nombre', 'apellido', 'horas_sala', 'horas_sala_consumidas', 'horas_sala_disponibles'];
 
   // Coworkers data
   dataSource: CoworkersDataSource;
@@ -30,6 +30,7 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   // Total coworkers count
   coworkersCount: number;
 
+  // form control for table filter
   filterFormControl = new FormControl('');
 
   constructor(private coworkersService: CoworkersService, private matDialog: MatDialog) { }
@@ -63,7 +64,7 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   loadCoworkersPage(): void {
     this.dataSource.loadCoworkers(
       this.filterFormControl.value,
-      'asc',
+      'desc',
       this.paginator.pageIndex,
       this.paginator.pageSize);
   }

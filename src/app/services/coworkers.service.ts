@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { Coworker } from '../models/coworker.model';
 import { Observable } from 'rxjs';
 import { UsersPuestos } from '../models/users-puestos.model';
+import { Plan } from '../models/plan.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,10 +29,11 @@ export class CoworkersService {
     return this.http.get<any>(this.url + '/coworkers/count');
   }
 
-  createCoworker(coworker: Coworker, usersPuestos?: UsersPuestos): Observable<any> {
+  createCoworker(coworker: Coworker, usersPuestos: UsersPuestos, selectedPlan: Plan): Observable<any> {
     const body = {
       coworker,
       usersPuestos,
+      selectedPlan,
     };
     return this.http.post<any>(this.url + '/coworkers', body);
   }

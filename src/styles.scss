@@ -66,13 +66,14 @@ table {
 }
 
 .table-wrapper {
-  width: 90%;
   padding: 20px;
   margin: auto;
 }
 
+.mat-row, .mat-header-row {
+  min-width: 1200px;
+}
 .table-filter-wrapper {
-  width: 90%;
   padding-top: 20px;
   padding-left: 20px;
   padding-right: 20px;
@@ -108,7 +109,8 @@ mat-dialog-actions {
 }
 
 .padding-inline-10 {
-  padding-inline: 10px;
+  padding-inline-start: 10px;
+  padding-inline-end: 10px;
 }
 
 *:focus {
