@@ -112,7 +112,7 @@
 
             <!-- Plan  -->
             <div class="row">
-                <div class="col-12">
+                <div class="col-lg-6 col-md-6">
                     <mat-form-field appearance="fill">
                         <mat-label>Plan</mat-label>
                         <mat-select formControlName="plan" (selectionChange)="onPlanSelected($event.value)">
@@ -128,11 +128,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-6 col-md-6">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Horas sala</mat-label>
+                        <input type="number" matInput formControlName="horas_sala" id="horas_sala">
+                    </mat-form-field>
+                    <div *ngIf="createCoworkerForm.controls.horas_sala.invalid && (formDir.submitted || createCoworkerForm.controls.horas_sala.dirty || createCoworkerForm.controls.horas_sala.touched)"
+                        class="alert white-color">
+                        <div *ngIf="createCoworkerForm.controls.horas_sala.errors.required" class="white-color">
+                            Horas sala inválidas
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Grupo -->
-            <div class="row" *ngIf="planOfiPrivadaSelected">
 
+            <div class="row">
+
+                <!-- Grupo -->
                 <div class="col-lg-6 col-md-6">
                     <mat-form-field appearance="fill">
                         <mat-label>Equipo</mat-label>
@@ -161,11 +174,14 @@
             <div *ngIf="!planOfiPrivadaSelected">
                 <h4 mat-dialog-title>Fechas/horarios</h4>
 
+
                 <div class="row">
+
+                    <!-- Hora desde -->
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Hora desde</mat-label>
-                            <mat-select formControlName="hora_desde">
+                            <mat-select formControlName="hora_desde" [disabled]="planFijoSelected">
                                 <mat-option *ngFor="let time of times" [value]="time.value">
                                     {{time.viewValue}}
                                 </mat-option>
@@ -173,10 +189,11 @@
                         </mat-form-field>
                     </div>
 
+                    <!-- Hora hasta -->
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Hora hasta</mat-label>
-                            <mat-select formControlName="hora_hasta">
+                            <mat-select formControlName="hora_hasta" [disabled]="planFijoSelected">
                                 <mat-option *ngFor="let time of times" [value]="time.value">
                                     {{time.viewValue}}
                                 </mat-option>
@@ -185,7 +202,10 @@
                     </div>
                 </div>
 
+
                 <div class="row">
+
+                    <!-- Fecha desde -->
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Fecha desde</mat-label>
@@ -194,6 +214,8 @@
                             <mat-datepicker #pickerDesde></mat-datepicker>
                         </mat-form-field>
                     </div>
+
+                    <!-- Fecha hasta -->
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Fecha hasta (Opcional)</mat-label>
@@ -215,6 +237,8 @@
                             color='primary'>Jueves</mat-checkbox>
                         <mat-checkbox [checked]="true" (change)="onCheckboxPressed(4)" class="example-margin"
                             color='primary'>Viernes</mat-checkbox>
+                        <mat-checkbox [checked]="false" (change)="onCheckboxPressed(5)" class="example-margin"
+                            color='primary'>Sábado</mat-checkbox>
                     </section>
                 </div>
             </div>
@@ -222,10 +246,10 @@
 
         </mat-dialog-content>
 
-        <mat-dialog-actions>
+        <mat-dialog-actions align="end">
             <div *ngIf="!loadingSubmit">
                 <div class="form-group">
-                    <button class="mat-button" (click)="close()">Cerrar</button>
+                    <button class="mat-button" type="button" (click)="close()">Cerrar</button>
                     <button type="submit" class="mat-raised-button primary">Guardar</button>
                 </div>
             </div>

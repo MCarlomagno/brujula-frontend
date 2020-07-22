@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GroupsService } from 'src/app/services/groups.service';
-import { TIMES, ROLES, PLANES, MatSelectOption } from '../../../shared/const';
+import { TIMES_PUESTO, ROLES, PLANES, MatSelectOption } from '../../../shared/const';
 import { Coworker } from 'src/app/models/coworker.model';
 import { UsersPuestos } from 'src/app/models/users-puestos.model';
 import { CoworkersService } from 'src/app/services/coworkers.service';
@@ -17,7 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CreateCoworkerComponent implements OnInit {
 
   // times with 20min gap from 8 to 20
-  times = TIMES;
+  times = TIMES_PUESTO;
 
   // Actual roles: Lider and Member
   roles = ROLES;
@@ -40,6 +40,7 @@ export class CreateCoworkerComponent implements OnInit {
   // Conditional form groups
   planOfiPrivadaSelected = false;
   planMovilSelected = false;
+  planFijoSelected = false;
 
   // success message
   successMessage = 'Coworker creado con éxito';
@@ -47,7 +48,7 @@ export class CreateCoworkerComponent implements OnInit {
   // error message
   errorMessage = 'Ocurrió un eror creando al coworker';
 
-  selectedDays = [true, true, true, true, true];
+  selectedDays = [true, true, true, true, true, false];
 
   constructor(
     public dialogRef: MatDialogRef<CreateCoworkerComponent>,
@@ -77,6 +78,7 @@ export class CreateCoworkerComponent implements OnInit {
       hora_hasta: new FormControl(),
       fecha_desde: new FormControl(),
       fecha_hasta: new FormControl(),
+      horas_sala: new FormControl(2, [Validators.required]),
     });
 
 
@@ -101,16 +103,41 @@ export class CreateCoworkerComponent implements OnInit {
   // Function performed when the user selects some value in Plans mat select
   // chagens the UI based on the actual selection.
   onPlanSelected(value): void {
-    if (value === 4) {
-      this.planOfiPrivadaSelected = true;
-    } else {
-      this.planOfiPrivadaSelected = false;
-    }
 
-    if (value === 1 || value === 2) {
-      this.planMovilSelected = true;
-    } else {
-      this.planMovilSelected = false;
+    switch (value) {
+      case 1: {
+        this.createCoworkerForm.controls.horas_sala.setValue(2);
+        this.planMovilSelected = true;
+        this.planOfiPrivadaSelected = false;
+        this.planFijoSelected = false;
+        break;
+      }
+      case 2: {
+        this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.planMovilSelected = true;
+        this.planOfiPrivadaSelected = false;
+        this.planFijoSelected = false;
+        break;
+      }
+      case 3: {
+        this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.planMovilSelected = false;
+        this.planOfiPrivadaSelected = false;
+        this.planFijoSelected = true;
+        this.createCoworkerForm.controls.hora_desde.setValue('8:00');
+        this.createCoworkerForm.controls.hora_hasta.setValue('20:00');
+        break;
+      }
+      case 4: {
+        this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.planMovilSelected = false;
+        this.planOfiPrivadaSelected = true;
+        this.planFijoSelected = true;
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 
@@ -119,23 +146,29 @@ export class CreateCoworkerComponent implements OnInit {
     this.selectedDays[index] = !this.selectedDays[index];
   }
 
+  onHorasSalaChange(): void {
+
+  }
+
   // closes the dialog
   close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 
   // Loads the data in the propper structures to send all to backend in order to create
   // the coworkers, plan (if custom) and users_puestos
   submit(): void {
 
-    console.log('valid: ' + this.createCoworkerForm.valid);
-    console.log('nombre invalid: ' + this.createCoworkerForm.controls.nombre.invalid);
-
-
     if (this.createCoworkerForm.valid) {
       this.loadingSubmit = true;
       // we take the planes from a harcoded structure, probably in the future we would get this from backend
       const selectedPlan = PLANES[this.createCoworkerForm.value.plan - 1];
+
+      // if the user changed the horas_sala parameter it's a custom plan
+      if (selectedPlan.horas_sala !== this.createCoworkerForm.controls.horas_sala.value) {
+        selectedPlan.horas_sala = this.createCoworkerForm.controls.horas_sala.value;
+        selectedPlan.is_custom = true;
+      }
 
       // we instantiate the coworker class
       const coworker: Coworker = {
@@ -155,6 +188,7 @@ export class CreateCoworkerComponent implements OnInit {
       };
 
       let usersPuestos: UsersPuestos;
+
       // Users puestos instance
       if (selectedPlan.id !== 4) {
         usersPuestos = {
@@ -173,7 +207,7 @@ export class CreateCoworkerComponent implements OnInit {
       }
 
 
-      this.cowortersService.createCoworker(coworker, usersPuestos).subscribe((response) => {
+      this.cowortersService.createCoworker(coworker, usersPuestos, selectedPlan).subscribe((response) => {
         if (!response.success) {
           this.onError(response.error);
         } else {
@@ -196,7 +230,7 @@ export class CreateCoworkerComponent implements OnInit {
 
   onSuccess(): void {
     this.loadingSubmit = false;
-    this.dialogRef.close();
+    this.dialogRef.close(true);
     this.snackBar.open(this.successMessage, 'Cerrar', {
       duration: 5000,
       panelClass: ['snackbar']

@@ -36,7 +36,7 @@ export const ROLES: MatSelectOption[] = [
     { value: '1', viewValue: 'Miembro' },
 ];
 
-export const TIMES: MatSelectOption[] = [
+export const TIMES_SALA: MatSelectOption[] = [
     { value: '8:00', viewValue: '8:00' },
     { value: '8:20', viewValue: '8:20' },
     { value: '8:40', viewValue: '8:40' },
@@ -74,4 +74,20 @@ export const TIMES: MatSelectOption[] = [
     { value: '19:20', viewValue: '19:20' },
     { value: '19:40', viewValue: '19:40' },
     { value: '20:00', viewValue: '20:00' },
+];
+
+export const TIMES_PUESTO: MatSelectOption[] = [
+  { value: '8:00', viewValue: '8:00' },
+  { value: '9:00', viewValue: '9:00' },
+  { value: '10:00', viewValue: '10:00' },
+  { value: '11:00', viewValue: '11:00' },
+  { value: '12:00', viewValue: '12:00' },
+  { value: '13:00', viewValue: '13:00' },
+  { value: '14:00', viewValue: '14:00' },
+  { value: '15:00', viewValue: '15:00' },
+  { value: '16:00', viewValue: '16:00' },
+  { value: '17:00', viewValue: '17:00' },
+  { value: '18:00', viewValue: '18:00' },
+  { value: '19:00', viewValue: '19:00' },
+  { value: '20:00', viewValue: '20:00' },
 ];

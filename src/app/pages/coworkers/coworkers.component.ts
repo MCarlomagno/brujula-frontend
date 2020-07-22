@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Coworker } from '../../models/coworker.model';
 import { CoworkersService } from '../../services/coworkers.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { CreateCoworkerComponent } from './create-coworker/create-coworker.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { CoworkersDataSource } from './coworkers.data-source';
@@ -19,7 +19,7 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   // table columns declaration
-  displayedColumns: string[] = ['nombre', 'apellido', 'email', 'horas_sala', 'horas_sala_consumidas', 'horas_sala_disponibles'];
+  displayedColumns: string[] = ['email', 'nombre', 'apellido', 'horas_sala', 'horas_sala_consumidas', 'horas_sala_disponibles'];
 
   // Coworkers data
   dataSource: CoworkersDataSource;
@@ -30,6 +30,7 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   // Total coworkers count
   coworkersCount: number;
 
+  // form control for table filter
   filterFormControl = new FormControl('');
 
   constructor(private coworkersService: CoworkersService, private matDialog: MatDialog) { }
@@ -63,7 +64,7 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   loadCoworkersPage(): void {
     this.dataSource.loadCoworkers(
       this.filterFormControl.value,
-      'asc',
+      'desc',
       this.paginator.pageIndex,
       this.paginator.pageSize);
   }
@@ -72,7 +73,12 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   openDialog(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = { name: 'some name' };
-    this.matDialog.open(CreateCoworkerComponent, dialogConfig);
+    const ref: MatDialogRef<CreateCoworkerComponent> = this.matDialog.open(CreateCoworkerComponent, dialogConfig);
+    ref.afterClosed().subscribe((result) => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
   }
 
 }
