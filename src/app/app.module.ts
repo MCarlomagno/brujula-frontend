@@ -42,6 +42,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { EditCoworkerComponent } from './pages/coworkers/edit-coworker/edit-coworker.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -61,7 +62,8 @@ FullCalendarModule.registerPlugins([
     GroupsComponent,
     CreateCoworkerComponent,
     CreateGroupComponent,
-    CalendarComponent
+    CalendarComponent,
+    EditCoworkerComponent
   ],
   imports: [
     BrowserModule,

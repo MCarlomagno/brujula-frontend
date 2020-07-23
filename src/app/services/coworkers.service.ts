@@ -24,6 +24,10 @@ export class CoworkersService {
     });
   }
 
+  getCoworkerById(id: number): Observable<Coworker> {
+    return this.http.get<Coworker>(this.url + '/coworkers/getById/' + id);
+  }
+
   // gets the number of coworkers
   getCoworkersCount(): Observable<any> {
     return this.http.get<any>(this.url + '/coworkers/count');
