@@ -136,3 +136,8 @@ a:hover {
   padding: 20px;
   background: $accent;
 }
+
+.table-row:hover {
+  background-color: $accent-light;
+  cursor: pointer;
+}

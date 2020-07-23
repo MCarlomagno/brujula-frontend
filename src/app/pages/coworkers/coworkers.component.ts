@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CoworkersDataSource } from './coworkers.data-source';
 import { tap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { EditCoworkerComponent } from './edit-coworker/edit-coworker.component';
 
 @Component({
   selector: 'app-coworkers',
@@ -81,4 +82,14 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
     });
   }
 
+  onCoworkerSelected(row): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = { id: row.id };
+    const ref: MatDialogRef<EditCoworkerComponent> = this.matDialog.open(EditCoworkerComponent, dialogConfig);
+    ref.afterClosed().subscribe((result) => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
+  }
 }

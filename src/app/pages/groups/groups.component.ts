@@ -6,9 +6,9 @@ import { CreateGroupComponent } from './create-group/create-group.component';
 
 
 const ELEMENT_DATA: Grupo[] = [
-  {nombre: 'los IT', id: '1', horas_sala: '1/4'},
-  {nombre: 'Codigo y cafe', id: '2', horas_sala: '2/5'},
-  {nombre: 'Otro grupo de nerds', id: '3', horas_sala: '0/0'},
+  {nombre: 'los IT', id: 1, horas_sala: 2, id_lider: 1},
+  {nombre: 'Codigo y cafe', id: 2, horas_sala: 2, id_lider: 1},
+  {nombre: 'Otro grupo de nerds', id: 3, horas_sala: 2, id_lider: 1},
 ];
 
 @Component({
