@@ -166,6 +166,8 @@ export class CreateCoworkerComponent implements OnInit {
 
       // if the user changed the horas_sala parameter it's a custom plan
       if (selectedPlan.horas_sala !== this.createCoworkerForm.controls.horas_sala.value) {
+        // concats custom to show to users that the hours are changed
+        selectedPlan.nombre = selectedPlan.nombre + ' (custom)';
         selectedPlan.horas_sala = this.createCoworkerForm.controls.horas_sala.value;
         selectedPlan.is_custom = true;
       }

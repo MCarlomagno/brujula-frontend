@@ -25,7 +25,7 @@ export class EditCoworkerComponent implements OnInit {
   roles = ROLES;
 
   // Standard planes, probably will get from DB
-  planes = PLANES;
+  planes = [...PLANES];
 
   // Groups for Mat select
   grupos: Grupo[] = [];
@@ -33,15 +33,11 @@ export class EditCoworkerComponent implements OnInit {
   // Initial loading
   loading = false;
 
-  // loading particular flags to set general loading
-  coworkersLoading = false;
-  groupsLoading = false;
-
   // Submit loading
   loadingSubmit = false;
 
   // create coworkers form group
-  createCoworkerForm: FormGroup;
+  editCoworkersForm: FormGroup;
 
   // Conditional form groups
   planOfiPrivadaSelected = false;
@@ -49,7 +45,7 @@ export class EditCoworkerComponent implements OnInit {
   planFijoSelected = false;
 
   // success message
-  successMessage = 'Coworker creado con éxito';
+  successMessage = 'Coworker editado con éxito';
 
   // error message
   errorMessage = 'Ocurrió un eror creando al coworker';
@@ -62,6 +58,14 @@ export class EditCoworkerComponent implements OnInit {
 
   // current group
   grupo: Grupo;
+
+  // current users_puestos
+  usersPuestos: UsersPuestos;
+
+  // changed flags
+  coworkerChanged = false;
+  planChanged = false;
+  userPuestoChanged = false;
 
   selectedDays = [true, true, true, true, true, false];
 
@@ -77,109 +81,95 @@ export class EditCoworkerComponent implements OnInit {
     // for show the spinner
     this.loading = true;
 
-    // sets the particular loadings in true
-    this.coworkersLoading = true;
-    this.groupsLoading = true;
-
     // loads the form
-    this.createCoworkerForm = new FormGroup({
-      nombre: new FormControl('', [Validators.required]),
-      apellido: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
-      plan: new FormControl('', [Validators.required]),
-      dni: new FormControl('', [Validators.required]),
-      celular: new FormControl('', [Validators.required]),
-      direccion: new FormControl('', [Validators.required]),
-      fecha_nacimiento: new FormControl('', [Validators.required]),
-      grupo: new FormControl(),
-      rol: new FormControl(),
-      hora_desde: new FormControl(),
-      hora_hasta: new FormControl(),
-      fecha_desde: new FormControl(),
-      fecha_hasta: new FormControl(),
-      horas_sala: new FormControl(2, [Validators.required]),
+    this.editCoworkersForm = new FormGroup({
+      nombre: new FormControl({ value: '' }, [Validators.required]),
+      apellido: new FormControl({ value: '' }, [Validators.required]),
+      email: new FormControl({ value: '' }, [Validators.required]),
+      plan: new FormControl({ value: '' }, [Validators.required]),
+      dni: new FormControl({ value: '' }, [Validators.required]),
+      celular: new FormControl({ value: '' }, [Validators.required]),
+      direccion: new FormControl({ value: '' }, [Validators.required]),
+      fecha_nacimiento: new FormControl({ value: '' }, [Validators.required]),
+      grupo: new FormControl({ value: '', disabled: true }),
+      rol: new FormControl({ value: '', disabled: true }),
+      hora_desde: new FormControl({ value: '', disabled: true }),
+      hora_hasta: new FormControl({ value: '', disabled: true }),
+      fecha_desde: new FormControl({ value: '', disabled: true }),
+      fecha_hasta: new FormControl({ value: '', disabled: true }),
+      horas_sala: new FormControl({ value: '' }, [Validators.required]),
     });
 
+    // get user, puesto, plan and grupo by user id
+    this.cowortersService.getCoworkerById(this.data.id).subscribe((result) => {
 
-    // TODO: instead of load groups on Init, a better approach could be load this when the coworkers list is loaded
-    // them passing the data by MAT_DIALOG_DATA.
-    this.groupsService.getGroups().subscribe((groups) => {
+      // loads result data
+      this.coworker = result.coworker;
+      this.usersPuestos = result.userPuesto;
+      this.plan = result.plan;
+      this.grupo = result.group;
 
-      // sets group backend data in a more readable format for mat select
-      this.grupos = groups;
-      // hides the spinner
-      this.groupsLoading = false;
+      // time data type for user puesto
+      this.usersPuestos.hora_desde = {
+        hours: result.userPuesto.hora_desde.split(':')[0],
+        minutes: result.userPuesto.hora_desde.split(':')[1]
+      };
 
+      this.usersPuestos.hora_hasta = {
+        hours: result.userPuesto.hora_hasta.split(':')[0],
+        minutes: result.userPuesto.hora_hasta.split(':')[1]
+      };
 
-      // get coworker by id
-      this.cowortersService.getCoworkerById(this.data.id).subscribe((result) => {
-        this.coworker = result;
-        console.log(this.coworker);
-        this.coworkersLoading = false;
+      // sets personal data
+      this.editCoworkersForm.controls.nombre.setValue(this.coworker.nombre);
+      this.editCoworkersForm.controls.apellido.setValue(this.coworker.apellido);
+      this.editCoworkersForm.controls.email.setValue(this.coworker.email);
+      this.editCoworkersForm.controls.dni.setValue(this.coworker.dni);
+      this.editCoworkersForm.controls.direccion.setValue(this.coworker.direccion);
+      this.editCoworkersForm.controls.celular.setValue(this.coworker.celular);
+      this.editCoworkersForm.controls.fecha_nacimiento.setValue(this.coworker.fecha_nacimiento);
 
-        // sets personal data
-        this.createCoworkerForm.controls.nombre.setValue(this.coworker.nombre);
-        this.createCoworkerForm.controls.apellido.setValue(this.coworker.apellido);
-        this.createCoworkerForm.controls.email.setValue(this.coworker.email);
-        this.createCoworkerForm.controls.dni.setValue(this.coworker.dni);
-        this.createCoworkerForm.controls.direccion.setValue(this.coworker.direccion);
-        this.createCoworkerForm.controls.celular.setValue(this.coworker.celular);
-        this.createCoworkerForm.controls.fecha_nacimiento.setValue(this.coworker.fecha_nacimiento);
+      // sets plan to static array
+      if (this.plan.is_custom) {
+        this.planes.push(this.plan);
+      }
+      this.editCoworkersForm.controls.plan.setValue(this.plan.id);
 
-        // if is not in the array of constants means its custom
-        const notCustomPlan = this.planes.some(plan => plan.id === this.coworker.id_plan);
+      // sets horas_sala
+      this.editCoworkersForm.controls.horas_sala.setValue(this.plan.horas_sala);
 
-        if (!notCustomPlan) {
-          // push the custom plan to show it in select
+      // sets hora_desde & hora_hasta
+      this.editCoworkersForm.controls.hora_desde.setValue(this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes);
+      this.editCoworkersForm.controls.hora_hasta.setValue(this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes);
 
-          // TODO get horas sala of this plan
-          this.planes.push({
-            id: this.coworker.id_plan,
-            nombre: 'Custom',
-            descripcion: 'Custom',
-            horas_sala: 0,
-            is_custom: true
-          });
-        }
+      // sets fecha_desde & fecha_hasta
+      this.editCoworkersForm.controls.fecha_desde.setValue(this.usersPuestos.fecha_desde);
+      this.editCoworkersForm.controls.fecha_hasta.setValue(this.usersPuestos.fecha_hasta);
 
-        // sets plan
-        this.createCoworkerForm.controls.plan.setValue(this.coworker.id_plan);
-        this.plan = this.planes.find(plan => plan.id === this.coworker.id_plan);
-
-
-        // sets horas_sala
-        this.createCoworkerForm.controls.horas_sala.setValue(this.plan.horas_sala);
+      if (this.coworker.id_grupo) {
+        // TODO get groups from database to select the coworker group (we can load it from the same query)
+        // if the coworker is part of a group we just push it on an empty array
+        this.grupos.push(this.grupo);
 
         // sets group
-        this.createCoworkerForm.controls.grupo.setValue(this.coworker.id_grupo);
+        this.editCoworkersForm.controls.grupo.setValue(this.grupo.id);
 
-        if (this.coworker.id_grupo) {
-
-          this.grupo = this.grupos.find(grupo => grupo.id === this.coworker.id_grupo);
-
-          // sets role
-          if (this.grupo.id_lider === this.coworker.id) {
-            this.createCoworkerForm.controls.rol.setValue('0');
-          } else {
-            this.createCoworkerForm.controls.rol.setValue('1');
-          }
-
+        // sets role
+        if (this.grupo.id_lider === this.coworker.id) {
+          this.editCoworkersForm.controls.rol.setValue('0');
+        } else {
+          this.editCoworkersForm.controls.rol.setValue('1');
         }
 
-        // checks if all the data is loaded
-        this.validateLoading();
-      });
+      }
 
-      // checks if all the data is loaded
-      this.validateLoading();
+      this.loading = false;
     });
 
-  }
+    //   // checks if all the data is loaded
+    //   this.validateLoading();
+    // });
 
-  validateLoading(): void {
-    if (!this.coworkersLoading && !this.groupsLoading) {
-      this.loading = false;
-    }
   }
 
   // Function performed when the user selects some value in Plans mat select
@@ -188,30 +178,30 @@ export class EditCoworkerComponent implements OnInit {
 
     switch (value) {
       case 1: {
-        this.createCoworkerForm.controls.horas_sala.setValue(2);
+        this.editCoworkersForm.controls.horas_sala.setValue(2);
         this.planMovilSelected = true;
         this.planOfiPrivadaSelected = false;
         this.planFijoSelected = false;
         break;
       }
       case 2: {
-        this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.editCoworkersForm.controls.horas_sala.setValue(4);
         this.planMovilSelected = true;
         this.planOfiPrivadaSelected = false;
         this.planFijoSelected = false;
         break;
       }
       case 3: {
-        this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.editCoworkersForm.controls.horas_sala.setValue(4);
         this.planMovilSelected = false;
         this.planOfiPrivadaSelected = false;
         this.planFijoSelected = true;
-        this.createCoworkerForm.controls.hora_desde.setValue('8:00');
-        this.createCoworkerForm.controls.hora_hasta.setValue('20:00');
+        this.editCoworkersForm.controls.hora_desde.setValue('8:00');
+        this.editCoworkersForm.controls.hora_hasta.setValue('20:00');
         break;
       }
       case 4: {
-        this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.editCoworkersForm.controls.horas_sala.setValue(4);
         this.planMovilSelected = false;
         this.planOfiPrivadaSelected = true;
         this.planFijoSelected = true;
@@ -228,77 +218,104 @@ export class EditCoworkerComponent implements OnInit {
     this.selectedDays[index] = !this.selectedDays[index];
   }
 
-  onHorasSalaChange(): void {
-
-  }
-
   // closes the dialog
   close(): void {
     this.dialogRef.close(false);
   }
 
-  // Loads the data in the propper structures to send all to backend in order to create
-  // the coworkers, plan (if custom) and users_puestos
+  // checks if the fields are changed and updates just the data changed
   submit(): void {
 
-    // if (this.createCoworkerForm.valid) {
-    //   this.loadingSubmit = true;
-    //   // we take the planes from a harcoded structure, probably in the future we would get this from backend
-    //   const selectedPlan = PLANES[this.createCoworkerForm.value.plan - 1];
+    if (this.editCoworkersForm.valid) {
+      // shows spinner
+      this.loadingSubmit = true;
 
-    //   // if the user changed the horas_sala parameter it's a custom plan
-    //   if (selectedPlan.horas_sala !== this.createCoworkerForm.controls.horas_sala.value) {
-    //     selectedPlan.horas_sala = this.createCoworkerForm.controls.horas_sala.value;
-    //     selectedPlan.is_custom = true;
-    //   }
+      // falgs to detect changes in coworker
+      const nombreChanged = this.editCoworkersForm.controls.nombre.value !== this.coworker.nombre;
+      const apellidoChanged = this.editCoworkersForm.controls.apellido.value !== this.coworker.apellido;
+      const emailChanged = this.editCoworkersForm.controls.email.value !== this.coworker.email;
+      const dniChanged = this.editCoworkersForm.controls.dni.value !== this.coworker.dni;
+      const direccionChanged = this.editCoworkersForm.controls.direccion.value !== this.coworker.direccion;
+      const celularChanged = this.editCoworkersForm.controls.celular.value !==  this.coworker.celular;
+      const fechaNacimientoChanged = this.editCoworkersForm.controls.fecha_nacimiento.value !== this.coworker.fecha_nacimiento;
+      this.coworkerChanged = nombreChanged || apellidoChanged || emailChanged ||  dniChanged ||
+                         direccionChanged || celularChanged || fechaNacimientoChanged;
 
-    //   // we instantiate the coworker class
-    //   const coworker: Coworker = {
-    //     nombre: this.createCoworkerForm.value.nombre,
-    //     apellido: this.createCoworkerForm.value.apellido,
-    //     email: this.createCoworkerForm.value.email,
-    //     horas_sala: selectedPlan.horas_sala,
-    //     horas_sala_consumidas: 0,
-    //     is_coworker: true,
-    //     dni: this.createCoworkerForm.value.dni,
-    //     fecha_nacimiento: this.createCoworkerForm.value.fecha_nacimiento,
-    //     direccion: this.createCoworkerForm.value.direccion,
-    //     celular: this.createCoworkerForm.value.celular,
-    //     id_plan: this.createCoworkerForm.value.plan,
-    //     id_grupo: this.createCoworkerForm.value.grupo,
-    //     is_leader: this.createCoworkerForm.value.rol === '0',
-    //   };
+      // flags to detect changes in plan
+      const planChanged =  this.editCoworkersForm.controls.plan.value !== this.plan.id;
+      const hotasSalaChanged = this.editCoworkersForm.controls.horas_sala.value !== this.plan.horas_sala;
+      this.planChanged = planChanged || hotasSalaChanged;
 
-    //   let usersPuestos: UsersPuestos;
+      // we take the planes from a harcoded structure, probably in the future we would get this from backend
+      const selectedPlan = PLANES[this.editCoworkersForm.value.plan - 1];
 
-    //   // Users puestos instance
-    //   if (selectedPlan.id !== 4) {
-    //     usersPuestos = {
-    //       hora_desde: {
-    //         hours: this.createCoworkerForm.value.hora_desde.split(':')[0],
-    //         minutes: this.createCoworkerForm.value.hora_desde.split(':')[1]
-    //       },
-    //       hora_hasta: {
-    //         hours: this.createCoworkerForm.value.hora_hasta.split(':')[0],
-    //         minutes: this.createCoworkerForm.value.hora_hasta.split(':')[1]
-    //       },
-    //       fecha_desde: this.createCoworkerForm.value.fecha_desde,
-    //       fecha_hasta: this.createCoworkerForm.value.fecha_hasta,
-    //       dias: this.selectedDays
-    //     };
-    //   }
+      let coworker: Coworker;
+      if (this.coworkerChanged) {
+        // we instantiate the coworker class
+        console.log('coworker changed');
+        coworker = {
+          id: this.coworker.id,
+          nombre: this.editCoworkersForm.value.nombre,
+          apellido: this.editCoworkersForm.value.apellido,
+          email: this.editCoworkersForm.value.email,
+          horas_sala: this.coworker.horas_sala,
+          horas_sala_consumidas: 0,
+          is_coworker: true,
+          dni: this.editCoworkersForm.value.dni,
+          fecha_nacimiento: this.editCoworkersForm.value.fecha_nacimiento,
+          direccion: this.editCoworkersForm.value.direccion,
+          celular: this.editCoworkersForm.value.celular,
+          id_plan: this.coworker.id_plan,
+          id_grupo: this.editCoworkersForm.value.grupo,
+          is_leader: this.editCoworkersForm.value.rol === '0',
+        };
+      }
+
+      let plan: Plan;
+      if (this.planChanged) {
+        // if the user changed the horas_sala parameter it's a custom plan
+        console.log('plan changed');
+
+        // if the plan isnt custom yet, concats '(custom)'
+        if (!selectedPlan.nombre.includes('custom')) {
+          selectedPlan.nombre = selectedPlan.nombre + ' (custom)';
+        }
+        selectedPlan.horas_sala = this.editCoworkersForm.controls.horas_sala.value;
+        selectedPlan.is_custom = true;
+        plan = selectedPlan;
+      }
 
 
-    //   this.cowortersService.createCoworker(coworker, usersPuestos, selectedPlan).subscribe((response) => {
-    //     if (!response.success) {
-    //       this.onError(response.error);
-    //     } else {
-    //       this.onSuccess();
-    //     }
+      let usersPuestos: UsersPuestos;
+      if (this.userPuestoChanged) {
+        console.log('users puestos changed');
+        // Users puestos instance
+        if (this.plan.id !== 4) {
+          usersPuestos = {
+            hora_desde: {
+              hours: this.editCoworkersForm.value.hora_desde.split(':')[0],
+              minutes: this.editCoworkersForm.value.hora_desde.split(':')[1]
+            },
+            hora_hasta: {
+              hours: this.editCoworkersForm.value.hora_hasta.split(':')[0],
+              minutes: this.editCoworkersForm.value.hora_hasta.split(':')[1]
+            },
+            fecha_desde: this.editCoworkersForm.value.fecha_desde,
+            fecha_hasta: this.editCoworkersForm.value.fecha_hasta,
+            dias: this.selectedDays
+          };
+        }
+      }
 
-    //   },
-    //     (err) => this.onError(err));
-    // }
+      this.cowortersService.updateCoworker(this.coworker.id, coworker, usersPuestos, plan).subscribe((response) => {
+        if (!response.success) {
+          this.onError(response.error);
+        } else {
+          this.onSuccess();
+        }
+      },
+        (err) => this.onError(err));
+    }
   }
 
   onError(err): void {

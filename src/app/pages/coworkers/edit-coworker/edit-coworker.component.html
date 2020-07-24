@@ -1,6 +1,6 @@
 <div *ngIf="!loading" class="container">
     <h2 mat-dialog-title>Agregar Coworker</h2>
-    <form [formGroup]="createCoworkerForm" (ngSubmit)="submit()" #formDir="ngForm">
+    <form [formGroup]="editCoworkersForm" (ngSubmit)="submit()" #formDir="ngForm">
         <mat-dialog-content>
 
             <h4 mat-dialog-title>Datos personales</h4>
@@ -12,9 +12,9 @@
                         <mat-label>Nombre</mat-label>
                         <input matInput formControlName="nombre" id="nombre">
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.nombre.invalid && (formDir.submitted || createCoworkerForm.controls.nombre.dirty || createCoworkerForm.controls.nombre.touched)"
+                    <div *ngIf="editCoworkersForm.controls.nombre.invalid && (formDir.submitted || editCoworkersForm.controls.nombre.dirty || editCoworkersForm.controls.nombre.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.nombre.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.nombre.errors.required" class="white-color">
                             Nombre requerido
                         </div>
                     </div>
@@ -26,9 +26,9 @@
                         <mat-label>Apellido</mat-label>
                         <input matInput formControlName="apellido" id="apellido">
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.apellido.invalid && (formDir.submitted || createCoworkerForm.controls.apellido.dirty || createCoworkerForm.controls.apellido.touched)"
+                    <div *ngIf="editCoworkersForm.controls.apellido.invalid && (formDir.submitted || editCoworkersForm.controls.apellido.dirty || editCoworkersForm.controls.apellido.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.apellido.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.apellido.errors.required" class="white-color">
                             Apellido requerido
                         </div>
                     </div>
@@ -40,9 +40,9 @@
                         <mat-label>Email</mat-label>
                         <input matInput formControlName="email" id="email">
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.email.invalid && (formDir.submitted || createCoworkerForm.controls.email.dirty || createCoworkerForm.controls.email.touched)"
+                    <div *ngIf="editCoworkersForm.controls.email.invalid && (formDir.submitted || editCoworkersForm.controls.email.dirty || editCoworkersForm.controls.email.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.email.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.email.errors.required" class="white-color">
                             Email requerido
                         </div>
                     </div>
@@ -56,9 +56,9 @@
                         <mat-label>Dni</mat-label>
                         <input matInput formControlName="dni" id="dni">
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.dni.invalid && (formDir.submitted || createCoworkerForm.controls.dni.dirty || createCoworkerForm.controls.dni.touched)"
+                    <div *ngIf="editCoworkersForm.controls.dni.invalid && (formDir.submitted || editCoworkersForm.controls.dni.dirty || editCoworkersForm.controls.dni.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.dni.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.dni.errors.required" class="white-color">
                             DNI requerido
                         </div>
                     </div>
@@ -70,9 +70,9 @@
                         <mat-label>Dirección</mat-label>
                         <input matInput formControlName="direccion" id="direccion">
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.direccion.invalid && (formDir.submitted || createCoworkerForm.controls.direccion.dirty || createCoworkerForm.controls.direccion.touched)"
+                    <div *ngIf="editCoworkersForm.controls.direccion.invalid && (formDir.submitted || editCoworkersForm.controls.direccion.dirty || editCoworkersForm.controls.direccion.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.direccion.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.direccion.errors.required" class="white-color">
                             Dirección requerido
                         </div>
                     </div>
@@ -84,9 +84,9 @@
                         <mat-label>Celular</mat-label>
                         <input matInput formControlName="celular" id="celular">
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.celular.invalid && (formDir.submitted || createCoworkerForm.controls.celular.dirty || createCoworkerForm.controls.celular.touched)"
+                    <div *ngIf="editCoworkersForm.controls.celular.invalid && (formDir.submitted || editCoworkersForm.controls.celular.dirty || editCoworkersForm.controls.celular.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.celular.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.celular.errors.required" class="white-color">
                             Celular requerido
                         </div>
                     </div>
@@ -100,9 +100,9 @@
                         <mat-datepicker-toggle matSuffix [for]="pickerFechaNac"></mat-datepicker-toggle>
                         <mat-datepicker #pickerFechaNac></mat-datepicker>
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.fecha_nacimiento.invalid && (formDir.submitted || createCoworkerForm.controls.fecha_nacimiento.dirty || createCoworkerForm.controls.fecha_nacimiento.touched)"
+                    <div *ngIf="editCoworkersForm.controls.fecha_nacimiento.invalid && (formDir.submitted || editCoworkersForm.controls.fecha_nacimiento.dirty || editCoworkersForm.controls.fecha_nacimiento.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.fecha_nacimiento.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.fecha_nacimiento.errors.required" class="white-color">
                             Fecha de Nacimiento requerida
                         </div>
                     </div>
@@ -121,9 +121,9 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.plan.invalid && (formDir.submitted || createCoworkerForm.controls.plan.dirty || createCoworkerForm.controls.plan.touched)"
+                    <div *ngIf="editCoworkersForm.controls.plan.invalid && (formDir.submitted || editCoworkersForm.controls.plan.dirty || editCoworkersForm.controls.plan.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.plan.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.plan.errors.required" class="white-color">
                             Plan requerido
                         </div>
                     </div>
@@ -133,9 +133,9 @@
                         <mat-label>Horas sala</mat-label>
                         <input type="number" matInput formControlName="horas_sala" id="horas_sala">
                     </mat-form-field>
-                    <div *ngIf="createCoworkerForm.controls.horas_sala.invalid && (formDir.submitted || createCoworkerForm.controls.horas_sala.dirty || createCoworkerForm.controls.horas_sala.touched)"
+                    <div *ngIf="editCoworkersForm.controls.horas_sala.invalid && (formDir.submitted || editCoworkersForm.controls.horas_sala.dirty || editCoworkersForm.controls.horas_sala.touched)"
                         class="alert white-color">
-                        <div *ngIf="createCoworkerForm.controls.horas_sala.errors.required" class="white-color">
+                        <div *ngIf="editCoworkersForm.controls.horas_sala.errors.required" class="white-color">
                             Horas sala inválidas
                         </div>
                     </div>
