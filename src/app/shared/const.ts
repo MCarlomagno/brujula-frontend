@@ -77,8 +77,8 @@ export const TIMES_SALA: MatSelectOption[] = [
 ];
 
 export const TIMES_PUESTO: MatSelectOption[] = [
-  { value: '8:00', viewValue: '8:00' },
-  { value: '9:00', viewValue: '9:00' },
+  { value: '08:00', viewValue: '8:00' },
+  { value: '09:00', viewValue: '9:00' },
   { value: '10:00', viewValue: '10:00' },
   { value: '11:00', viewValue: '11:00' },
   { value: '12:00', viewValue: '12:00' },

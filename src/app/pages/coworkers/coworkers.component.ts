@@ -20,7 +20,7 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   // table columns declaration
-  displayedColumns: string[] = ['email', 'nombre', 'apellido', 'horas_sala', 'horas_sala_consumidas', 'horas_sala_disponibles'];
+  displayedColumns: string[] = ['email', 'nombre', 'apellido', 'horas_sala', 'horas_sala_consumidas', 'horas_sala_disponibles', 'actions'];
 
   // Coworkers data
   dataSource: CoworkersDataSource;
@@ -91,5 +91,9 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
         this.ngOnInit();
       }
     });
+  }
+
+  onDelete(element): void {
+    console.log(element);
   }
 }

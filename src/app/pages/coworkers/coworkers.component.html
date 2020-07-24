@@ -43,21 +43,31 @@
 
       <!-- horas_sala Column -->
       <ng-container matColumnDef="horas_sala">
-        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala </th>
-        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala}} </td>
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.horas_sala}} </td>
       </ng-container>
 
       <!-- horas_sala Column -->
       <ng-container matColumnDef="horas_sala_consumidas">
-        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala consumidas </th>
-        <td mat-cell *matCellDef="let element" style="text-align: right;"> {{element.horas_sala_consumidas}} </td>
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala consumidas </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.horas_sala_consumidas}} </td>
       </ng-container>
 
       <!-- horas_sala Column -->
       <ng-container matColumnDef="horas_sala_disponibles">
-        <th mat-header-cell *matHeaderCellDef style="text-align: right;"> Horas sala disponibles </th>
-        <td mat-cell *matCellDef="let element" style="text-align: right;">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala disponibles </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
           {{element.horas_sala - element.horas_sala_consumidas}} </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acciones </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
+          <button mat-icon-button color="warn" (click)="onDelete(element) ; $event.stopPropagation()" aria-label="Example icon button with a heart icon">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -68,9 +78,6 @@
     </div>
     <mat-paginator [length]="coworkersCount ? coworkersCount : 0" [pageSize]="10" [pageSizeOptions]="[10, 20]"
       class="accent" showFirstLastButtons></mat-paginator>
-
-
-
   </div>
   <button mat-fab color="primary" class="fab" (click)='openDialog()'>
     <mat-icon>add</mat-icon>

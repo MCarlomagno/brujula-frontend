@@ -24,8 +24,8 @@ export class CoworkersService {
     });
   }
 
-  getCoworkerById(id: number): Observable<Coworker> {
-    return this.http.get<Coworker>(this.url + '/coworkers/getById/' + id);
+  getCoworkerById(id: number): Observable<any> {
+    return this.http.get<any>(this.url + '/coworkers/getById/' + id);
   }
 
   // gets the number of coworkers
@@ -40,6 +40,15 @@ export class CoworkersService {
       selectedPlan,
     };
     return this.http.post<any>(this.url + '/coworkers', body);
+  }
+
+  updateCoworker(id: number, coworker: Coworker, usersPuestos: UsersPuestos, selectedPlan: Plan): Observable<any> {
+    const body = {
+      coworker,
+      usersPuestos,
+      selectedPlan,
+    };
+    return this.http.put<any>(this.url + '/coworkers/' + id, body);
   }
 
 }
