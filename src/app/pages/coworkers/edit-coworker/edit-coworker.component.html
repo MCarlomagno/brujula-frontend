@@ -225,19 +225,19 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <div *ngIf="planMovilSelected">
+                <div>
                     <section>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(0)" class="example-margin"
+                        <mat-checkbox [checked]="usersPuestos.dias[0]" (change)="onCheckboxPressed(0)" class="example-margin"
                             color='primary'>Lunes</mat-checkbox>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(1)" class="example-margin"
+                        <mat-checkbox [checked]="usersPuestos.dias[1]" (change)="onCheckboxPressed(1)" class="example-margin"
                             color='primary'>Martes</mat-checkbox>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(2)" class="example-margin"
+                        <mat-checkbox [checked]="usersPuestos.dias[2]" (change)="onCheckboxPressed(2)" class="example-margin"
                             color='primary'>Miercoles</mat-checkbox>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(3)" class="example-margin"
+                        <mat-checkbox [checked]="usersPuestos.dias[3]" (change)="onCheckboxPressed(3)" class="example-margin"
                             color='primary'>Jueves</mat-checkbox>
-                        <mat-checkbox [checked]="true" (change)="onCheckboxPressed(4)" class="example-margin"
+                        <mat-checkbox [checked]="usersPuestos.dias[4]" (change)="onCheckboxPressed(4)" class="example-margin"
                             color='primary'>Viernes</mat-checkbox>
-                        <mat-checkbox [checked]="false" (change)="onCheckboxPressed(5)" class="example-margin"
+                        <mat-checkbox [checked]="usersPuestos.dias[5]" (change)="onCheckboxPressed(5)" class="example-margin"
                             color='primary'>Sábado</mat-checkbox>
                     </section>
                 </div>
