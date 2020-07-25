@@ -91,34 +91,64 @@ export class EditCoworkerComponent implements OnInit {
       celular: new FormControl({ value: '' }, [Validators.required]),
       direccion: new FormControl({ value: '' }, [Validators.required]),
       fecha_nacimiento: new FormControl({ value: '' }, [Validators.required]),
-      grupo: new FormControl({ value: '', disabled: true }),
-      rol: new FormControl({ value: '', disabled: true }),
-      hora_desde: new FormControl({ value: '', disabled: true }),
-      hora_hasta: new FormControl({ value: '', disabled: true }),
-      fecha_desde: new FormControl({ value: '', disabled: true }),
-      fecha_hasta: new FormControl({ value: '', disabled: true }),
+      grupo: new FormControl({ value: ''}),
+      rol: new FormControl({ value: ''}),
+      hora_desde: new FormControl({ value: ''}),
+      hora_hasta: new FormControl({ value: ''}),
+      fecha_desde: new FormControl({ value: ''}),
+      fecha_hasta: new FormControl({ value: ''}),
       horas_sala: new FormControl({ value: '' }, [Validators.required]),
     });
 
     // get user, puesto, plan and grupo by user id
     this.cowortersService.getCoworkerById(this.data.id).subscribe((result) => {
 
+      if (!result.success) {
+        console.log('ocurrio un error');
+        console.log(result.msg);
+      }
+
       // loads result data
       this.coworker = result.coworker;
       this.usersPuestos = result.userPuesto;
+      this.usersPuestos.dias = [
+        result.userPuesto.lunes,
+        result.userPuesto.martes,
+        result.userPuesto.miercoles,
+        result.userPuesto.jueves,
+        result.userPuesto.viernes,
+        result.userPuesto.sabado
+      ];
       this.plan = result.plan;
-      this.grupo = result.group;
+      this.grupos = result.groups;
 
       // time data type for user puesto
-      this.usersPuestos.hora_desde = {
-        hours: result.userPuesto.hora_desde.split(':')[0],
-        minutes: result.userPuesto.hora_desde.split(':')[1]
-      };
+      if (this.usersPuestos) {
+        this.usersPuestos.hora_desde = {
+          hours: result.userPuesto.hora_desde.split(':')[0],
+          minutes: result.userPuesto.hora_desde.split(':')[1]
+        };
 
-      this.usersPuestos.hora_hasta = {
-        hours: result.userPuesto.hora_hasta.split(':')[0],
-        minutes: result.userPuesto.hora_hasta.split(':')[1]
-      };
+        this.usersPuestos.hora_hasta = {
+          hours: result.userPuesto.hora_hasta.split(':')[0],
+          minutes: result.userPuesto.hora_hasta.split(':')[1]
+        };
+
+        // sets hora_desde & hora_hasta
+        this.editCoworkersForm.controls.hora_desde.setValue(
+          this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes
+        );
+        this.editCoworkersForm.controls.hora_hasta.setValue(
+          this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes
+        );
+
+        // sets fecha_desde & fecha_hasta
+        this.editCoworkersForm.controls.fecha_desde.setValue(this.usersPuestos.fecha_desde);
+        this.editCoworkersForm.controls.fecha_hasta.setValue(this.usersPuestos.fecha_hasta);
+
+        this.selectedDays = [...this.usersPuestos.dias];
+      }
+
 
       // sets personal data
       this.editCoworkersForm.controls.nombre.setValue(this.coworker.nombre);
@@ -133,42 +163,33 @@ export class EditCoworkerComponent implements OnInit {
       if (this.plan.is_custom) {
         this.planes.push(this.plan);
       }
+
       this.editCoworkersForm.controls.plan.setValue(this.plan.id);
+      this.onPlanSelected(this.plan.id);
 
       // sets horas_sala
       this.editCoworkersForm.controls.horas_sala.setValue(this.plan.horas_sala);
 
-      // sets hora_desde & hora_hasta
-      this.editCoworkersForm.controls.hora_desde.setValue(this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes);
-      this.editCoworkersForm.controls.hora_hasta.setValue(this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes);
-
-      // sets fecha_desde & fecha_hasta
-      this.editCoworkersForm.controls.fecha_desde.setValue(this.usersPuestos.fecha_desde);
-      this.editCoworkersForm.controls.fecha_hasta.setValue(this.usersPuestos.fecha_hasta);
-
       if (this.coworker.id_grupo) {
-        // TODO get groups from database to select the coworker group (we can load it from the same query)
-        // if the coworker is part of a group we just push it on an empty array
-        this.grupos.push(this.grupo);
+
+        this.grupo = this.grupos.find(g => g.id === this.coworker.id_grupo);
 
         // sets group
         this.editCoworkersForm.controls.grupo.setValue(this.grupo.id);
 
         // sets role
         if (this.grupo.id_lider === this.coworker.id) {
-          this.editCoworkersForm.controls.rol.setValue('0');
+          this.editCoworkersForm.controls.rol.setValue('leader');
         } else {
-          this.editCoworkersForm.controls.rol.setValue('1');
+          this.editCoworkersForm.controls.rol.setValue('member');
         }
 
+      }else {
+        this.editCoworkersForm.controls.grupo.setValue(null);
       }
 
       this.loading = false;
     });
-
-    //   // checks if all the data is loaded
-    //   this.validateLoading();
-    // });
 
   }
 
@@ -208,6 +229,7 @@ export class EditCoworkerComponent implements OnInit {
         break;
       }
       default: {
+        this.planOfiPrivadaSelected = false;
         break;
       }
     }
@@ -236,18 +258,33 @@ export class EditCoworkerComponent implements OnInit {
       const emailChanged = this.editCoworkersForm.controls.email.value !== this.coworker.email;
       const dniChanged = this.editCoworkersForm.controls.dni.value !== this.coworker.dni;
       const direccionChanged = this.editCoworkersForm.controls.direccion.value !== this.coworker.direccion;
-      const celularChanged = this.editCoworkersForm.controls.celular.value !==  this.coworker.celular;
+      const celularChanged = this.editCoworkersForm.controls.celular.value !== this.coworker.celular;
       const fechaNacimientoChanged = this.editCoworkersForm.controls.fecha_nacimiento.value !== this.coworker.fecha_nacimiento;
-      this.coworkerChanged = nombreChanged || apellidoChanged || emailChanged ||  dniChanged ||
-                         direccionChanged || celularChanged || fechaNacimientoChanged;
+
+      // if the user already has group and the initial group is different than the actual: group has changed
+      // if the user does not have group and the actual group is different than null: group has changed
+      const groupChanged = (this.grupo && this.editCoworkersForm.controls.grupo.value !== this.grupo.id) ||
+                           (!this.grupo && this.editCoworkersForm.controls.grupo.value !== null);
+      const rolChanged = this.editCoworkersForm.value.rol === 'leader';
+
+      this.coworkerChanged = nombreChanged || apellidoChanged || emailChanged || dniChanged ||
+        direccionChanged || celularChanged || fechaNacimientoChanged || groupChanged || rolChanged;
 
       // flags to detect changes in plan
-      const planChanged =  this.editCoworkersForm.controls.plan.value !== this.plan.id;
+      const planChanged = this.editCoworkersForm.controls.plan.value !== this.plan.id;
       const hotasSalaChanged = this.editCoworkersForm.controls.horas_sala.value !== this.plan.horas_sala;
       this.planChanged = planChanged || hotasSalaChanged;
 
-      // we take the planes from a harcoded structure, probably in the future we would get this from backend
-      const selectedPlan = PLANES[this.editCoworkersForm.value.plan - 1];
+      // flags to detect changes in users_puestos
+      const horaDesdeChanged = this.editCoworkersForm.controls.hora_desde.value !==
+                                (this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes);
+      const horaHastaChanged = this.editCoworkersForm.controls.hora_hasta.value !==
+                                (this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes);
+
+      const fechaDesdeChanged = this.editCoworkersForm.controls.fecha_desde.value !== this.usersPuestos.fecha_desde;
+      const fechaHastaChanged = this.editCoworkersForm.controls.fecha_hasta.value !== this.usersPuestos.fecha_hasta;
+      const daysChaged = this.usersPuestos.dias !== this.selectedDays;
+      this.userPuestoChanged = horaDesdeChanged || horaHastaChanged || fechaDesdeChanged || fechaHastaChanged || daysChaged;
 
       let coworker: Coworker;
       if (this.coworkerChanged) {
@@ -267,7 +304,7 @@ export class EditCoworkerComponent implements OnInit {
           celular: this.editCoworkersForm.value.celular,
           id_plan: this.coworker.id_plan,
           id_grupo: this.editCoworkersForm.value.grupo,
-          is_leader: this.editCoworkersForm.value.rol === '0',
+          is_leader: this.editCoworkersForm.value.rol === 'leader',
         };
       }
 
@@ -275,9 +312,14 @@ export class EditCoworkerComponent implements OnInit {
       if (this.planChanged) {
         // if the user changed the horas_sala parameter it's a custom plan
         console.log('plan changed');
+        // we take the planes from a harcoded structure, probably in the future we would get this from backend
+        let selectedPlan = PLANES[this.editCoworkersForm.value.plan - 1];
+        if (!selectedPlan) {
+          selectedPlan = this.plan;
+        }
 
         // if the plan isnt custom yet, concats '(custom)'
-        if (!selectedPlan.nombre.includes('custom')) {
+        if (selectedPlan.is_custom && !selectedPlan.nombre.includes('custom')) {
           selectedPlan.nombre = selectedPlan.nombre + ' (custom)';
         }
         selectedPlan.horas_sala = this.editCoworkersForm.controls.horas_sala.value;
@@ -290,28 +332,28 @@ export class EditCoworkerComponent implements OnInit {
       if (this.userPuestoChanged) {
         console.log('users puestos changed');
         // Users puestos instance
-        if (this.plan.id !== 4) {
-          usersPuestos = {
-            hora_desde: {
-              hours: this.editCoworkersForm.value.hora_desde.split(':')[0],
-              minutes: this.editCoworkersForm.value.hora_desde.split(':')[1]
-            },
-            hora_hasta: {
-              hours: this.editCoworkersForm.value.hora_hasta.split(':')[0],
-              minutes: this.editCoworkersForm.value.hora_hasta.split(':')[1]
-            },
-            fecha_desde: this.editCoworkersForm.value.fecha_desde,
-            fecha_hasta: this.editCoworkersForm.value.fecha_hasta,
-            dias: this.selectedDays
-          };
-        }
+        usersPuestos = {
+          id_user: this.coworker.id,
+          hora_desde: {
+            hours: this.editCoworkersForm.value.hora_desde.split(':')[0],
+            minutes: this.editCoworkersForm.value.hora_desde.split(':')[1]
+          },
+          hora_hasta: {
+            hours: this.editCoworkersForm.value.hora_hasta.split(':')[0],
+            minutes: this.editCoworkersForm.value.hora_hasta.split(':')[1]
+          },
+          fecha_desde: this.editCoworkersForm.value.fecha_desde,
+          fecha_hasta: this.editCoworkersForm.value.fecha_hasta,
+          dias: this.selectedDays
+        };
+        console.log(usersPuestos);
       }
 
       this.cowortersService.updateCoworker(this.coworker.id, coworker, usersPuestos, plan).subscribe((response) => {
-        if (!response.success) {
-          this.onError(response.error);
-        } else {
+        if (response.success) {
           this.onSuccess();
+        } else {
+          this.onError(response.error);
         }
       },
         (err) => this.onError(err));

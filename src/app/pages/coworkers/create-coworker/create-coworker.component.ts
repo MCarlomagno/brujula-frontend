@@ -186,7 +186,7 @@ export class CreateCoworkerComponent implements OnInit {
         celular: this.createCoworkerForm.value.celular,
         id_plan: this.createCoworkerForm.value.plan,
         id_grupo: this.createCoworkerForm.value.grupo,
-        is_leader: this.createCoworkerForm.value.rol === '0',
+        is_leader: this.createCoworkerForm.value.rol === 'leader',
       };
 
       let usersPuestos: UsersPuestos;
@@ -194,6 +194,7 @@ export class CreateCoworkerComponent implements OnInit {
       // Users puestos instance
       if (selectedPlan.id !== 4) {
         usersPuestos = {
+          id_user: null,
           hora_desde: {
             hours: this.createCoworkerForm.value.hora_desde.split(':')[0],
             minutes: this.createCoworkerForm.value.hora_desde.split(':')[1]

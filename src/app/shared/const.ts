@@ -32,8 +32,8 @@ export const PLANES: Plan[] = [{
   }];
 
 export const ROLES: MatSelectOption[] = [
-    { value: '0', viewValue: 'Lider' },
-    { value: '1', viewValue: 'Miembro' },
+    { value: 'leader', viewValue: 'Lider' },
+    { value: 'member', viewValue: 'Miembro' },
 ];
 
 export const TIMES_SALA: MatSelectOption[] = [
