@@ -8,6 +8,7 @@ import { CoworkersDataSource } from './coworkers.data-source';
 import { tap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { EditCoworkerComponent } from './edit-coworker/edit-coworker.component';
+import { DeleteCoworkerComponent } from './delete-coworker/delete-coworker.component';
 
 @Component({
   selector: 'app-coworkers',
@@ -94,6 +95,13 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   }
 
   onDelete(element): void {
-    console.log(element);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = { id: element.id, name: element.nombre, surname: element.apellido };
+    const ref: MatDialogRef<DeleteCoworkerComponent> = this.matDialog.open(DeleteCoworkerComponent, dialogConfig);
+    ref.afterClosed().subscribe((result) => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
   }
 }

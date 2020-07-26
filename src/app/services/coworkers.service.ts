@@ -51,4 +51,8 @@ export class CoworkersService {
     return this.http.put<any>(this.url + '/coworkers/' + id, body);
   }
 
+  deleteCoworker(id: number): Observable<any> {
+    return this.http.delete<any>(this.url + '/coworkers/' + id);
+  }
+
 }
