@@ -149,7 +149,7 @@
                 <div class="col-lg-6 col-md-6">
                     <mat-form-field appearance="fill">
                         <mat-label>Equipo</mat-label>
-                        <mat-select formControlName="grupo">
+                        <mat-select formControlName="grupo" (selectionChange)="onGroupSelected($event.value)">
                             <mat-option *ngFor="let grupo of grupos" [value]="grupo.id">
                                 {{grupo.nombre}}
                             </mat-option>
