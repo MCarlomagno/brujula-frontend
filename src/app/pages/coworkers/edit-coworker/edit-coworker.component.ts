@@ -184,7 +184,7 @@ export class EditCoworkerComponent implements OnInit {
         // sets group
         this.editCoworkersForm.controls.grupo.setValue(this.grupo.id);
 
-        this.grupos.push({ id: 0, id_lider: null, nombre: 'Sin grupo', horas_sala: 0 });
+        this.grupos.push({ id: 0, id_lider: null, nombre: 'Sin grupo', horas_sala: 0 , cuit_cuil: ''});
 
         // sets role
         if (this.grupo.id_lider === this.coworker.id) {

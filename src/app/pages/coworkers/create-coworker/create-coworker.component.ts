@@ -84,7 +84,7 @@ export class CreateCoworkerComponent implements OnInit {
 
     // TODO: instead of load groups on Init, a better approach could be load this when the coworkers list is loaded
     // them passing the data by MAT_DIALOG_DATA.
-    this.groupsService.getGroups().subscribe((groups) => {
+    this.groupsService.getAllGroups().subscribe((groups) => {
 
       // sets group backend data in a more readable format for mat select
       groups.map(group => {

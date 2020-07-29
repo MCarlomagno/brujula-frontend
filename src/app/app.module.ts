@@ -44,6 +44,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { EditCoworkerComponent } from './pages/coworkers/edit-coworker/edit-coworker.component';
 import { DeleteCoworkerComponent } from './pages/coworkers/delete-coworker/delete-coworker.component';
+import { DeleteGroupComponent } from './pages/groups/delete-group/delete-group.component';
+import { EditGroupComponent } from './pages/groups/edit-group/edit-group.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -65,7 +67,9 @@ FullCalendarModule.registerPlugins([
     CreateGroupComponent,
     CalendarComponent,
     EditCoworkerComponent,
-    DeleteCoworkerComponent
+    DeleteCoworkerComponent,
+    DeleteGroupComponent,
+    EditGroupComponent
   ],
   imports: [
     BrowserModule,
