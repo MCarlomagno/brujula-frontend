@@ -84,7 +84,7 @@ export class CreateCoworkerComponent implements OnInit {
 
     // TODO: instead of load groups on Init, a better approach could be load this when the coworkers list is loaded
     // them passing the data by MAT_DIALOG_DATA.
-    this.groupsService.getGroups().subscribe((groups) => {
+    this.groupsService.getAllGroups().subscribe((groups) => {
 
       // sets group backend data in a more readable format for mat select
       groups.map(group => {
@@ -107,6 +107,7 @@ export class CreateCoworkerComponent implements OnInit {
     switch (value) {
       case 1: {
         this.createCoworkerForm.controls.horas_sala.setValue(2);
+        this.createCoworkerForm.controls.horas_sala.disable();
         this.planMovilSelected = true;
         this.planOfiPrivadaSelected = false;
         this.planFijoSelected = false;
@@ -114,25 +115,38 @@ export class CreateCoworkerComponent implements OnInit {
       }
       case 2: {
         this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.createCoworkerForm.controls.horas_sala.disable();
         this.planMovilSelected = true;
         this.planOfiPrivadaSelected = false;
-        this.planFijoSelected = false;
+        this.planFijoSelected = true;
+        this.createCoworkerForm.controls.hora_desde.setValue('08:00');
+        this.createCoworkerForm.controls.hora_hasta.setValue('20:00');
         break;
       }
       case 3: {
         this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.createCoworkerForm.controls.horas_sala.disable();
         this.planMovilSelected = false;
         this.planOfiPrivadaSelected = false;
         this.planFijoSelected = true;
-        this.createCoworkerForm.controls.hora_desde.setValue('8:00');
+        this.createCoworkerForm.controls.hora_desde.setValue('08:00');
         this.createCoworkerForm.controls.hora_hasta.setValue('20:00');
         break;
       }
       case 4: {
         this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.createCoworkerForm.controls.horas_sala.enable();
         this.planMovilSelected = false;
         this.planOfiPrivadaSelected = true;
         this.planFijoSelected = true;
+        break;
+      }
+      case 5: {
+        this.createCoworkerForm.controls.horas_sala.setValue(4);
+        this.createCoworkerForm.controls.horas_sala.enable();
+        this.planMovilSelected = true;
+        this.planOfiPrivadaSelected = false;
+        this.planFijoSelected = false;
         break;
       }
       default: {
@@ -167,7 +181,7 @@ export class CreateCoworkerComponent implements OnInit {
       // if the user changed the horas_sala parameter it's a custom plan
       if (selectedPlan.horas_sala !== this.createCoworkerForm.controls.horas_sala.value) {
         // concats custom to show to users that the hours are changed
-        selectedPlan.nombre = selectedPlan.nombre + ' (custom)';
+        selectedPlan.nombre = selectedPlan.nombre;
         selectedPlan.horas_sala = this.createCoworkerForm.controls.horas_sala.value;
         selectedPlan.is_custom = true;
       }

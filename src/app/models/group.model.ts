@@ -1,6 +1,7 @@
 export interface Grupo {
-    id: number;
+    id?: number;
     nombre: string;
-    horas_sala: number;
-    id_lider: number;
+    horas_sala?: number;
+    id_lider?: number;
+    cuit_cuil: string;
 }

@@ -29,6 +29,12 @@ export const PLANES: Plan[] = [{
     is_custom: false,
     nombre: 'Oficina privada',
     descripcion: 'Oficina privada',
+  }, {
+    id: 5,
+    horas_sala: 4,
+    is_custom: true,
+    nombre: 'Personalizado',
+    descripcion: 'Personalizado',
   }];
 
 export const ROLES: MatSelectOption[] = [

@@ -62,6 +62,9 @@ export class EditCoworkerComponent implements OnInit {
   // current users_puestos
   usersPuestos: UsersPuestos;
 
+  // is leader flag
+  isLeader = false;
+
   // changed flags
   coworkerChanged = false;
   planChanged = false;
@@ -91,12 +94,12 @@ export class EditCoworkerComponent implements OnInit {
       celular: new FormControl({ value: '' }, [Validators.required]),
       direccion: new FormControl({ value: '' }, [Validators.required]),
       fecha_nacimiento: new FormControl({ value: '' }, [Validators.required]),
-      grupo: new FormControl({ value: ''}),
-      rol: new FormControl({ value: ''}),
-      hora_desde: new FormControl({ value: ''}),
-      hora_hasta: new FormControl({ value: ''}),
-      fecha_desde: new FormControl({ value: ''}),
-      fecha_hasta: new FormControl({ value: ''}),
+      grupo: new FormControl({ value: '' }),
+      rol: new FormControl({ value: '' }),
+      hora_desde: new FormControl({ value: '' }),
+      hora_hasta: new FormControl({ value: '' }),
+      fecha_desde: new FormControl({ value: '' }),
+      fecha_hasta: new FormControl({ value: '' }),
       horas_sala: new FormControl({ value: '' }, [Validators.required]),
     });
 
@@ -161,11 +164,15 @@ export class EditCoworkerComponent implements OnInit {
 
       // sets plan to static array
       if (this.plan.is_custom) {
-        this.planes.push(this.plan);
+        // plan 5 represents the personalizado plan
+        this.editCoworkersForm.controls.plan.setValue(5);
+        this.onPlanSelected(5);
+      } else {
+        this.editCoworkersForm.controls.plan.setValue(this.plan.id);
+        this.onPlanSelected(this.plan.id);
       }
 
-      this.editCoworkersForm.controls.plan.setValue(this.plan.id);
-      this.onPlanSelected(this.plan.id);
+
 
       // sets horas_sala
       this.editCoworkersForm.controls.horas_sala.setValue(this.plan.horas_sala);
@@ -177,20 +184,29 @@ export class EditCoworkerComponent implements OnInit {
         // sets group
         this.editCoworkersForm.controls.grupo.setValue(this.grupo.id);
 
+        this.grupos.push({ id: 0, id_lider: null, nombre: 'Sin grupo', horas_sala: 0 , cuit_cuil: ''});
+
         // sets role
         if (this.grupo.id_lider === this.coworker.id) {
+          this.isLeader = true;
           this.editCoworkersForm.controls.rol.setValue('leader');
         } else {
           this.editCoworkersForm.controls.rol.setValue('member');
         }
 
-      }else {
+      } else {
         this.editCoworkersForm.controls.grupo.setValue(null);
       }
 
       this.loading = false;
     });
 
+  }
+
+  onGroupSelected(value): void {
+    if (value === 0) {
+      this.editCoworkersForm.controls.rol.setValue(null);
+    }
   }
 
   // Function performed when the user selects some value in Plans mat select
@@ -200,6 +216,7 @@ export class EditCoworkerComponent implements OnInit {
     switch (value) {
       case 1: {
         this.editCoworkersForm.controls.horas_sala.setValue(2);
+        this.editCoworkersForm.controls.horas_sala.disable();
         this.planMovilSelected = true;
         this.planOfiPrivadaSelected = false;
         this.planFijoSelected = false;
@@ -207,25 +224,38 @@ export class EditCoworkerComponent implements OnInit {
       }
       case 2: {
         this.editCoworkersForm.controls.horas_sala.setValue(4);
+        this.editCoworkersForm.controls.horas_sala.disable();
         this.planMovilSelected = true;
         this.planOfiPrivadaSelected = false;
-        this.planFijoSelected = false;
+        this.planFijoSelected = true;
+        this.editCoworkersForm.controls.hora_desde.setValue('08:00');
+        this.editCoworkersForm.controls.hora_hasta.setValue('20:00');
         break;
       }
       case 3: {
         this.editCoworkersForm.controls.horas_sala.setValue(4);
+        this.editCoworkersForm.controls.horas_sala.disable();
         this.planMovilSelected = false;
         this.planOfiPrivadaSelected = false;
         this.planFijoSelected = true;
-        this.editCoworkersForm.controls.hora_desde.setValue('8:00');
+        this.editCoworkersForm.controls.hora_desde.setValue('08:00');
         this.editCoworkersForm.controls.hora_hasta.setValue('20:00');
         break;
       }
       case 4: {
         this.editCoworkersForm.controls.horas_sala.setValue(4);
+        this.editCoworkersForm.controls.horas_sala.enable();
         this.planMovilSelected = false;
         this.planOfiPrivadaSelected = true;
         this.planFijoSelected = true;
+        break;
+      }
+      case 5: {
+        this.editCoworkersForm.controls.horas_sala.setValue(4);
+        this.editCoworkersForm.controls.horas_sala.enable();
+        this.planMovilSelected = true;
+        this.planOfiPrivadaSelected = false;
+        this.planFijoSelected = false;
         break;
       }
       default: {
@@ -264,8 +294,11 @@ export class EditCoworkerComponent implements OnInit {
       // if the user already has group and the initial group is different than the actual: group has changed
       // if the user does not have group and the actual group is different than null: group has changed
       const groupChanged = (this.grupo && this.editCoworkersForm.controls.grupo.value !== this.grupo.id) ||
-                           (!this.grupo && this.editCoworkersForm.controls.grupo.value !== null);
-      const rolChanged = this.editCoworkersForm.value.rol === 'leader';
+        (!this.grupo && this.editCoworkersForm.controls.grupo.value !== null);
+
+      // isLeader flag indicates if the user loaded was a leader
+      const rolChanged = (!this.isLeader && this.editCoworkersForm.value.rol === 'leader') ||
+        (this.isLeader && this.editCoworkersForm.value.rol === 'member');
 
       this.coworkerChanged = nombreChanged || apellidoChanged || emailChanged || dniChanged ||
         direccionChanged || celularChanged || fechaNacimientoChanged || groupChanged || rolChanged;
@@ -277,9 +310,9 @@ export class EditCoworkerComponent implements OnInit {
 
       // flags to detect changes in users_puestos
       const horaDesdeChanged = this.editCoworkersForm.controls.hora_desde.value !==
-                                (this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes);
+        (this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes);
       const horaHastaChanged = this.editCoworkersForm.controls.hora_hasta.value !==
-                                (this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes);
+        (this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes);
 
       const fechaDesdeChanged = this.editCoworkersForm.controls.fecha_desde.value !== this.usersPuestos.fecha_desde;
       const fechaHastaChanged = this.editCoworkersForm.controls.fecha_hasta.value !== this.usersPuestos.fecha_hasta;
@@ -311,26 +344,20 @@ export class EditCoworkerComponent implements OnInit {
       let plan: Plan;
       if (this.planChanged) {
         // if the user changed the horas_sala parameter it's a custom plan
-        console.log('plan changed');
         // we take the planes from a harcoded structure, probably in the future we would get this from backend
         let selectedPlan = PLANES[this.editCoworkersForm.value.plan - 1];
         if (!selectedPlan) {
           selectedPlan = this.plan;
         }
 
-        // if the plan isnt custom yet, concats '(custom)'
-        if (selectedPlan.is_custom && !selectedPlan.nombre.includes('custom')) {
-          selectedPlan.nombre = selectedPlan.nombre + ' (custom)';
-        }
         selectedPlan.horas_sala = this.editCoworkersForm.controls.horas_sala.value;
-        selectedPlan.is_custom = true;
+        selectedPlan.is_custom = selectedPlan.id === 5;
         plan = selectedPlan;
       }
 
 
       let usersPuestos: UsersPuestos;
       if (this.userPuestoChanged) {
-        console.log('users puestos changed');
         // Users puestos instance
         usersPuestos = {
           id_user: this.coworker.id,
@@ -346,7 +373,6 @@ export class EditCoworkerComponent implements OnInit {
           fecha_hasta: this.editCoworkersForm.value.fecha_hasta,
           dias: this.selectedDays
         };
-        console.log(usersPuestos);
       }
 
       this.cowortersService.updateCoworker(this.coworker.id, coworker, usersPuestos, plan).subscribe((response) => {
@@ -362,7 +388,6 @@ export class EditCoworkerComponent implements OnInit {
 
   onError(err): void {
     this.loadingSubmit = false;
-    console.log(err);
     this.snackBar.open(this.errorMessage, 'Cerrar', {
       duration: 5000,
       panelClass: ['snackbar']

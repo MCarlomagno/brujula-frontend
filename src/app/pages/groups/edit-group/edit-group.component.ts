@@ -6,11 +6,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Grupo } from 'src/app/models/group.model';
 
 @Component({
-  selector: 'app-create-group',
-  templateUrl: './create-group.component.html',
-  styleUrls: ['./create-group.component.scss']
+  selector: 'app-edit-group',
+  templateUrl: './edit-group.component.html',
+  styleUrls: ['./edit-group.component.scss']
 })
-export class CreateGroupComponent implements OnInit {
+export class EditGroupComponent implements OnInit {
+
+  // actual group
+  group: Grupo;
 
   // Initial loading
   loading = false;
@@ -22,13 +25,13 @@ export class CreateGroupComponent implements OnInit {
   createGroupForm: FormGroup;
 
   // success message
-  successMessage = 'Grupo creado con éxito';
+  successMessage = 'Grupo editado con éxito';
 
   // error message
-  errorMessage = 'Ocurrió un eror creando al Grupo';
+  errorMessage = 'Ocurrió un eror editando al Grupo';
 
   constructor(
-    public dialogRef: MatDialogRef<CreateGroupComponent>,
+    public dialogRef: MatDialogRef<EditGroupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private groupsService: GroupsService,
     private snackBar: MatSnackBar) { }
@@ -38,14 +41,23 @@ export class CreateGroupComponent implements OnInit {
     // for show the spinner
     this.loading = true;
 
-    // loads the form
     this.createGroupForm = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
       cuit_cuil: new FormControl('', [Validators.required]),
     });
 
-    // hides the spinner
-    this.loading = false;
+    this.groupsService.getGroupById(this.data.id).subscribe((grupo) => {
+      this.group = grupo;
+
+      // loads the form
+      this.createGroupForm.controls.nombre.setValue(this.group.nombre);
+      this.createGroupForm.controls.cuit_cuil.setValue(this.group.cuit_cuil);
+
+      // hides the spinner
+      this.loading = false;
+    });
+
+
   }
 
   // closes the dialog
@@ -55,26 +67,28 @@ export class CreateGroupComponent implements OnInit {
 
   submit(): void {
     if (this.createGroupForm.valid) {
+
+      // shows spinner
       this.loadingSubmit = true;
-      const createdGroup: Grupo = {
+
+      const editedGroup: Grupo = {
         nombre: this.createGroupForm.controls.nombre.value,
         cuit_cuil: this.createGroupForm.controls.cuit_cuil.value
       };
 
-      this.groupsService.createGroup(createdGroup).subscribe((response) => {
+      this.groupsService.editGroup(editedGroup, this.data.id).subscribe((response) => {
         if (!response.success) {
           this.onError(response.error);
         } else {
           this.onSuccess();
         }
-
       },
         (err) => this.onError(err));
-
     }
   }
 
   onError(err): void {
+    // hides spinner
     this.loadingSubmit = false;
     console.log(err);
     this.snackBar.open(this.errorMessage, 'Cerrar', {
@@ -84,6 +98,7 @@ export class CreateGroupComponent implements OnInit {
   }
 
   onSuccess(): void {
+    // hides spinner
     this.loadingSubmit = false;
     this.dialogRef.close(true);
     this.snackBar.open(this.successMessage, 'Cerrar', {
