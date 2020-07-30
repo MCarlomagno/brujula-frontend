@@ -1,5 +1,40 @@
-<body>
-    <div class="center">
-        <full-calendar id="calendar" [options]="calendarOptions"></full-calendar>
+<div class="container">
+    <div class="table-filter-wrapper">
+        <mat-card class="table-filter-card" style="font-size: 14px">
+            <div class="row">
+                <div class="col-lg-6">
+                    <mat-form-field appearance="fill" style="display: block">
+                        <mat-label>Sala</mat-label>
+                        <mat-select (selectionChange)="loadCalendar()">
+                            <mat-option *ngFor="let sala of salas" [value]="sala.id">
+                                {{sala.nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6">
+                    <mat-form-field appearance="fill" style="display: block">
+                        <mat-label>Semana</mat-label>
+                        <input matInput [matDatepicker]="pickerDesde">
+                        <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerDesde></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="col-12 button-filter-wrapper">
+
+                <!-- Filter button -->
+                <button class="primary" (click)="loadCalendar()" mat-raised-button>Buscar</button>
+
+            </div>
+        </mat-card>
     </div>
-</body>
+
+    <body>
+        <div class="center">
+            <full-calendar id="calendar" [options]="calendarOptions"></full-calendar>
+        </div>
+    </body>
+</div>

@@ -1,0 +1,24 @@
+.draggable-div {
+    background: rgb(206, 206, 206);
+    height: 30px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    padding: 10px;
+}
+
+.calendar-top-icon {
+    color: #253036;
+    font-size: 20px;
+}
+
+.icon-left {
+    left: 0;
+}
+
+.icon-right {
+    right: 0;
+}

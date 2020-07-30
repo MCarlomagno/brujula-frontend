@@ -46,6 +46,8 @@ import { EditCoworkerComponent } from './pages/coworkers/edit-coworker/edit-cowo
 import { DeleteCoworkerComponent } from './pages/coworkers/delete-coworker/delete-coworker.component';
 import { DeleteGroupComponent } from './pages/groups/delete-group/delete-group.component';
 import { EditGroupComponent } from './pages/groups/edit-group/edit-group.component';
+import { CalendarEventComponent } from './pages/calendar/calendar-event/calendar-event.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -69,7 +71,8 @@ FullCalendarModule.registerPlugins([
     EditCoworkerComponent,
     DeleteCoworkerComponent,
     DeleteGroupComponent,
-    EditGroupComponent
+    EditGroupComponent,
+    CalendarEventComponent
   ],
   imports: [
     BrowserModule,
@@ -96,6 +99,7 @@ FullCalendarModule.registerPlugins([
     MatPaginatorModule,
     MatSortModule,
     MatCardModule,
+    DragDropModule
   ],
   providers: [AuthGuardGuard,
     {
@@ -105,6 +109,6 @@ FullCalendarModule.registerPlugins([
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateCoworkerComponent, CreateGroupComponent]
+  entryComponents: [CreateCoworkerComponent, CreateGroupComponent, CalendarEventComponent]
 })
 export class AppModule { }
