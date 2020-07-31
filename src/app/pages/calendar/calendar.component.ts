@@ -4,10 +4,8 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { CalendarEventComponent } from './calendar-event/calendar-event.component';
 import { isPlatformBrowser } from '@angular/common';
-
-
-const SALAS = [{ id: 1, nombre: 'Sala 1' },
-         { id: 1, nombre: 'Sala 2' }];
+import { SalasService } from '../../services/salas.service';
+import { Sala } from 'src/app/models/sala.model';
 
 
 @Component({
@@ -26,12 +24,15 @@ export class CalendarComponent implements OnInit {
   public innerHeight: any;
 
   // salas
-  salas = [...SALAS];
+  salas: Sala[];
+
+  // loading flag
+  loading = false;
 
   calendarOptions: CalendarOptions = {
     // spanish language
     locales: [esLocale],
-    contentHeight: 'auto',
+    contentHeight: innerHeight - 300,
     select: this.handleSelect.bind(this),
     // free version (open source)
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -45,22 +46,32 @@ export class CalendarComponent implements OnInit {
     eventBackgroundColor: '#E65100',
     selectMirror: true,
     headerToolbar: {
-      left: 'prev,next',
+      left: '',
       center: 'title',
-      right: 'timeGridWeek'
+      right: 'prev,next'
     },
   };
 
   constructor(
     private matDialog: MatDialog,
-    @Inject(PLATFORM_ID) platformId: string) {
+    @Inject(PLATFORM_ID) platformId: string,
+    private salasService: SalasService) {
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
-    this.salas = SALAS;
+
+    // shows loading flag
+    this.loading = true;
+
+    this.salasService.getSalas().subscribe((result) => {
+      this.salas = result;
+
+      // hides loading flag
+      this.loading = false;
+    });
   }
 
   loadCalendar(): void {
@@ -73,10 +84,10 @@ export class CalendarComponent implements OnInit {
     dialogConfig.data = {};
     dialogConfig.panelClass = 'calendar-evert-dialog-container';
     const ref: MatDialogRef<CalendarEventComponent> = this.matDialog.open(CalendarEventComponent, dialogConfig);
-    if (this.isBrowser) {
-      this.handleModalPosition(ref, arg);
+    // if (this.isBrowser) {
+    this.handleModalPosition(ref, arg);
 
-    }
+    // }
     ref.afterClosed().subscribe((result) => {
       if (!result) {
         // delete selection

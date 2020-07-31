@@ -5,6 +5,7 @@ import { Coworker } from '../models/coworker.model';
 import { Observable } from 'rxjs';
 import { UsersPuestos } from '../models/users-puestos.model';
 import { Plan } from '../models/plan.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class CoworkersService {
         .set('pageNumber', pageNumber.toString())
         .set('pageSize', pageSize.toString())
     });
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.url + '/users');
   }
 
   getCoworkerById(id: number): Observable<any> {
