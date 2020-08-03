@@ -1,31 +1,81 @@
 <div cdkDrag cdkDragRootElement=".cdk-overlay-pane" class="draggable-div" cdkDragHandle>
-    <mat-icon aria-hidden="false" class="calendar-top-icon icon-left" aria-label="handle drag icon">drag_handle
+  <mat-icon aria-hidden="false" class="calendar-top-icon icon-left" aria-label="handle drag icon">drag_handle
+  </mat-icon>
+  <a (click)="close()">
+    <mat-icon aria-hidden="false" class="calendar-top-icon icon-right" aria-label="handle drag icon">close
     </mat-icon>
-    <a (click)="close()">
-        <mat-icon aria-hidden="false" class="calendar-top-icon icon-right" aria-label="handle drag icon">close
-        </mat-icon>
-    </a>
+  </a>
 </div>
 <div class="container" *ngIf="!loading">
-    <h3 mat-dialog-title>
-        Agregar reserva
-    </h3>
-    <form class="example-form">
-        <mat-form-field class="example-full-width">
-          <input type="text"
-                 placeholder="Usuario"
-                 aria-label="Number"
-                 matInput
-                 [formControl]="userControl"
-                 [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let user of filteredUsers | async" [value]="user.nombre + ' ' + user.apellido">
-              {{user.nombre}} {{user.apellido}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>
+  <h3 mat-dialog-title>
+    Agregar reserva
+  </h3>
+  <form [formGroup]="reservaForm" (ngSubmit)="submit()">
+
+    <!-- Cororker -->
+    <div class="row">
+      <mat-form-field appearance="fill" class="formField">
+        <input type="text" placeholder="Usuario" aria-label="user" matInput
+        formControlName="user" [matAutocomplete]="auto" (blur)="checkUser()">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="userClick($event)">
+          <mat-option *ngFor="let user of filteredUsers | async" [value]="user.nombre+' '+user.apellido">
+            {{user.nombre}} {{user.apellido}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+
+    <!-- Day -->
+    <div class="row">
+      <mat-form-field appearance="fill" class="formField">
+        <mat-label>Fecha</mat-label>
+        <input matInput formControlName="fecha" [matDatepicker]="pickerFecha">
+        <mat-datepicker-toggle matSuffix [for]="pickerFecha"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFecha></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+    <!-- Hora desde -->
+    <div class="row">
+      <mat-form-field appearance="fill" class="formField">
+        <mat-label>Hora desde</mat-label>
+        <mat-select formControlName="hora_desde">
+          <mat-option *ngFor="let time of times" [value]="time.value">
+            {{time.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
+    <!-- Hora hasta -->
+    <div class="row">
+      <mat-form-field appearance="fill" class="formField">
+        <mat-label>Hora hasta</mat-label>
+        <mat-select formControlName="hora_hasta">
+          <mat-option *ngFor="let time of times" [value]="time.value">
+            {{time.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-dialog-actions align="end">
+      <div *ngIf="!loadingSubmit">
+          <div class="form-group">
+              <button type="submit" class="mat-raised-button primary">Guardar</button>
+          </div>
+      </div>
+      <div *ngIf="loadingSubmit" style="margin-right: 20px">
+          <mat-spinner [diameter]="25"></mat-spinner>
+      </div>
+
+  </mat-dialog-actions>
+
+  </form>
 </div>
 <div *ngIf="loading" class="mat-spinner-wrapper">
-    <mat-spinner [diameter]="30"></mat-spinner>
+  <mat-spinner [diameter]="30"></mat-spinner>
 </div>
