@@ -43,12 +43,12 @@ export const ROLES: MatSelectOption[] = [
 ];
 
 export const TIMES_SALA: MatSelectOption[] = [
-    { value: '8:00', viewValue: '8:00' },
-    { value: '8:20', viewValue: '8:20' },
-    { value: '8:40', viewValue: '8:40' },
-    { value: '9:00', viewValue: '9:00' },
-    { value: '9:20', viewValue: '9:20' },
-    { value: '9:40', viewValue: '9:40' },
+    { value: '08:00', viewValue: '8:00' },
+    { value: '08:20', viewValue: '8:20' },
+    { value: '08:40', viewValue: '8:40' },
+    { value: '09:00', viewValue: '9:00' },
+    { value: '09:20', viewValue: '9:20' },
+    { value: '09:40', viewValue: '9:40' },
     { value: '10:00', viewValue: '10:00' },
     { value: '10:20', viewValue: '10:20' },
     { value: '10:40', viewValue: '10:40' },

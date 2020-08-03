@@ -75,7 +75,6 @@ export class EditCoworkerComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<EditCoworkerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private groupsService: GroupsService,
     private cowortersService: CoworkersService,
     private snackBar: MatSnackBar) { }
 

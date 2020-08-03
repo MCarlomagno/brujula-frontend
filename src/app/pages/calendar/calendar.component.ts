@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, Injectable } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/angular';
 import esLocale from '@fullcalendar/core/locales/es';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
@@ -6,12 +6,41 @@ import { CalendarEventComponent } from './calendar-event/calendar-event.componen
 import { isPlatformBrowser } from '@angular/common';
 import { SalasService } from '../../services/salas.service';
 import { Sala } from 'src/app/models/sala.model';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatDateRangeSelectionStrategy, DateRange, MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
+import { DateAdapter } from '@angular/material/core';
 
+@Injectable()
+export class SevenDaysRangeSelectionStrategy<D> implements MatDateRangeSelectionStrategy<D> {
+  constructor(private dateAdapter: DateAdapter<D>) {}
+
+  selectionFinished(date: D | null): DateRange<D> {
+    return this._createSevenDaysRange(date);
+  }
+
+  createPreview(activeDate: D | null): DateRange<D> {
+    return this._createSevenDaysRange(activeDate);
+  }
+
+  private _createSevenDaysRange(date: D | null): DateRange<D> {
+    if (date) {
+      const start = this.dateAdapter.addCalendarDays(date, -3);
+      const end = this.dateAdapter.addCalendarDays(date, 3);
+      return new DateRange<D>(start, end);
+    }
+
+    return new DateRange<D>(null, null);
+  }
+}
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
+  providers: [{
+    provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
+    useClass: SevenDaysRangeSelectionStrategy
+  }]
 })
 
 export class CalendarComponent implements OnInit {
@@ -22,6 +51,9 @@ export class CalendarComponent implements OnInit {
   // detects width to show the dialog at left if overfows the screen
   public innerWidth: any;
   public innerHeight: any;
+
+  // form group
+  filterForm: FormGroup;
 
   // salas
   salas: Sala[];
@@ -66,8 +98,17 @@ export class CalendarComponent implements OnInit {
     // shows loading flag
     this.loading = true;
 
+    // loads the form
+    this.filterForm = new FormGroup({
+      sala: new FormControl({ value: '' }, []),
+      start: new FormControl({ value: '' }, []),
+      end: new FormControl({value: ''}, []),
+    });
+
     this.salasService.getSalas().subscribe((result) => {
       this.salas = result;
+
+      this.filterForm.controls.sala.setValue(this.salas[0].id);
 
       // hides loading flag
       this.loading = false;
@@ -79,9 +120,8 @@ export class CalendarComponent implements OnInit {
   }
 
   handleSelect(arg): void {
-    console.log(arg);
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {};
+    dialogConfig.data = { start: arg.start, end: arg.end, id_sala: this.filterForm.controls.sala.value };
     dialogConfig.panelClass = 'calendar-evert-dialog-container';
     const ref: MatDialogRef<CalendarEventComponent> = this.matDialog.open(CalendarEventComponent, dialogConfig);
     // if (this.isBrowser) {
@@ -111,13 +151,16 @@ export class CalendarComponent implements OnInit {
     const overflowHeight = (this.innerHeight - arg.jsEvent.clientY) < dialogHeight;
 
     if (!overflowWidth && !overflowHeight) {
-      ref.updatePosition({ left: (arg.jsEvent.clientX) + 'px', top: arg.jsEvent.clientY + 'px' });
+      ref.updatePosition({ left: (arg.jsEvent.clientX) + 'px', top: arg.jsEvent.clientY - 200 + 'px' });
     } else if (overflowWidth && !overflowHeight) {
-      ref.updatePosition({ left: (arg.jsEvent.clientX - 400) + 'px', top: arg.jsEvent.clientY + 'px' });
+      ref.updatePosition({ left: (arg.jsEvent.clientX - 400) + 'px', top: arg.jsEvent.clientY - 200 + 'px' });
     } else if (!overflowWidth && overflowHeight) {
-      ref.updatePosition({ left: arg.jsEvent.clientX + 'px', top: (arg.jsEvent.clientY - 200) + 'px' });
+      ref.updatePosition({ left: arg.jsEvent.clientX + 'px', top: (arg.jsEvent.clientY - 400) + 'px' });
     } else if (overflowWidth && overflowHeight) {
-      ref.updatePosition({ left: (arg.jsEvent.clientX - 400) + 'px', top: (arg.jsEvent.clientY - 200) + 'px' });
+      ref.updatePosition({ left: (arg.jsEvent.clientX - 400) + 'px', top: (arg.jsEvent.clientY - 400) + 'px' });
     }
   }
 }
+
+
+

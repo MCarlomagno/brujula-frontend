@@ -2,27 +2,34 @@
 
     <div class="table-filter-wrapper" *ngIf="!loading">
         <mat-card class="table-filter-card" style="font-size: 14px">
-            <div class="row">
-                <div class="col-lg-6">
-                    <mat-form-field appearance="fill" style="display: block">
-                        <mat-label>Sala</mat-label>
-                        <mat-select (selectionChange)="loadCalendar()">
-                            <mat-option *ngFor="let sala of salas" [value]="sala.id">
-                                {{sala.nombre}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-6">
-                    <mat-form-field appearance="fill" style="display: block">
-                        <mat-label>Semana</mat-label>
-                        <input matInput [matDatepicker]="pickerDesde">
-                        <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerDesde></mat-datepicker>
-                    </mat-form-field>
-                </div>
 
-            </div>
+            <form [formGroup]="filterForm">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="fill" style="display: block">
+                            <mat-label>Sala</mat-label>
+                            <mat-select formControlName="sala" (selectionChange)="loadCalendar()">
+                                <mat-option *ngFor="let sala of salas" [value]="sala.id">
+                                    {{sala.nombre}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="fill" style="display: block">
+                            <mat-label>Seleccionar semana</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                              <input matStartDate formControlName="start" placeholder="Fecha Fin">
+                              <input matEndDate formControlName="end" placeholder="Fecha inicio">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                          </mat-form-field>
+                    </div>
+
+
+                </div>
+            </form>
 
             <div class="col-12 button-filter-wrapper">
 
@@ -36,8 +43,8 @@
     <body>
         <div *ngIf="loading" class="mat-spinner-wrapper">
             <mat-spinner [diameter]="50"></mat-spinner>
-          </div>
-        <div class="center" *ngIf="!loading" >
+        </div>
+        <div class="center" *ngIf="!loading">
             <full-calendar id="calendar" [options]="calendarOptions"></full-calendar>
         </div>
 
