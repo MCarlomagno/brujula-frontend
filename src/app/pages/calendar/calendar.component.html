@@ -18,8 +18,8 @@
                     <div class="col-lg-6">
                         <mat-form-field appearance="fill" style="display: block">
                             <mat-label>Seleccionar semana</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                              <input matStartDate formControlName="start" placeholder="Fecha Fin">
+                            <mat-date-range-input [rangePicker]="picker" >
+                              <input matStartDate formControlName="start" (dateChange)="selectWeek($event.value)" placeholder="Fecha Fin">
                               <input matEndDate formControlName="end" placeholder="Fecha inicio">
                             </mat-date-range-input>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -45,7 +45,7 @@
             <mat-spinner [diameter]="50"></mat-spinner>
         </div>
         <div class="center" *ngIf="!loading">
-            <full-calendar id="calendar" [options]="calendarOptions"></full-calendar>
+            <full-calendar id="calendar" [options]="calendarOptions" #calendar></full-calendar>
         </div>
 
     </body>
