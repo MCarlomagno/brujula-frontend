@@ -1,5 +1,5 @@
-import { Component, OnInit, PLATFORM_ID, Inject, Injectable } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/angular';
+import { Component, OnInit, PLATFORM_ID, Inject, Injectable, ViewChild } from '@angular/core';
+import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import esLocale from '@fullcalendar/core/locales/es';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { CalendarEventComponent } from './calendar-event/calendar-event.component';
@@ -12,7 +12,7 @@ import { DateAdapter } from '@angular/material/core';
 
 @Injectable()
 export class SevenDaysRangeSelectionStrategy<D> implements MatDateRangeSelectionStrategy<D> {
-  constructor(private dateAdapter: DateAdapter<D>) {}
+  constructor(private dateAdapter: DateAdapter<D>) { }
 
   selectionFinished(date: D | null): DateRange<D> {
     return this._createSevenDaysRange(date);
@@ -44,6 +44,9 @@ export class SevenDaysRangeSelectionStrategy<D> implements MatDateRangeSelection
 })
 
 export class CalendarComponent implements OnInit {
+
+  // references the #calendar in the template
+  @ViewChild('calendar') calendarComponent: FullCalendarComponent;
 
   // checks if the platform is browser to show the dialog in paticular zone of the screen
   isBrowser: boolean;
@@ -102,7 +105,7 @@ export class CalendarComponent implements OnInit {
     this.filterForm = new FormGroup({
       sala: new FormControl({ value: '' }, []),
       start: new FormControl({ value: '' }, []),
-      end: new FormControl({value: ''}, []),
+      end: new FormControl({ value: '' }, []),
     });
 
     this.salasService.getSalas().subscribe((result) => {
@@ -138,7 +141,17 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  selectWeek(initialDate: Date): void {
 
+    const dayOfTheWeek = initialDate.getDay();
+
+    // loads the calendar api
+    const calendarApi = this.calendarComponent.getApi();
+
+
+    calendarApi.setOption('firstDay', dayOfTheWeek);
+    calendarApi.gotoDate(initialDate);
+  }
 
   handleModalPosition(ref, arg): void {
 
