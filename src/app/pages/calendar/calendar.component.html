@@ -8,7 +8,7 @@
                     <div class="col-lg-6">
                         <mat-form-field appearance="fill" style="display: block">
                             <mat-label>Sala</mat-label>
-                            <mat-select formControlName="sala" (selectionChange)="loadCalendar()">
+                            <mat-select formControlName="sala">
                                 <mat-option *ngFor="let sala of salas" [value]="sala.id">
                                     {{sala.nombre}}
                                 </mat-option>
@@ -34,7 +34,7 @@
             <div class="col-12 button-filter-wrapper">
 
                 <!-- Filter button -->
-                <button class="primary" (click)="loadCalendar()" mat-raised-button>Buscar</button>
+                <button class="primary" mat-raised-button>Buscar</button>
 
             </div>
         </mat-card>
@@ -44,7 +44,7 @@
         <div *ngIf="loading" class="mat-spinner-wrapper">
             <mat-spinner [diameter]="50"></mat-spinner>
         </div>
-        <div class="center" *ngIf="!loading">
+        <div class="center" [class.hide]="loading">
             <full-calendar id="calendar" [options]="calendarOptions" #calendar></full-calendar>
         </div>
 

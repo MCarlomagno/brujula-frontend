@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, Inject, Injectable, ViewChild } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject, Injectable, ViewChild, AfterViewInit } from '@angular/core';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import esLocale from '@fullcalendar/core/locales/es';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
@@ -9,6 +9,8 @@ import { Sala } from 'src/app/models/sala.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDateRangeSelectionStrategy, DateRange, MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
+import { CalendarService } from 'src/app/services/calendar.service';
+import { Event } from 'src/app/models/event.model';
 
 @Injectable()
 export class SevenDaysRangeSelectionStrategy<D> implements MatDateRangeSelectionStrategy<D> {
@@ -43,7 +45,7 @@ export class SevenDaysRangeSelectionStrategy<D> implements MatDateRangeSelection
   }]
 })
 
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, AfterViewInit {
 
   // references the #calendar in the template
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
@@ -60,6 +62,9 @@ export class CalendarComponent implements OnInit {
 
   // salas
   salas: Sala[];
+
+  // reservations
+  events: Event[];
 
   // loading flag
   loading = false;
@@ -90,7 +95,8 @@ export class CalendarComponent implements OnInit {
   constructor(
     private matDialog: MatDialog,
     @Inject(PLATFORM_ID) platformId: string,
-    private salasService: SalasService) {
+    private salasService: SalasService,
+    private calendarService: CalendarService) {
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
     this.isBrowser = isPlatformBrowser(platformId);
@@ -98,27 +104,51 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // shows loading flag
-    this.loading = true;
-
     // loads the form
     this.filterForm = new FormGroup({
       sala: new FormControl({ value: '' }, []),
       start: new FormControl({ value: '' }, []),
       end: new FormControl({ value: '' }, []),
     });
+  }
 
-    this.salasService.getSalas().subscribe((result) => {
-      this.salas = result;
+  ngAfterViewInit(): void {
+
+    // loads the calendar api
+    const calendarApi = this.calendarComponent.getApi();
+    // current week start
+    const currentStart = calendarApi.view.currentStart;
+    // current week end
+    const currentEnd = calendarApi.view.currentEnd;
+
+    // adds a day on origin
+    const fixedStartForPicker = currentStart;
+    fixedStartForPicker.setDate(fixedStartForPicker.getDate() + 1);
+
+    // shows loading flag
+    this.loading = true;
+
+    console.log(currentStart, currentEnd);
+
+    this.calendarService.getRoomsReservations(currentStart, currentEnd).subscribe((result) => {
+
+      console.log(result);
+
+      this.salas = result.data.salas;
+
+      this.events = result.data.reservations;
+
+      for (const event of this.events) {
+        calendarApi.addEvent(event);
+      }
 
       this.filterForm.controls.sala.setValue(this.salas[0].id);
+      this.filterForm.controls.start.setValue(fixedStartForPicker);
+      this.filterForm.controls.end.setValue(currentEnd);
 
       // hides loading flag
       this.loading = false;
     });
-  }
-
-  loadCalendar(): void {
 
   }
 
