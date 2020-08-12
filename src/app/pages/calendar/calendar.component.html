@@ -34,13 +34,14 @@
             <div class="col-12 button-filter-wrapper">
 
                 <!-- Filter button -->
-                <button class="primary" mat-raised-button>Buscar</button>
+                <button class="primary" mat-raised-button (click)="searchEvents()">Buscar</button>
 
             </div>
         </mat-card>
     </div>
 
     <body>
+        <mat-progress-bar *ngIf="reloading" mode="indeterminate"></mat-progress-bar>
         <div *ngIf="loading" class="mat-spinner-wrapper">
             <mat-spinner [diameter]="50"></mat-spinner>
         </div>

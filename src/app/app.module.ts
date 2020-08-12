@@ -17,6 +17,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 // end material modules
 
 import { AppRoutingModule } from './app-routing.module';
@@ -49,6 +50,7 @@ import { DeleteGroupComponent } from './pages/groups/delete-group/delete-group.c
 import { EditGroupComponent } from './pages/groups/edit-group/edit-group.component';
 import { CalendarEventComponent } from './pages/calendar/calendar-event/calendar-event.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { StopPropagationDirective } from './directives/stop-propagation.directive';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -73,7 +75,8 @@ FullCalendarModule.registerPlugins([
     DeleteCoworkerComponent,
     DeleteGroupComponent,
     EditGroupComponent,
-    CalendarEventComponent
+    CalendarEventComponent,
+    StopPropagationDirective
   ],
   imports: [
     BrowserModule,
@@ -101,7 +104,8 @@ FullCalendarModule.registerPlugins([
     MatSortModule,
     MatCardModule,
     DragDropModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatProgressBarModule
   ],
   providers: [AuthGuardGuard,
     {

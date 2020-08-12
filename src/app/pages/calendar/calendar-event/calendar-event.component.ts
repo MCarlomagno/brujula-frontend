@@ -128,7 +128,6 @@ export class CalendarEventComponent implements OnInit {
   }
 
   submit(): void {
-    console.log(this.reservaForm.value);
     if (this.reservaForm.valid) {
       this.loadingSubmit = true;
       const reservation: Reservation = {
@@ -146,8 +145,6 @@ export class CalendarEventComponent implements OnInit {
         }
       },
         (err) => this.onError(err));
-
-
     }
   }
 
