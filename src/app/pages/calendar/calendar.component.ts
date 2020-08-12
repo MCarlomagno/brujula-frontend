@@ -1,5 +1,5 @@
 import { Component, OnInit, PLATFORM_ID, Inject, Injectable, ViewChild, AfterViewInit } from '@angular/core';
-import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions, FullCalendarComponent, Calendar } from '@fullcalendar/angular';
 import esLocale from '@fullcalendar/core/locales/es';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { CalendarEventComponent } from './calendar-event/calendar-event.component';
@@ -69,6 +69,12 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   // loading flag
   loading = false;
 
+  // reloading flag
+  reloading = false;
+
+  // references the calendar
+  calendarApi: Calendar;
+
   calendarOptions: CalendarOptions = {
     // spanish language
     locales: [esLocale],
@@ -88,14 +94,13 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     headerToolbar: {
       left: '',
       center: 'title',
-      right: 'prev,next'
+      right: ''
     },
   };
 
   constructor(
     private matDialog: MatDialog,
     @Inject(PLATFORM_ID) platformId: string,
-    private salasService: SalasService,
     private calendarService: CalendarService) {
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.innerHeight;
@@ -112,42 +117,50 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(reloading?: boolean): void {
 
     // loads the calendar api
-    const calendarApi = this.calendarComponent.getApi();
+    this.calendarApi = this.calendarComponent.getApi();
+
+    // cleans the calendar
+    this.calendarApi.removeAllEvents();
+
     // current week start
-    const currentStart = calendarApi.view.currentStart;
+    const currentStart = this.calendarApi.view.currentStart;
     // current week end
-    const currentEnd = calendarApi.view.currentEnd;
+    const currentEnd = this.calendarApi.view.currentEnd;
 
     // adds a day on origin
     const fixedStartForPicker = currentStart;
     fixedStartForPicker.setDate(fixedStartForPicker.getDate() + 1);
 
     // shows loading flag
-    this.loading = true;
+    let idSala;
+    if (!reloading) {
+      this.loading = true;
+    }else {
+      this.reloading = true;
+      idSala = this.filterForm.controls.sala.value;
+    }
 
-    console.log(currentStart, currentEnd);
-
-    this.calendarService.getRoomsReservations(currentStart, currentEnd).subscribe((result) => {
-
-      console.log(result);
-
-      this.salas = result.data.salas;
+    this.calendarService.getRoomsReservations(currentStart, currentEnd, idSala).subscribe((result) => {
 
       this.events = result.data.reservations;
 
       for (const event of this.events) {
-        calendarApi.addEvent(event);
+        this.calendarApi.addEvent(event);
       }
 
-      this.filterForm.controls.sala.setValue(this.salas[0].id);
-      this.filterForm.controls.start.setValue(fixedStartForPicker);
-      this.filterForm.controls.end.setValue(currentEnd);
-
       // hides loading flag
-      this.loading = false;
+      if (reloading) {
+        this.reloading = false;
+      }else {
+        this.salas = result.data.salas;
+        this.filterForm.controls.sala.setValue(this.salas[0].id);
+        this.filterForm.controls.start.setValue(fixedStartForPicker);
+        this.filterForm.controls.end.setValue(currentEnd);
+        this.loading = false;
+      }
     });
 
   }
@@ -156,31 +169,31 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = { start: arg.start, end: arg.end, id_sala: this.filterForm.controls.sala.value };
     dialogConfig.panelClass = 'calendar-evert-dialog-container';
+    dialogConfig.disableClose = true;
     const ref: MatDialogRef<CalendarEventComponent> = this.matDialog.open(CalendarEventComponent, dialogConfig);
-    // if (this.isBrowser) {
+
     this.handleModalPosition(ref, arg);
 
-    // }
     ref.afterClosed().subscribe((result) => {
       if (!result) {
         // delete selection
         const calendarApi = arg.view.calendar;
         calendarApi.unselect();
+      } else {
+        this.ngAfterViewInit(true);
       }
 
     });
   }
 
   selectWeek(initialDate: Date): void {
-
     const dayOfTheWeek = initialDate.getDay();
+    this.calendarApi.setOption('firstDay', dayOfTheWeek);
+    this.calendarApi.gotoDate(initialDate);
+  }
 
-    // loads the calendar api
-    const calendarApi = this.calendarComponent.getApi();
-
-
-    calendarApi.setOption('firstDay', dayOfTheWeek);
-    calendarApi.gotoDate(initialDate);
+  searchEvents(): void {
+    this.ngAfterViewInit(true);
   }
 
   handleModalPosition(ref, arg): void {
