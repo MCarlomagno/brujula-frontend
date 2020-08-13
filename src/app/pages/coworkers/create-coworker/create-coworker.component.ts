@@ -209,14 +209,14 @@ export class CreateCoworkerComponent implements OnInit {
       if (selectedPlan.id !== 4) {
         usersPuestos = {
           id_user: null,
-          hora_desde: {
+          hora_desde: this.createCoworkerForm.value.hora_desde ?  {
             hours: this.createCoworkerForm.value.hora_desde.split(':')[0],
             minutes: this.createCoworkerForm.value.hora_desde.split(':')[1]
-          },
-          hora_hasta: {
+          } : null,
+          hora_hasta: this.createCoworkerForm.value.hora_desde ? {
             hours: this.createCoworkerForm.value.hora_hasta.split(':')[0],
             minutes: this.createCoworkerForm.value.hora_hasta.split(':')[1]
-          },
+          } : null,
           fecha_desde: this.createCoworkerForm.value.fecha_desde,
           fecha_hasta: this.createCoworkerForm.value.fecha_hasta,
           dias: this.selectedDays

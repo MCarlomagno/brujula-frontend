@@ -138,7 +138,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     let idSala;
     if (!reloading) {
       this.loading = true;
-    }else {
+    } else {
       this.reloading = true;
       idSala = this.filterForm.controls.sala.value;
     }
@@ -154,7 +154,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       // hides loading flag
       if (reloading) {
         this.reloading = false;
-      }else {
+      } else {
         this.salas = result.data.salas;
         this.filterForm.controls.sala.setValue(this.salas[0].id);
         this.filterForm.controls.start.setValue(fixedStartForPicker);
@@ -165,14 +165,19 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   }
 
-  handleSelect(arg): void {
+  handleSelect(arg?): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = { start: arg.start, end: arg.end, id_sala: this.filterForm.controls.sala.value };
+    if (arg) {
+      dialogConfig.data = { start: arg.start, end: arg.end, id_sala: this.filterForm.controls.sala.value, salas: this.salas };
+    } else {
+      dialogConfig.data = { start: '', end: '', id_sala: this.filterForm.controls.sala.value, salas: this.salas };
+    }
+
     dialogConfig.panelClass = 'calendar-evert-dialog-container';
     dialogConfig.disableClose = true;
     const ref: MatDialogRef<CalendarEventComponent> = this.matDialog.open(CalendarEventComponent, dialogConfig);
 
-    this.handleModalPosition(ref, arg);
+    // this.handleModalPosition(ref, arg);
 
     ref.afterClosed().subscribe((result) => {
       if (!result) {
@@ -196,26 +201,26 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     this.ngAfterViewInit(true);
   }
 
-  handleModalPosition(ref, arg): void {
+  // handleModalPosition(ref, arg): void {
 
-    // dialog height and width
-    const dialogWidth = 400;
-    const dialogHeight = 200;
+  //   // dialog height and width
+  //   const dialogWidth = 400;
+  //   const dialogHeight = 200;
 
-    // overflow flags
-    const overflowWidth = (this.innerWidth - arg.jsEvent.clientX) < dialogWidth;
-    const overflowHeight = (this.innerHeight - arg.jsEvent.clientY) < dialogHeight;
+  //   // overflow flags
+  //   const overflowWidth = (this.innerWidth - arg.jsEvent.clientX) < dialogWidth;
+  //   const overflowHeight = (this.innerHeight - arg.jsEvent.clientY) < dialogHeight;
 
-    if (!overflowWidth && !overflowHeight) {
-      ref.updatePosition({ left: (arg.jsEvent.clientX) + 'px', top: arg.jsEvent.clientY - 200 + 'px' });
-    } else if (overflowWidth && !overflowHeight) {
-      ref.updatePosition({ left: (arg.jsEvent.clientX - 400) + 'px', top: arg.jsEvent.clientY - 200 + 'px' });
-    } else if (!overflowWidth && overflowHeight) {
-      ref.updatePosition({ left: arg.jsEvent.clientX + 'px', top: (arg.jsEvent.clientY - 400) + 'px' });
-    } else if (overflowWidth && overflowHeight) {
-      ref.updatePosition({ left: (arg.jsEvent.clientX - 400) + 'px', top: (arg.jsEvent.clientY - 400) + 'px' });
-    }
-  }
+  //   if (!overflowWidth && !overflowHeight) {
+  //     ref.updatePosition({ left: (arg.jsEvent.clientX) + 'px', top: arg.jsEvent.clientY - 200 + 'px' });
+  //   } else if (overflowWidth && !overflowHeight) {
+  //     ref.updatePosition({ left: (arg.jsEvent.clientX - 400) + 'px', top: arg.jsEvent.clientY - 200 + 'px' });
+  //   } else if (!overflowWidth && overflowHeight) {
+  //     ref.updatePosition({ left: arg.jsEvent.clientX + 'px', top: (arg.jsEvent.clientY - 400) + 'px' });
+  //   } else if (overflowWidth && overflowHeight) {
+  //     ref.updatePosition({ left: (arg.jsEvent.clientX - 400) + 'px', top: (arg.jsEvent.clientY - 400) + 'px' });
+  //   }
+  // }
 }
 
 
