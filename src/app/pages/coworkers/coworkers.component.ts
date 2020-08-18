@@ -9,6 +9,8 @@ import { tap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { EditCoworkerComponent } from './edit-coworker/edit-coworker.component';
 import { DeleteCoworkerComponent } from './delete-coworker/delete-coworker.component';
+import { Grupo } from 'src/app/models/group.model';
+import { Plan } from 'src/app/models/plan.model';
 
 @Component({
   selector: 'app-coworkers',
@@ -34,6 +36,17 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
 
   // form control for table filter
   filterFormControl = new FormControl('');
+
+  // groups
+  groups: Grupo[];
+  groupFormControl = new FormControl(null);
+
+  // groups
+  planes: Plan[];
+  planFormControl = new FormControl(null);
+
+  // born date form control
+  bornDateFormControl = new FormControl(null);
 
   constructor(private coworkersService: CoworkersService, private matDialog: MatDialog) { }
 
@@ -64,8 +77,12 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
 
   // loads the coworkers page with new filter parameters
   loadCoworkersPage(): void {
+    // const date: Date;
     this.dataSource.loadCoworkers(
       this.filterFormControl.value,
+      this.groupFormControl.value,
+      this.planFormControl.value,
+      this.bornDateFormControl.value,
       'desc',
       this.paginator.pageIndex,
       this.paginator.pageSize);

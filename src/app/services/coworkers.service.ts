@@ -16,9 +16,20 @@ export class CoworkersService {
 
   constructor(private http: HttpClient) { }
 
-  getCoworkers(filter = '', sortOrder = 'asc', pageNumber = 1, pageSize = 10): Observable<Coworker[]> {
+  getCoworkers(
+    filter = '',
+    group = null,
+    plan = null,
+    bornDate = null,
+    sortOrder = 'asc',
+    pageNumber = 1,
+    pageSize = 10): Observable<Coworker[]> {
+
     return this.http.get<Coworker[]>(this.url + '/coworkers', {
       params: new HttpParams().set('filter', filter)
+        .set('bornDate', bornDate)
+        .set('plan', plan)
+        .set('group', group)
         .set('sortOrder', sortOrder)
         .set('pageNumber', pageNumber.toString())
         .set('pageSize', pageSize.toString())

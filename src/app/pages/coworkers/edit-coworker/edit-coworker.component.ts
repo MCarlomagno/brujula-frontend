@@ -126,23 +126,27 @@ export class EditCoworkerComponent implements OnInit {
 
       // time data type for user puesto
       if (this.usersPuestos) {
-        this.usersPuestos.hora_desde = {
-          hours: result.userPuesto.hora_desde.split(':')[0],
-          minutes: result.userPuesto.hora_desde.split(':')[1]
-        };
+        if (this.usersPuestos.hora_desde) {
+          this.usersPuestos.hora_desde = {
+            hours: result.userPuesto.hora_desde.split(':')[0],
+            minutes: result.userPuesto.hora_desde.split(':')[1]
+          };
 
-        this.usersPuestos.hora_hasta = {
-          hours: result.userPuesto.hora_hasta.split(':')[0],
-          minutes: result.userPuesto.hora_hasta.split(':')[1]
-        };
+          this.editCoworkersForm.controls.hora_desde.setValue(
+            this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes
+          );
+        }
 
-        // sets hora_desde & hora_hasta
-        this.editCoworkersForm.controls.hora_desde.setValue(
-          this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes
-        );
-        this.editCoworkersForm.controls.hora_hasta.setValue(
-          this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes
-        );
+        if (this.usersPuestos.hora_hasta) {
+          this.usersPuestos.hora_hasta = {
+            hours: result.userPuesto.hora_hasta.split(':')[0],
+            minutes: result.userPuesto.hora_hasta.split(':')[1]
+          };
+          this.editCoworkersForm.controls.hora_hasta.setValue(
+            this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes
+          );
+        }
+
 
         // sets fecha_desde & fecha_hasta
         this.editCoworkersForm.controls.fecha_desde.setValue(this.usersPuestos.fecha_desde);
@@ -183,7 +187,7 @@ export class EditCoworkerComponent implements OnInit {
         // sets group
         this.editCoworkersForm.controls.grupo.setValue(this.grupo.id);
 
-        this.grupos.push({ id: 0, id_lider: null, nombre: 'Sin grupo', horas_sala: 0 , cuit_cuil: ''});
+        this.grupos.push({ id: 0, id_lider: null, nombre: 'Sin grupo', horas_sala: 0, cuit_cuil: '' });
 
         // sets role
         if (this.grupo.id_lider === this.coworker.id) {

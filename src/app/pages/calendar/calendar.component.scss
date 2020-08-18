@@ -8,6 +8,7 @@
     margin: 40px auto;
     bottom:0%;
     width: 100%;
+    z-index: 0;
   }
 
 .table-filter-wrapper{
@@ -21,4 +22,8 @@
 
 .hide {
     display: none;
+}
+
+.fab {
+    z-index: 1;
 }

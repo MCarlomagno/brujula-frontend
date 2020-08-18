@@ -18,13 +18,14 @@
                     <div class="col-lg-6">
                         <mat-form-field appearance="fill" style="display: block">
                             <mat-label>Seleccionar semana</mat-label>
-                            <mat-date-range-input [rangePicker]="picker" >
-                              <input matStartDate formControlName="start" (dateChange)="selectWeek($event.value)" placeholder="Fecha Fin">
-                              <input matEndDate formControlName="end" placeholder="Fecha inicio">
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="start" (dateChange)="selectWeek($event.value)"
+                                    placeholder="Fecha Fin">
+                                <input matEndDate formControlName="end" placeholder="Fecha inicio">
                             </mat-date-range-input>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-date-range-picker #picker></mat-date-range-picker>
-                          </mat-form-field>
+                        </mat-form-field>
                     </div>
 
 
@@ -50,4 +51,7 @@
         </div>
 
     </body>
+    <button mat-fab color="primary" class="fab" (click)='handleSelect()'>
+        <mat-icon>add</mat-icon>
+    </button>
 </div>

@@ -62,6 +62,7 @@ export class CalendarEventComponent implements OnInit {
       fecha: new FormControl({ value: '' }, [Validators.required]),
       hora_desde: new FormControl({ value: '' }, [Validators.required]),
       hora_hasta: new FormControl({ value: '' }, [Validators.required]),
+      sala: new FormControl({value: this.data.id_sala, disabled: true}, ),
     });
 
     this.coworkersService.getUsers().subscribe((users) => {
@@ -78,9 +79,12 @@ export class CalendarEventComponent implements OnInit {
         );
 
       // sets controls values
-      this.reservaForm.controls.fecha.setValue(this.data.start);
-      this.reservaForm.controls.hora_desde.setValue(this.formatToHours(this.data.start));
-      this.reservaForm.controls.hora_hasta.setValue(this.formatToHours(this.data.end));
+      if (this.data.start && this.data.end) {
+        this.reservaForm.controls.fecha.setValue(this.data.start);
+        this.reservaForm.controls.hora_desde.setValue(this.formatToHours(this.data.start));
+        this.reservaForm.controls.hora_hasta.setValue(this.formatToHours(this.data.end));
+      }
+
 
 
       // hides spinner
