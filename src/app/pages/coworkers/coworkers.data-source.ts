@@ -21,12 +21,29 @@ export class CoworkersDataSource implements DataSource<Coworker> {
         this.loadingSubject.complete();
     }
 
-    loadCoworkers(filter = '', sortDirection = 'asc', pageIndex = 0, pageSize = 10): void {
+    loadCoworkers(filter = '', group = null, plan = null, bornDate = null, sortDirection = 'asc', pageIndex = 0, pageSize = 10): void {
 
         this.loadingSubject.next(true);
         this.coworkersSubject.next([]);
 
-        this.coworkersService.getCoworkers(filter, sortDirection,
+        let bornDateObject = null;
+        if (bornDate) {
+            const isoString = bornDate.toISOString().split('T')[0];
+            let day = isoString.split('-')[2];
+            let month = isoString.split('-')[1];
+
+            if (day[0] === '0') {
+                day = day[1];
+            }
+
+            if (month[0] === '0') {
+                month = month[1];
+            }
+
+            bornDateObject = month + '-' + day;
+        }
+
+        this.coworkersService.getCoworkers(filter, group , plan , bornDateObject , sortDirection,
             pageIndex, pageSize).subscribe((coworkers: Coworker[]) => {
                 this.coworkersSubject.next(coworkers);
                 this.loadingSubject.next(false);

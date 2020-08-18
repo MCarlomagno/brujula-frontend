@@ -3,26 +3,65 @@
     <mat-card class="table-filter-card" style="font-size: 14px">
       <div class="row">
         <div class="col-12">
+          <div class="col-12">
 
-          <!-- Filter field -->
-          <mat-form-field appearance="fill" style="display: block">
-            <mat-label>Filtrar (email, nombre o apellido)</mat-label>
-            <input [formControl]="filterFormControl" matInput id="nombre">
-          </mat-form-field>
+            <!-- Filter field -->
+            <mat-form-field appearance="fill" style="display: block">
+              <mat-label>Filtrar (email, nombre o apellido)</mat-label>
+              <input [formControl]="filterFormControl" matInput id="nombre">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12" style="display: inherit;">
+          <div class="col-4 col-s-12">
+            <mat-form-field appearance="fill" style="display: block">
+              <mat-label>Plan</mat-label>
+              <mat-select [formControl]="groupFormControl">
+                <mat-option *ngFor="let plan of planes" [value]="plan.id">
+                  {{plan.nombre}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+          <div class="col-4 col-s-12">
+            <mat-form-field appearance="fill" style="display: block">
+              <mat-label>Fecha Nacimiento</mat-label>
+              <input matInput [formControl]="bornDateFormControl" [matDatepicker]="pickerFechaNac">
+              <mat-datepicker-toggle matSuffix [for]="pickerFechaNac"></mat-datepicker-toggle>
+              <mat-datepicker #pickerFechaNac></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="col-4 col-s-12">
+            <mat-form-field appearance="fill" style="display: block">
+              <mat-label>Grupo</mat-label>
+              <mat-select [formControl]="planFormControl">
+                <mat-option *ngFor="let group of groups" [value]="group.id">
+                  {{group.nombre}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
 
         </div>
-        <div class="col-12 button-filter-wrapper">
+      </div>
+      <div class="col-12 button-filter-wrapper">
 
-          <!-- Filter button -->
-          <button class="primary" (click)="loadCoworkersPage()" mat-raised-button>Buscar</button>
+        <!-- Filter button -->
+        <button class="primary" (click)="loadCoworkersPage()" mat-raised-button>Buscar</button>
 
-        </div>
       </div>
     </mat-card>
   </div>
   <div class="table-wrapper">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 accent nu-table-body table-responsive">
-      
+
       <!-- email Column -->
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef> Email </th>
@@ -64,14 +103,16 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acciones </th>
         <td mat-cell *matCellDef="let element" style="text-align: center;">
-          <button mat-icon-button color="warn" (click)="onDelete(element) ; $event.stopPropagation()" aria-label="Example icon button with a heart icon">
+          <button mat-icon-button color="warn" (click)="onDelete(element) ; $event.stopPropagation()"
+            aria-label="Example icon button with a heart icon">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row" (click)="onCoworkerSelected(row)"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row" (click)="onCoworkerSelected(row)">
+      </tr>
     </table>
     <div *ngIf="dataSource.loading$ | async" class="mat-spinner-wrapper mat-spinner-table">
       <mat-spinner [diameter]="50"></mat-spinner>
