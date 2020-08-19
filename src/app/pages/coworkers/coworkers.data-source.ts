@@ -7,6 +7,7 @@ export class CoworkersDataSource implements DataSource<Coworker> {
 
     public coworkersSubject = new BehaviorSubject<Coworker[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
+    public coworkersCountSubject = new BehaviorSubject<number>(0);
 
     public loading$ = this.loadingSubject.asObservable();
 
@@ -25,6 +26,7 @@ export class CoworkersDataSource implements DataSource<Coworker> {
 
         this.loadingSubject.next(true);
         this.coworkersSubject.next([]);
+        this.coworkersCountSubject.next(0);
 
         let bornDateObject = null;
         if (bornDate) {
@@ -44,8 +46,10 @@ export class CoworkersDataSource implements DataSource<Coworker> {
         }
 
         this.coworkersService.getCoworkers(filter, group , plan , bornDateObject , sortDirection,
-            pageIndex, pageSize).subscribe((coworkers: Coworker[]) => {
-                this.coworkersSubject.next(coworkers);
+            pageIndex, pageSize).subscribe((result) => {
+                console.log(result);
+                this.coworkersCountSubject.next(result.coworkersCount);
+                this.coworkersSubject.next(result.coworkers);
                 this.loadingSubject.next(false);
             },
             (err) => {
