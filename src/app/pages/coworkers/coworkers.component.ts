@@ -56,10 +56,35 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
       this.coworkersCount = totalCoworkers.count;
     });
 
+
+    // loads data for select filters
+    this.coworkersService.getPlanesAndGroups().subscribe((result) => {
+      if (!result.success) {
+        console.log(result.error);
+      }
+
+      // creates the customized plan dinamically
+      const planPersonalizado: Plan = {
+        id: 0,
+        nombre: 'Personalizado',
+        is_custom: false,
+        descripcion: ''
+      };
+
+      // sets data on select lists
+      this.planes = result.plans;
+      this.planes.push(planPersonalizado);
+      this.groups = result.groups;
+    });
+
     this.dataSource = new CoworkersDataSource(this.coworkersService);
 
     // loads the coworkers from backend
     this.dataSource.loadCoworkers();
+
+    this.dataSource.coworkersCountSubject.subscribe((count) => {
+      this.coworkersCount = count;
+    });
 
     this.dataSource.coworkersSubject.subscribe((coworkers) => {
       this.coworkers = coworkers;

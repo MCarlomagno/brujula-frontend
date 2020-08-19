@@ -23,9 +23,9 @@ export class CoworkersService {
     bornDate = null,
     sortOrder = 'asc',
     pageNumber = 1,
-    pageSize = 10): Observable<Coworker[]> {
+    pageSize = 10): Observable<any> {
 
-    return this.http.get<Coworker[]>(this.url + '/coworkers', {
+    return this.http.get<any>(this.url + '/coworkers', {
       params: new HttpParams().set('filter', filter)
         .set('bornDate', bornDate)
         .set('plan', plan)
@@ -70,5 +70,10 @@ export class CoworkersService {
   deleteCoworker(id: number): Observable<any> {
     return this.http.delete<any>(this.url + '/coworkers/' + id);
   }
+
+  getPlanesAndGroups(): Observable<any> {
+    return this.http.get<any>(this.url + '/coworkers/allPlanesAndGroups');
+  }
+
 
 }
