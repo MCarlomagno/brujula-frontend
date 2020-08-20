@@ -102,12 +102,11 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
 
   // loads the coworkers page with new filter parameters
   loadCoworkersPage(): void {
-    // const date: Date;
     this.dataSource.loadCoworkers(
       this.filterFormControl.value,
       this.groupFormControl.value,
       this.planFormControl.value,
-      this.bornDateFormControl.value,
+      this.bornDateFormControl.value ? this.bornDateFormControl.value.toISOString() : null,
       'desc',
       this.paginator.pageIndex,
       this.paginator.pageSize);
