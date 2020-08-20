@@ -28,24 +28,7 @@ export class CoworkersDataSource implements DataSource<Coworker> {
         this.coworkersSubject.next([]);
         this.coworkersCountSubject.next(0);
 
-        let bornDateObject = null;
-        if (bornDate) {
-            const isoString = bornDate.toISOString().split('T')[0];
-            let day = isoString.split('-')[2];
-            let month = isoString.split('-')[1];
-
-            if (day[0] === '0') {
-                day = day[1];
-            }
-
-            if (month[0] === '0') {
-                month = month[1];
-            }
-
-            bornDateObject = month + '-' + day;
-        }
-
-        this.coworkersService.getCoworkers(filter, group , plan , bornDateObject , sortDirection,
+        this.coworkersService.getCoworkers(filter, group , plan , bornDate , sortDirection,
             pageIndex, pageSize).subscribe((result) => {
                 console.log(result);
                 this.coworkersCountSubject.next(result.coworkersCount);
