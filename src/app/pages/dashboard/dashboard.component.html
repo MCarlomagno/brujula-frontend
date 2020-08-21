@@ -14,6 +14,7 @@
                     routerLinkActive="active">
                     Administrar Coworkers
                 </a>
+                <a class="navigation-item primary"  mat-list-item (click)='logout()' routerLinkActive="active">Cerrar Sesión</a>
             </mat-nav-list>
         </mat-drawer>
         <mat-drawer-content>
@@ -27,7 +28,7 @@
                     </button>
                     <h4 class="title">Brujula Coworking</h4>
                     <span class="flexExpand"></span>
-                    <a mat-raised-button (click)='logout()' class="primary" routerLinkActive="active">Cerrar Sesión</a>
+                    <a mat-raised-button (click)='logout()' class="primary responsive" routerLinkActive="active">Cerrar Sesión</a>
                 </mat-toolbar-row>
             </mat-toolbar>
 

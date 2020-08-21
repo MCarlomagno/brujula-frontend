@@ -3,33 +3,46 @@
     <form [formGroup]="createGroupForm" (ngSubmit)="submit()" #formDir="ngForm">
 
         <mat-dialog-content>
-                <!-- Nombre -->
-                <div class="col-12">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Nombre</mat-label>
-                        <input matInput formControlName="nombre" id="nombre">
-                    </mat-form-field>
-                    <div *ngIf="createGroupForm.controls.nombre.invalid && (formDir.submitted || createGroupForm.controls.nombre.dirty || createGroupForm.controls.nombre.touched)"
-                        class="alert white-color">
-                        <div *ngIf="createGroupForm.controls.nombre.errors.required" class="white-color">
-                            Nombre requerido
-                        </div>
+            <!-- Nombre -->
+            <div class="col-12">
+                <mat-form-field appearance="fill">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" id="nombre">
+                </mat-form-field>
+                <div *ngIf="createGroupForm.controls.nombre.invalid && (formDir.submitted || createGroupForm.controls.nombre.dirty || createGroupForm.controls.nombre.touched)"
+                    class="alert white-color">
+                    <div *ngIf="createGroupForm.controls.nombre.errors.required" class="white-color">
+                        Nombre requerido
                     </div>
                 </div>
+            </div>
 
-                <!-- cuit_cuil -->
-                <div class="col-12">
-                    <mat-form-field appearance="fill">
-                        <mat-label>CUIT/CUIL</mat-label>
-                        <input matInput formControlName="cuit_cuil" id="cuit_cuil">
-                    </mat-form-field>
-                    <div *ngIf="createGroupForm.controls.cuit_cuil.invalid && (formDir.submitted || createGroupForm.controls.cuit_cuil.dirty || createGroupForm.controls.cuit_cuil.touched)"
-                        class="alert white-color">
-                        <div *ngIf="createGroupForm.controls.cuit_cuil.errors.required" class="white-color">
-                            CUIT/CUIL requerido
-                        </div>
+            <!-- cuit_cuil -->
+            <div class="col-12">
+                <mat-form-field appearance="fill">
+                    <mat-label>CUIT/CUIL</mat-label>
+                    <input matInput formControlName="cuit_cuil" id="cuit_cuil">
+                </mat-form-field>
+                <div *ngIf="createGroupForm.controls.cuit_cuil.invalid && (formDir.submitted || createGroupForm.controls.cuit_cuil.dirty || createGroupForm.controls.cuit_cuil.touched)"
+                    class="alert white-color">
+                    <div *ngIf="createGroupForm.controls.cuit_cuil.errors.required" class="white-color">
+                        CUIT/CUIL requerido
                     </div>
                 </div>
+            </div>
+
+            <!-- oficinas -->
+            <div class="col-12">
+                <mat-form-field appearance="fill">
+                    <mat-label>Oficina (Opcional)</mat-label>
+                    <mat-select formControlName="oficina">
+                        <mat-option [value]="null">-</mat-option>
+                        <mat-option *ngFor="let oficina of oficinas" [value]="oficina.id">
+                            {{oficina.nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </mat-dialog-content>
 
         <mat-dialog-actions align="end">
