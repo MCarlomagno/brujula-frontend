@@ -160,8 +160,32 @@ export class CreateCoworkerComponent implements OnInit {
     this.selectedDays[index] = !this.selectedDays[index];
   }
 
-  onHorasSalaChange(): void {
+  onHorasSalaChange(): void { }
 
+  onHoraDesdeChange(): void {
+    if (this.planMovilSelected) {
+      const value = this.createCoworkerForm.controls.hora_desde.value;
+      const hour = parseInt(value.split(':')[0], 10);
+      if (hour + 6 <= 20) {
+        const horaHastaValue = (hour + 6) + ':00';
+        this.createCoworkerForm.controls.hora_hasta.setValue(horaHastaValue);
+      } else {
+        this.createCoworkerForm.controls.hora_hasta.setValue(null);
+      }
+    }
+  }
+
+  onHoraHastaChange(): void {
+    if (this.planMovilSelected) {
+      const value = this.createCoworkerForm.controls.hora_hasta.value;
+      const hour = parseInt(value.split(':')[0], 10);
+      if (hour - 6 <= 20) {
+        const horaDesdeValue = (hour - 6) + ':00';
+        this.createCoworkerForm.controls.hora_desde.setValue(horaDesdeValue);
+      } else {
+        this.createCoworkerForm.controls.hora_desde.setValue(null);
+      }
+    }
   }
 
   // closes the dialog
@@ -209,7 +233,7 @@ export class CreateCoworkerComponent implements OnInit {
       if (selectedPlan.id !== 4) {
         usersPuestos = {
           id_user: null,
-          hora_desde: this.createCoworkerForm.value.hora_desde ?  {
+          hora_desde: this.createCoworkerForm.value.hora_desde ? {
             hours: this.createCoworkerForm.value.hora_desde.split(':')[0],
             minutes: this.createCoworkerForm.value.hora_desde.split(':')[1]
           } : null,

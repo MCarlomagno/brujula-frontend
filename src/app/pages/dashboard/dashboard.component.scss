@@ -13,3 +13,18 @@ mat-drawer-container, mat-drawer-content { display: block; height: 100%; }
 .navigation-list {
     margin-right: 5px;
 }
+
+
+.mat-nav-list .mat-list-item {
+    border-radius: 0px 15px 15px 0px !important;
+}
+
+.primary {
+    color: white;
+}
+
+@media (max-width: 400px) { 
+    .responsive {
+        display: none;
+    }
+ }

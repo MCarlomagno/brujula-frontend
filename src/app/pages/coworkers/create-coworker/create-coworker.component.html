@@ -181,7 +181,7 @@
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Hora desde</mat-label>
-                            <mat-select formControlName="hora_desde" [disabled]="planFijoSelected">
+                            <mat-select formControlName="hora_desde" [disabled]="planFijoSelected" (selectionChange)="onHoraDesdeChange()">
                                 <mat-option *ngFor="let time of times" [value]="time.value">
                                     {{time.viewValue}}
                                 </mat-option>
@@ -193,7 +193,7 @@
                     <div class="col-lg-6 col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Hora hasta</mat-label>
-                            <mat-select formControlName="hora_hasta" [disabled]="planFijoSelected">
+                            <mat-select formControlName="hora_hasta" [disabled]="planFijoSelected" (selectionChange)="onHoraHastaChange()">
                                 <mat-option *ngFor="let time of times" [value]="time.value">
                                     {{time.viewValue}}
                                 </mat-option>

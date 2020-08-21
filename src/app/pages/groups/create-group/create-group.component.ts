@@ -2,8 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GroupsService } from 'src/app/services/groups.service';
+import { OficinasService } from 'src/app/services/oficinas.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Grupo } from 'src/app/models/group.model';
+import { Oficina } from 'src/app/models/oficina.model';
 
 @Component({
   selector: 'app-create-group',
@@ -27,10 +29,14 @@ export class CreateGroupComponent implements OnInit {
   // error message
   errorMessage = 'Ocurrió un eror creando al Grupo';
 
+  // oficinas
+  oficinas: Oficina[];
+
   constructor(
     public dialogRef: MatDialogRef<CreateGroupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private groupsService: GroupsService,
+    private oficinasService: OficinasService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -42,10 +48,17 @@ export class CreateGroupComponent implements OnInit {
     this.createGroupForm = new FormGroup({
       nombre: new FormControl('', [Validators.required]),
       cuit_cuil: new FormControl('', [Validators.required]),
+      oficina: new FormControl(''),
     });
 
-    // hides the spinner
-    this.loading = false;
+    // load offices
+    this.oficinasService.getOficinas().subscribe((result: Oficina[]) => {
+      this.oficinas = result;
+
+      // hides the spinner
+      this.loading = false;
+    });
+
   }
 
   // closes the dialog
@@ -58,7 +71,8 @@ export class CreateGroupComponent implements OnInit {
       this.loadingSubmit = true;
       const createdGroup: Grupo = {
         nombre: this.createGroupForm.controls.nombre.value,
-        cuit_cuil: this.createGroupForm.controls.cuit_cuil.value
+        cuit_cuil: this.createGroupForm.controls.cuit_cuil.value,
+        id_oficina: this.createGroupForm.controls.oficina.value
       };
 
       this.groupsService.createGroup(createdGroup).subscribe((response) => {
