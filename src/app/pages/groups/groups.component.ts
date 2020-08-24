@@ -21,7 +21,7 @@ export class GroupsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   // displayed columns
-  displayedColumns: string[] = ['nombre', 'id', 'cuit_cuil', 'actions'];
+  displayedColumns: string[] = ['nombre', 'oficina', 'id', 'cuit_cuil', 'actions'];
 
   // current groups
   groups: Grupo[];
@@ -98,7 +98,7 @@ export class GroupsComponent implements OnInit, AfterViewInit {
   onDelete(element): void {
     console.log(element);
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = { id: element.id, name: element.nombre};
+    dialogConfig.data = { id: element.id, name: element.nombre };
     const ref: MatDialogRef<DeleteGroupComponent> = this.matDialog.open(DeleteGroupComponent, dialogConfig);
     ref.afterClosed().subscribe((result) => {
       if (result) {
