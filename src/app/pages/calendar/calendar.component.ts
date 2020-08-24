@@ -83,7 +83,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     // free version (open source)
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
     timeZone: 'UTC',
-    initialView: 'timeGridWeek',
+    initialView: innerWidth > 700 ? 'timeGridWeek' : 'timelineWeek',
     slotDuration: '00:20:00',
     slotMinTime: '08:00',
     slotMaxTime: '20:00',
@@ -148,6 +148,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       this.events = result.data.reservations;
 
       for (const event of this.events) {
+        console.log(event);
         this.calendarApi.addEvent(event);
       }
 
