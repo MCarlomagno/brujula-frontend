@@ -32,6 +32,13 @@
         <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
       </ng-container>
 
+
+      <!-- horas_sala Column -->
+      <ng-container matColumnDef="oficina">
+        <th mat-header-cell *matHeaderCellDef> Oficina </th>
+        <td mat-cell *matCellDef="let element"> {{element.id_oficina ? element.nombre_oficina : "-"}} </td>
+      </ng-container>
+
       <!-- ID Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -44,6 +51,7 @@
         <th mat-header-cell *matHeaderCellDef> CUIT/CUIL </th>
         <td mat-cell *matCellDef="let element"> {{element.cuit_cuil}} </td>
       </ng-container>
+
 
       <!-- actions Column -->
       <ng-container matColumnDef="actions">
