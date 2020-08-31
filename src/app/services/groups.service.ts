@@ -36,6 +36,10 @@ export class GroupsService {
     return this.http.get<Grupo[]>(this.url + '/groups/getAll');
   }
 
+  getAllGroupsAndPuestos(): Observable<any> {
+    return this.http.get<any>(this.url + '/corowkers/allGroupsAndPuestos');
+  }
+
   createGroup(group: Grupo): Observable<any> {
     const body = {
       group,

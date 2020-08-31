@@ -28,6 +28,9 @@ export class CreateCoworkerComponent implements OnInit {
   // Groups for Mat select
   grupos: MatSelectOption[] = [];
 
+  // Puestos for select
+  puestos = [];
+
   // Initial loading
   loading = false;
 
@@ -79,15 +82,20 @@ export class CreateCoworkerComponent implements OnInit {
       fecha_desde: new FormControl(),
       fecha_hasta: new FormControl(),
       horas_sala: new FormControl(2, [Validators.required]),
+      puesto: new FormControl(),
     });
 
 
-    // TODO: instead of load groups on Init, a better approach could be load this when the coworkers list is loaded
-    // them passing the data by MAT_DIALOG_DATA.
-    this.groupsService.getAllGroups().subscribe((groups) => {
+    this.groupsService.getAllGroupsAndPuestos().subscribe((result) => {
+
+      if (!result.success) {
+        console.log(result.error);
+      }
+
+      this.puestos = result.puestos;
 
       // sets group backend data in a more readable format for mat select
-      groups.map(group => {
+      result.groups.map(group => {
         this.grupos.push({
           value: group.id.toString(),
           viewValue: group.nombre
@@ -243,7 +251,8 @@ export class CreateCoworkerComponent implements OnInit {
           } : null,
           fecha_desde: this.createCoworkerForm.value.fecha_desde,
           fecha_hasta: this.createCoworkerForm.value.fecha_hasta,
-          dias: this.selectedDays
+          dias: this.selectedDays,
+          id_puesto: this.createCoworkerForm.value.puesto,
         };
       }
 
