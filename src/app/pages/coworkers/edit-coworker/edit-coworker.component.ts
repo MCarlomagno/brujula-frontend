@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { GroupsService } from 'src/app/services/groups.service';
 import { TIMES_PUESTO, ROLES, PLANES, MatSelectOption } from '../../../shared/const';
 import { Coworker } from 'src/app/models/coworker.model';
 import { UsersPuestos } from 'src/app/models/users-puestos.model';
@@ -10,6 +9,7 @@ import { CoworkersService } from 'src/app/services/coworkers.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Plan } from 'src/app/models/plan.model';
 import { Grupo } from 'src/app/models/group.model';
+import { Puesto } from 'src/app/models/puesto.model';
 
 @Component({
   selector: 'app-edit-coworker',
@@ -48,7 +48,7 @@ export class EditCoworkerComponent implements OnInit {
   successMessage = 'Coworker editado con éxito';
 
   // error message
-  errorMessage = 'Ocurrió un eror creando al coworker';
+  errorMessage = 'Ocurrió un eror editando al coworker';
 
   // current coworker
   coworker: Coworker;
@@ -61,6 +61,9 @@ export class EditCoworkerComponent implements OnInit {
 
   // current users_puestos
   usersPuestos: UsersPuestos;
+
+  // puestos
+  puestos: Puesto[];
 
   // is leader flag
   isLeader = false;
@@ -89,17 +92,18 @@ export class EditCoworkerComponent implements OnInit {
       apellido: new FormControl({ value: '' }, [Validators.required]),
       email: new FormControl({ value: '' }, [Validators.required]),
       plan: new FormControl({ value: '' }, [Validators.required]),
-      dni: new FormControl({ value: '' }, [Validators.required]),
-      celular: new FormControl({ value: '' }, [Validators.required]),
-      direccion: new FormControl({ value: '' }, [Validators.required]),
-      fecha_nacimiento: new FormControl({ value: '' }, [Validators.required]),
-      grupo: new FormControl({ value: '' }),
-      rol: new FormControl({ value: '' }),
-      hora_desde: new FormControl({ value: '' }),
-      hora_hasta: new FormControl({ value: '' }),
-      fecha_desde: new FormControl({ value: '' }),
-      fecha_hasta: new FormControl({ value: '' }),
-      horas_sala: new FormControl({ value: '' }, [Validators.required]),
+      dni: new FormControl('', [Validators.required]),
+      celular: new FormControl('', [Validators.required]),
+      direccion: new FormControl('', [Validators.required]),
+      fecha_nacimiento: new FormControl('', [Validators.required]),
+      grupo: new FormControl(''),
+      rol: new FormControl(''),
+      hora_desde: new FormControl(),
+      hora_hasta: new FormControl(),
+      fecha_desde: new FormControl(''),
+      fecha_hasta: new FormControl(''),
+      horas_sala: new FormControl('', [Validators.required]),
+      puesto: new FormControl(),
     });
 
     // get user, puesto, plan and grupo by user id
@@ -109,6 +113,10 @@ export class EditCoworkerComponent implements OnInit {
         console.log('ocurrio un error');
         console.log(result.msg);
       }
+
+      this.grupos = result.groups;
+      this.puestos = result.puestos;
+      this.plan = result.plan;
 
       // loads result data
       this.coworker = result.coworker;
@@ -121,8 +129,6 @@ export class EditCoworkerComponent implements OnInit {
         result.userPuesto.viernes,
         result.userPuesto.sabado
       ];
-      this.plan = result.plan;
-      this.grupos = result.groups;
 
       // time data type for user puesto
       if (this.usersPuestos) {
@@ -151,6 +157,10 @@ export class EditCoworkerComponent implements OnInit {
         // sets fecha_desde & fecha_hasta
         this.editCoworkersForm.controls.fecha_desde.setValue(this.usersPuestos.fecha_desde);
         this.editCoworkersForm.controls.fecha_hasta.setValue(this.usersPuestos.fecha_hasta);
+
+        if (this.usersPuestos.id_puesto) {
+          this.editCoworkersForm.controls.puesto.setValue(this.usersPuestos.id_puesto);
+        }
 
         this.selectedDays = [...this.usersPuestos.dias];
       }
@@ -311,11 +321,20 @@ export class EditCoworkerComponent implements OnInit {
       const hotasSalaChanged = this.editCoworkersForm.controls.horas_sala.value !== this.plan.horas_sala;
       this.planChanged = planChanged || hotasSalaChanged;
 
+      let horaDesdeChanged = false;
       // flags to detect changes in users_puestos
-      const horaDesdeChanged = this.editCoworkersForm.controls.hora_desde.value !==
-        (this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes);
-      const horaHastaChanged = this.editCoworkersForm.controls.hora_hasta.value !==
-        (this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes);
+      if (this.usersPuestos.hora_desde) {
+        horaDesdeChanged = this.editCoworkersForm.controls.hora_desde.value !==
+          (this.usersPuestos.hora_desde.hours + ':' + this.usersPuestos.hora_desde.minutes);
+      }
+
+      let horaHastaChanged = false;
+      if (this.usersPuestos.hora_hasta) {
+        horaHastaChanged = this.editCoworkersForm.controls.hora_hasta.value !==
+          (this.usersPuestos.hora_hasta.hours + ':' + this.usersPuestos.hora_hasta.minutes);
+      }
+
+
 
       const fechaDesdeChanged = this.editCoworkersForm.controls.fecha_desde.value !== this.usersPuestos.fecha_desde;
       const fechaHastaChanged = this.editCoworkersForm.controls.fecha_hasta.value !== this.usersPuestos.fecha_hasta;
@@ -362,16 +381,17 @@ export class EditCoworkerComponent implements OnInit {
       let usersPuestos: UsersPuestos;
       if (this.userPuestoChanged) {
         // Users puestos instance
+        console.log(this.editCoworkersForm.value.hora_desde);
         usersPuestos = {
           id_user: this.coworker.id,
-          hora_desde: {
+          hora_desde: this.editCoworkersForm.value.hora_desde ? {
             hours: this.editCoworkersForm.value.hora_desde.split(':')[0],
             minutes: this.editCoworkersForm.value.hora_desde.split(':')[1]
-          },
-          hora_hasta: {
+          } : null,
+          hora_hasta: this.editCoworkersForm.value.hora_hasta ? {
             hours: this.editCoworkersForm.value.hora_hasta.split(':')[0],
             minutes: this.editCoworkersForm.value.hora_hasta.split(':')[1]
-          },
+          } : null,
           fecha_desde: this.editCoworkersForm.value.fecha_desde,
           fecha_hasta: this.editCoworkersForm.value.fecha_hasta,
           dias: this.selectedDays

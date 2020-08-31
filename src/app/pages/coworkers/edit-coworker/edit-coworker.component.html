@@ -1,265 +1,289 @@
 <div *ngIf="!loading" class="container">
-    <h2 mat-dialog-title>Agregar Coworker</h2>
-    <form [formGroup]="editCoworkersForm" (ngSubmit)="submit()" #formDir="ngForm">
-        <mat-dialog-content>
+  <h2 mat-dialog-title>Agregar Coworker</h2>
+  <form [formGroup]="editCoworkersForm" (ngSubmit)="submit()" #formDir="ngForm">
+    <mat-dialog-content>
 
-            <h4 mat-dialog-title>Datos personales</h4>
-            <div class="row">
+      <h4 mat-dialog-title>Datos personales</h4>
+      <div class="row">
 
-                <!-- Nombre -->
-                <div class="col-lg-4 col-md-4">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Nombre</mat-label>
-                        <input matInput formControlName="nombre" id="nombre">
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.nombre.invalid && (formDir.submitted || editCoworkersForm.controls.nombre.dirty || editCoworkersForm.controls.nombre.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.nombre.errors.required" class="white-color">
-                            Nombre requerido
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Apellido -->
-                <div class="col-lg-4 col-md-4">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Apellido</mat-label>
-                        <input matInput formControlName="apellido" id="apellido">
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.apellido.invalid && (formDir.submitted || editCoworkersForm.controls.apellido.dirty || editCoworkersForm.controls.apellido.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.apellido.errors.required" class="white-color">
-                            Apellido requerido
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Email -->
-                <div class="col-lg-4 col-md-4">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Email</mat-label>
-                        <input matInput formControlName="email" id="email">
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.email.invalid && (formDir.submitted || editCoworkersForm.controls.email.dirty || editCoworkersForm.controls.email.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.email.errors.required" class="white-color">
-                            Email requerido
-                        </div>
-                    </div>
-                </div>
+        <!-- Nombre -->
+        <div class="col-lg-4 col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" id="nombre">
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.nombre.invalid && (formDir.submitted || editCoworkersForm.controls.nombre.dirty || editCoworkersForm.controls.nombre.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.nombre.errors.required" class="white-color">
+              Nombre requerido
             </div>
-            <div class="row">
+          </div>
+        </div>
 
-                <!-- DNI -->
-                <div class="col-lg-3 col-md-3">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Dni</mat-label>
-                        <input matInput formControlName="dni" id="dni">
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.dni.invalid && (formDir.submitted || editCoworkersForm.controls.dni.dirty || editCoworkersForm.controls.dni.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.dni.errors.required" class="white-color">
-                            DNI requerido
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Direccion -->
-                <div class="col-lg-3 col-md-3">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Dirección</mat-label>
-                        <input matInput formControlName="direccion" id="direccion">
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.direccion.invalid && (formDir.submitted || editCoworkersForm.controls.direccion.dirty || editCoworkersForm.controls.direccion.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.direccion.errors.required" class="white-color">
-                            Dirección requerido
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Celu -->
-                <div class="col-lg-3 col-md-3">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Celular</mat-label>
-                        <input matInput formControlName="celular" id="celular">
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.celular.invalid && (formDir.submitted || editCoworkersForm.controls.celular.dirty || editCoworkersForm.controls.celular.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.celular.errors.required" class="white-color">
-                            Celular requerido
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fecha Nac -->
-                <div class="col-lg-3 col-md-3">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Fecha Nacimiento</mat-label>
-                        <input matInput formControlName="fecha_nacimiento" [matDatepicker]="pickerFechaNac">
-                        <mat-datepicker-toggle matSuffix [for]="pickerFechaNac"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerFechaNac></mat-datepicker>
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.fecha_nacimiento.invalid && (formDir.submitted || editCoworkersForm.controls.fecha_nacimiento.dirty || editCoworkersForm.controls.fecha_nacimiento.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.fecha_nacimiento.errors.required" class="white-color">
-                            Fecha de Nacimiento requerida
-                        </div>
-                    </div>
-                </div>
+        <!-- Apellido -->
+        <div class="col-lg-4 col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="apellido" id="apellido">
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.apellido.invalid && (formDir.submitted || editCoworkersForm.controls.apellido.dirty || editCoworkersForm.controls.apellido.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.apellido.errors.required" class="white-color">
+              Apellido requerido
             </div>
-            <h4 mat-dialog-title>Plan</h4>
+          </div>
+        </div>
 
-            <!-- Plan  -->
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Plan</mat-label>
-                        <mat-select formControlName="plan" (selectionChange)="onPlanSelected($event.value)">
-                            <mat-option *ngFor="let plan of planes" [value]="plan.id">
-                                {{plan.nombre}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.plan.invalid && (formDir.submitted || editCoworkersForm.controls.plan.dirty || editCoworkersForm.controls.plan.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.plan.errors.required" class="white-color">
-                            Plan requerido
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Horas sala</mat-label>
-                        <input type="number" matInput formControlName="horas_sala" id="horas_sala">
-                    </mat-form-field>
-                    <div *ngIf="editCoworkersForm.controls.horas_sala.invalid && (formDir.submitted || editCoworkersForm.controls.horas_sala.dirty || editCoworkersForm.controls.horas_sala.touched)"
-                        class="alert white-color">
-                        <div *ngIf="editCoworkersForm.controls.horas_sala.errors.required" class="white-color">
-                            Horas sala inválidas
-                        </div>
-                    </div>
-                </div>
+        <!-- Email -->
+        <div class="col-lg-4 col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" id="email">
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.email.invalid && (formDir.submitted || editCoworkersForm.controls.email.dirty || editCoworkersForm.controls.email.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.email.errors.required" class="white-color">
+              Email requerido
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
 
-
-            <div class="row">
-
-                <!-- Grupo -->
-                <div class="col-lg-6 col-md-6">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Equipo</mat-label>
-                        <mat-select formControlName="grupo" (selectionChange)="onGroupSelected($event.value)">
-                            <mat-option *ngFor="let grupo of grupos" [value]="grupo.id">
-                                {{grupo.nombre}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
-                <!-- Roles -->
-                <div class="col-lg-6 col-md-6">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Rol</mat-label>
-                        <mat-select formControlName="rol">
-                            <mat-option *ngFor="let rol of roles" [value]="rol.value">
-                                {{rol.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
+        <!-- DNI -->
+        <div class="col-lg-3 col-md-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Dni</mat-label>
+            <input matInput formControlName="dni" id="dni">
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.dni.invalid && (formDir.submitted || editCoworkersForm.controls.dni.dirty || editCoworkersForm.controls.dni.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.dni.errors.required" class="white-color">
+              DNI requerido
             </div>
+          </div>
+        </div>
 
-            <div *ngIf="!planOfiPrivadaSelected">
-                <h4 mat-dialog-title>Fechas/horarios</h4>
-
-
-                <div class="row">
-
-                    <!-- Hora desde -->
-                    <div class="col-lg-6 col-md-6">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Hora desde</mat-label>
-                            <mat-select formControlName="hora_desde" [disabled]="planFijoSelected">
-                                <mat-option *ngFor="let time of times" [value]="time.value">
-                                    {{time.viewValue}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <!-- Hora hasta -->
-                    <div class="col-lg-6 col-md-6">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Hora hasta</mat-label>
-                            <mat-select formControlName="hora_hasta" [disabled]="planFijoSelected">
-                                <mat-option *ngFor="let time of times" [value]="time.value">
-                                    {{time.viewValue}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-
-                <div class="row">
-
-                    <!-- Fecha desde -->
-                    <div class="col-lg-6 col-md-6">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Fecha desde</mat-label>
-                            <input matInput formControlName="fecha_desde" [matDatepicker]="pickerDesde">
-                            <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
-                            <mat-datepicker #pickerDesde></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-
-                    <!-- Fecha hasta -->
-                    <div class="col-lg-6 col-md-6">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Fecha hasta (Opcional)</mat-label>
-                            <input matInput formControlName="fecha_hasta" [matDatepicker]="pickerHasta">
-                            <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
-                            <mat-datepicker #pickerHasta></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div>
-                    <section>
-                        <mat-checkbox [checked]="usersPuestos.dias[0]" (change)="onCheckboxPressed(0)" class="example-margin"
-                            color='primary'>Lunes</mat-checkbox>
-                        <mat-checkbox [checked]="usersPuestos.dias[1]" (change)="onCheckboxPressed(1)" class="example-margin"
-                            color='primary'>Martes</mat-checkbox>
-                        <mat-checkbox [checked]="usersPuestos.dias[2]" (change)="onCheckboxPressed(2)" class="example-margin"
-                            color='primary'>Miercoles</mat-checkbox>
-                        <mat-checkbox [checked]="usersPuestos.dias[3]" (change)="onCheckboxPressed(3)" class="example-margin"
-                            color='primary'>Jueves</mat-checkbox>
-                        <mat-checkbox [checked]="usersPuestos.dias[4]" (change)="onCheckboxPressed(4)" class="example-margin"
-                            color='primary'>Viernes</mat-checkbox>
-                        <mat-checkbox [checked]="usersPuestos.dias[5]" (change)="onCheckboxPressed(5)" class="example-margin"
-                            color='primary'>Sábado</mat-checkbox>
-                    </section>
-                </div>
+        <!-- Direccion -->
+        <div class="col-lg-3 col-md-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Dirección</mat-label>
+            <input matInput formControlName="direccion" id="direccion">
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.direccion.invalid && (formDir.submitted || editCoworkersForm.controls.direccion.dirty || editCoworkersForm.controls.direccion.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.direccion.errors.required" class="white-color">
+              Dirección requerido
             </div>
+          </div>
+        </div>
 
-
-        </mat-dialog-content>
-
-        <mat-dialog-actions align="end">
-            <div *ngIf="!loadingSubmit">
-                <div class="form-group">
-                    <button class="mat-button" type="button" (click)="close()">Cerrar</button>
-                    <button type="submit" class="mat-raised-button primary">Guardar</button>
-                </div>
+        <!-- Celu -->
+        <div class="col-lg-3 col-md-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Celular</mat-label>
+            <input matInput formControlName="celular" id="celular">
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.celular.invalid && (formDir.submitted || editCoworkersForm.controls.celular.dirty || editCoworkersForm.controls.celular.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.celular.errors.required" class="white-color">
+              Celular requerido
             </div>
-            <div *ngIf="loadingSubmit" class="mat-spinner-wrapper spinner-submit-padding">
-                <mat-spinner [diameter]="25"></mat-spinner>
-            </div>
+          </div>
+        </div>
 
-        </mat-dialog-actions>
-    </form>
+        <!-- Fecha Nac -->
+        <div class="col-lg-3 col-md-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Fecha Nacimiento</mat-label>
+            <input matInput formControlName="fecha_nacimiento" [matDatepicker]="pickerFechaNac">
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaNac"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaNac></mat-datepicker>
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.fecha_nacimiento.invalid && (formDir.submitted || editCoworkersForm.controls.fecha_nacimiento.dirty || editCoworkersForm.controls.fecha_nacimiento.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.fecha_nacimiento.errors.required" class="white-color">
+              Fecha de Nacimiento requerida
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4 mat-dialog-title>Plan</h4>
+
+      <!-- Plan  -->
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <mat-form-field appearance="fill">
+            <mat-label>Plan</mat-label>
+            <mat-select formControlName="plan" (selectionChange)="onPlanSelected($event.value)">
+              <mat-option *ngFor="let plan of planes" [value]="plan.id">
+                {{plan.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.plan.invalid && (formDir.submitted || editCoworkersForm.controls.plan.dirty || editCoworkersForm.controls.plan.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.plan.errors.required" class="white-color">
+              Plan requerido
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <mat-form-field appearance="fill">
+            <mat-label>Horas sala</mat-label>
+            <input type="number" matInput formControlName="horas_sala" id="horas_sala">
+          </mat-form-field>
+          <div
+            *ngIf="editCoworkersForm.controls.horas_sala.invalid && (formDir.submitted || editCoworkersForm.controls.horas_sala.dirty || editCoworkersForm.controls.horas_sala.touched)"
+            class="alert white-color">
+            <div *ngIf="editCoworkersForm.controls.horas_sala.errors.required" class="white-color">
+              Horas sala inválidas
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+
+        <!-- Grupo -->
+        <div class="col-lg-6 col-md-6">
+          <mat-form-field appearance="fill">
+            <mat-label>Equipo</mat-label>
+            <mat-select formControlName="grupo" (selectionChange)="onGroupSelected($event.value)">
+              <mat-option *ngFor="let grupo of grupos" [value]="grupo.id">
+                {{grupo.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Roles -->
+        <div class="col-lg-6 col-md-6">
+          <mat-form-field appearance="fill">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="rol">
+              <mat-option *ngFor="let rol of roles" [value]="rol.value">
+                {{rol.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div *ngIf="!planOfiPrivadaSelected">
+        <h4 mat-dialog-title>Fechas/horarios</h4>
+
+
+        <div class="row">
+
+          <!-- Hora desde -->
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="fill">
+              <mat-label>Hora desde</mat-label>
+              <mat-select formControlName="hora_desde" [disabled]="planFijoSelected">
+                <mat-option *ngFor="let time of times" [value]="time.value">
+                  {{time.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Hora hasta -->
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="fill">
+              <mat-label>Hora hasta</mat-label>
+              <mat-select formControlName="hora_hasta" [disabled]="planFijoSelected">
+                <mat-option *ngFor="let time of times" [value]="time.value">
+                  {{time.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div class="row">
+
+          <!-- Fecha desde -->
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="fill">
+              <mat-label>Fecha desde</mat-label>
+              <input matInput formControlName="fecha_desde" [matDatepicker]="pickerDesde">
+              <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDesde></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <!-- Fecha hasta -->
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="fill">
+              <mat-label>Fecha hasta (Opcional)</mat-label>
+              <input matInput formControlName="fecha_hasta" [matDatepicker]="pickerHasta">
+              <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+              <mat-datepicker #pickerHasta></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Puestos -->
+          <div class="col-lg-6 col-md-6">
+            <mat-form-field appearance="fill">
+              <mat-label>Puesto</mat-label>
+              <mat-select formControlName="puesto">
+                <mat-option *ngFor="let puesto of puestos" [value]="puesto.id">
+                  {{puesto.nombre}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div>
+          <section>
+            <mat-checkbox [checked]="usersPuestos.dias[0]" (change)="onCheckboxPressed(0)" class="example-margin"
+              color='primary'>Lunes</mat-checkbox>
+            <mat-checkbox [checked]="usersPuestos.dias[1]" (change)="onCheckboxPressed(1)" class="example-margin"
+              color='primary'>Martes</mat-checkbox>
+            <mat-checkbox [checked]="usersPuestos.dias[2]" (change)="onCheckboxPressed(2)" class="example-margin"
+              color='primary'>Miercoles</mat-checkbox>
+            <mat-checkbox [checked]="usersPuestos.dias[3]" (change)="onCheckboxPressed(3)" class="example-margin"
+              color='primary'>Jueves</mat-checkbox>
+            <mat-checkbox [checked]="usersPuestos.dias[4]" (change)="onCheckboxPressed(4)" class="example-margin"
+              color='primary'>Viernes</mat-checkbox>
+            <mat-checkbox [checked]="usersPuestos.dias[5]" (change)="onCheckboxPressed(5)" class="example-margin"
+              color='primary'>Sábado</mat-checkbox>
+          </section>
+        </div>
+      </div>
+
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <div *ngIf="!loadingSubmit">
+        <div class="form-group">
+          <button class="mat-button" type="button" (click)="close()">Cerrar</button>
+          <button type="submit" class="mat-raised-button primary">Guardar</button>
+        </div>
+      </div>
+      <div *ngIf="loadingSubmit" class="mat-spinner-wrapper spinner-submit-padding">
+        <mat-spinner [diameter]="25"></mat-spinner>
+      </div>
+
+    </mat-dialog-actions>
+  </form>
 </div>
 <div *ngIf="loading" class="mat-spinner-wrapper">
-    <mat-spinner [diameter]="30"></mat-spinner>
+  <mat-spinner [diameter]="30"></mat-spinner>
 </div>
