@@ -394,7 +394,8 @@ export class EditCoworkerComponent implements OnInit {
           } : null,
           fecha_desde: this.editCoworkersForm.value.fecha_desde,
           fecha_hasta: this.editCoworkersForm.value.fecha_hasta,
-          dias: this.selectedDays
+          dias: this.selectedDays,
+          id_puesto: this.editCoworkersForm.value.puesto,
         };
       }
 
