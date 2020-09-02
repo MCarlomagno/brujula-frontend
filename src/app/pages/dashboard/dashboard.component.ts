@@ -26,4 +26,11 @@ export class DashboardComponent implements OnInit {
       return 'side';
     }
   }
+
+  restorePass(): void {
+    this.authService.restorePass().subscribe((result) => {
+      console.log('resultado del restore pass');
+      console.log(result);
+    });
+  }
 }
