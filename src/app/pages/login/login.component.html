@@ -34,6 +34,10 @@
 
             Ingresar
         </button>
+        <div *ngIf='!isLoading'>
+            <a (click)="forgotPassword()" class="forgot-pass">Olvidé mi contraseña</a>
+        </div>
+        
         <span *ngIf='isLoading' class="mat-spinner-wrapper">
             <mat-spinner [diameter]="30"></mat-spinner>
         </span>

@@ -33,11 +33,10 @@ export class AuthService {
     return decodedToken.id;
   }
 
-  restorePass(): Observable<any> {
-    const id = this.getUserId();
+  restorePass(email: string): Observable<any> {
     const body = {};
-    console.log('ejecuta el restore pass');
-    return this.http.post(this.url + `/users/forgotPassword/${id}`, body);
+    console.log(email);
+    return this.http.post(this.url + `/users/forgotPassword/${email}`, body);
   }
 
   logout(): void {

@@ -51,6 +51,7 @@ import { EditGroupComponent } from './pages/groups/edit-group/edit-group.compone
 import { CalendarEventComponent } from './pages/calendar/calendar-event/calendar-event.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { StopPropagationDirective } from './directives/stop-propagation.directive';
+import { ForgotPasswordComponent } from './pages/login/forgot-password/forgot-password.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -76,7 +77,8 @@ FullCalendarModule.registerPlugins([
     DeleteGroupComponent,
     EditGroupComponent,
     CalendarEventComponent,
-    StopPropagationDirective
+    StopPropagationDirective,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

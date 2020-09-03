@@ -1,3 +1,5 @@
+// Import _variables.css to the component's sass file where you want to use it.
+@import "../../../theme.scss";
 
 .example-form {
     height: 100%;
@@ -14,12 +16,26 @@
     width: 100%;
 }
 
-// .input-container {
-//     position: relative;
-//     margin-inline: auto;
-//     margin-top: 10px;
-//     width: 100%;
-// }
+.forgot-pass {
+    padding: 14px 16px;
+    font-size: 15;
+    font-weight: 500;
+    color: $primary !important;
+    animation: ripple 1s;
+}
+
+.forgot-pass:hover {
+    cursor: pointer;
+    padding: 14px 16px;
+    background: rgb(221, 221, 221);
+    border-radius: 5px;
+    
+}
+
+.forgot-pass:active {
+    background: rgb(182, 182, 182);    
+}
+
 
 .form-button {
     margin: 20px;
