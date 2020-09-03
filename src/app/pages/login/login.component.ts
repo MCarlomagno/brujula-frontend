@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,7 +24,7 @@ export class LoginComponent implements OnInit {
   // error message on login failed
   errorMsg = 'Usuario o contraseña inválidos, por favor intentá de nuevo.';
 
-  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService, private matDialog: MatDialog) {
 
   }
 
@@ -66,4 +68,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  forgotPassword(): void {
+    const dialogConfig = new MatDialogConfig();
+    const ref: MatDialogRef<ForgotPasswordComponent> = this.matDialog.open(ForgotPasswordComponent, dialogConfig);
+  }
 }
