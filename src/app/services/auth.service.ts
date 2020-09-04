@@ -40,6 +40,10 @@ export class AuthService {
   }
 
   logout(): void {
+    const helper = new JwtHelperService();
+    const token = this.getToken();
+    const decodedToken = helper.decodeToken(token);
+    console.log(decodedToken);
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
