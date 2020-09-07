@@ -33,6 +33,13 @@ export class AuthService {
     return decodedToken.id;
   }
 
+  getUserData(): any {
+    const helper = new JwtHelperService();
+    const token = this.getToken();
+    const decodedToken = helper.decodeToken(token);
+    return decodedToken;
+  }
+
   restorePass(email: string): Observable<any> {
     const body = {};
     console.log(email);

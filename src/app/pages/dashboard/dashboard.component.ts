@@ -9,10 +9,18 @@ import { AuthService } from 'src/app/services/auth.service';
 export class DashboardComponent implements OnInit {
   public innerWidth: any;
 
+  userData: any;
+
+  isAdmin: boolean;
+  isLeader: boolean;
+
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.innerWidth = window.innerWidth;
+    this.userData = this.authService.getUserData();
+    this.isAdmin = this.userData.rol === 'admin';
+    this.isLeader = this.userData.rol === 'leader';
   }
 
   logout(): void {

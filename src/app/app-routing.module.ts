@@ -4,9 +4,13 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuardGuard } from './guards/auth-guard.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { LeaderGuard } from './guards/leader.guard';
 import { CoworkersComponent } from './pages/coworkers/coworkers.component';
 import { GroupsComponent } from './pages/groups/groups.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
+import { MyAccountComponent } from './pages/my-account/my-account.component';
+import { GroupManagementComponent } from './pages/group-management/group-management.component';
 
 const routes: Routes = [
   {
@@ -22,18 +26,30 @@ const routes: Routes = [
     canActivate: [AuthGuardGuard],
     children: [
       {
-        path: '',
+        path: 'my-account',
+        component: MyAccountComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'calendar',
         component: CalendarComponent,
-        pathMatch: 'full'
+        canActivate: [AdminGuard],
       },
       {
         path: 'coworkers',
         component: CoworkersComponent,
+        canActivate: [AdminGuard],
       },
       {
         path: 'groups',
         component: GroupsComponent,
-      }
+        canActivate: [AdminGuard],
+      },
+      {
+        path: 'groups-management',
+        component: GroupManagementComponent,
+        canActivate: [LeaderGuard],
+      },
     ]
   }
 ];

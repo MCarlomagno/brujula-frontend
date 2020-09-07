@@ -7,7 +7,7 @@
 
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: $accent-light; }
 mat-toolbar-row { background: $accent; }
-.mat-drawer-inner-container{ background: $accent; }
+.mat-drawer-inner-container{ background: $accent; min-width: 200px; }
 .mat-drawer-content {background: $accent-light;}
 .mat-calendar { background: $accent-light; }
 .mat-option { background: $accent-light !important; }
