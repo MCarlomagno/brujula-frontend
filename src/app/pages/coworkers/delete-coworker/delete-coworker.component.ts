@@ -57,9 +57,6 @@ export class DeleteCoworkerComponent implements OnInit {
   onError(err): void {
     this.loadingConfirm = false;
     console.log(err);
-    if (err.error.error) {
-      this.errorMessage = err.error.error;
-    }
     this.snackBar.open(this.errorMessage, 'Cerrar', {
       duration: 5000,
       panelClass: ['snackbar']
