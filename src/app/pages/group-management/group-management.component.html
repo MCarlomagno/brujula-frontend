@@ -1,1 +1,58 @@
-<p>group-management works!</p>
+<div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 accent nu-table-body table-responsive">
+
+      <!-- email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+      </ng-container>
+
+      <!-- apellido Column -->
+      <ng-container matColumnDef="apellido">
+        <th mat-header-cell *matHeaderCellDef> Apellido </th>
+        <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
+      </ng-container>
+
+      <!-- horas_sala Column -->
+      <ng-container matColumnDef="horas_sala">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.horas_sala}} </td>
+      </ng-container>
+
+      <!-- horas_sala Column -->
+      <ng-container matColumnDef="horas_sala_consumidas">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala consumidas </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.horas_sala_consumidas}} </td>
+      </ng-container>
+
+      <!-- horas_sala Column -->
+      <ng-container matColumnDef="horas_sala_disponibles">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala disponibles </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
+          {{element.horas_sala - element.horas_sala_consumidas}} </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acciones </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center;">
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row" (click)="onCoworkerSelected(row)">
+      </tr>
+    </table>
+    <div *ngIf="dataSource.loading$ | async" class="mat-spinner-wrapper mat-spinner-table">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <mat-paginator [length]="coworkersCount ? coworkersCount : 0" [pageSize]="10" [pageSizeOptions]="[10, 20]"
+      class="accent" showFirstLastButtons></mat-paginator>
+  </div>
