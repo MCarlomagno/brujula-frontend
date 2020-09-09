@@ -12,20 +12,19 @@ export class GroupManagementService {
 
   constructor(private http: HttpClient) { }
 
-  getCoworkers(
+  getGroupCoworkers(
     filter = '',
-    group = null,
+    userId: number,
     plan = null,
     bornDate = null,
     sortOrder = 'asc',
     pageNumber = 1,
     pageSize = 10): Observable<any> {
 
-    return this.http.get<any>(this.url + '/myGroupCoworkers', {
+    return this.http.get<any>(this.url + `/myGroupCoworkers/${userId}`, {
       params: new HttpParams().set('filter', filter)
         .set('bornDate', bornDate)
         .set('plan', plan)
-        .set('group', group)
         .set('sortOrder', sortOrder)
         .set('pageNumber', pageNumber.toString())
         .set('pageSize', pageSize.toString())

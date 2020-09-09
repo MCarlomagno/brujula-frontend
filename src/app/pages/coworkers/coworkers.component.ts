@@ -41,7 +41,7 @@ export class CoworkersComponent implements OnInit, AfterViewInit {
   groups: Grupo[];
   groupFormControl = new FormControl(null);
 
-  // groups
+  // planes
   planes: Plan[];
   planFormControl = new FormControl(null);
 

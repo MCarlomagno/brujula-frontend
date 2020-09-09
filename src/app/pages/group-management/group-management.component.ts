@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Grupo } from 'src/app/models/group.model';
 import { Plan } from 'src/app/models/plan.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-group-management',
@@ -16,6 +17,8 @@ import { Plan } from 'src/app/models/plan.model';
 export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  userId: number;
 
   // my group data source
   dataSource: MyGroupDataSource;
@@ -31,6 +34,7 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   // form control for table filter
   filterFormControl = new FormControl('');
+
   // groups
   groups: Grupo[];
   groupFormControl = new FormControl(null);
@@ -41,13 +45,14 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
   // born date form control
   bornDateFormControl = new FormControl(null);
 
-  constructor(private groupManagementService: GroupManagementService) { }
+  constructor(private groupManagementService: GroupManagementService, private auth: AuthService) { }
 
   ngOnInit(): void {
+    this.userId = this.auth.getUserId();
     this.dataSource = new MyGroupDataSource(this.groupManagementService);
 
     // loads the coworkers from backend
-    this.dataSource.loadCoworkers();
+    this.dataSource.loadGroupCoworkers(this.userId);
 
     this.dataSource.coworkersCountSubject.subscribe((count) => {
       this.coworkersCount = count;
@@ -69,9 +74,10 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   // loads the coworkers page with new filter parameters
   loadCoworkersPage(): void {
-    this.dataSource.loadCoworkers(
+
+    this.dataSource.loadGroupCoworkers(
+      this.userId,
       this.filterFormControl.value,
-      this.groupFormControl.value,
       this.planFormControl.value,
       this.bornDateFormControl.value ? this.bornDateFormControl.value.toISOString() : null,
       'desc',
