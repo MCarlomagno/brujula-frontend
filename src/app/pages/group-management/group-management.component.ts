@@ -24,7 +24,7 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
   dataSource: MyGroupDataSource;
 
   // displayed columns
-  displayedColumns: string[] = ['email', 'nombre', 'apellido', 'horas_sala', 'horas_sala_consumidas', 'horas_sala_disponibles', 'actions'];
+  displayedColumns: string[] = ['email', 'nombre', 'apellido', 'horas_sala', 'horas_sala_consumidas', 'actions'];
 
   // Coworkers list (for future uses)
   coworkers: Coworker[];
@@ -87,5 +87,9 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
 
   onCoworkerSelected(row): void { }
+
+  hoursChanged(): void {
+    console.log('hours changed');
+  }
 
 }

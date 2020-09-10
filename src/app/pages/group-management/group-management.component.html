@@ -1,5 +1,5 @@
 <div class="container">
-<div class="table-wrapper">
+  <div class="table-wrapper">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 accent nu-table-body table-responsive">
 
       <!-- email Column -->
@@ -22,7 +22,7 @@
 
       <!-- horas_sala Column -->
       <ng-container matColumnDef="horas_sala">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala </th>
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala totales</th>
         <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.horas_sala}} </td>
       </ng-container>
 
@@ -32,18 +32,14 @@
         <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.horas_sala_consumidas}} </td>
       </ng-container>
 
-      <!-- horas_sala Column -->
-      <ng-container matColumnDef="horas_sala_disponibles">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas sala disponibles </th>
-        <td mat-cell *matCellDef="let element" style="text-align: center;">
-          {{element.horas_sala - element.horas_sala_consumidas}} </td>
-      </ng-container>
-
       <!-- Actions -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acciones </th>
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Horas Sala </th>
         <td mat-cell *matCellDef="let element" style="text-align: center;">
-
+          <mat-form-field appearance="fill" class="table-width">
+            <mat-label>Horas</mat-label>
+            <input matInput type="number" min="1" max="99" (change)="hoursChanged()" [value]="element.horas_sala">
+          </mat-form-field>
         </td>
       </ng-container>
 
