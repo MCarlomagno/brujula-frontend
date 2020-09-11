@@ -28,6 +28,8 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   // Coworkers list (for future uses)
   coworkers: Coworker[];
+  leaderCoworker: Coworker;
+  horasSalaLeader: number = null;
 
   // Total coworkers count
   coworkersCount: number;
@@ -60,6 +62,9 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
     this.dataSource.coworkersSubject.subscribe((coworkers) => {
       this.coworkers = coworkers;
+
+      this.leaderCoworker = this.coworkers.find(c => c.id === this.userId);
+
     });
   }
 
@@ -88,8 +93,26 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   onCoworkerSelected(row): void { }
 
-  hoursChanged(): void {
-    console.log('hours changed');
+  hoursChanged(event, horasSala: number): void {
+
+    let value = 0;
+
+    if (event.target.value) {
+      value = event.target.value;
+    }
+
+    if (value >= 0) {
+
+      console.log(`el coworker tiene ${value} horas`);
+      console.log(`se le suman ${horasSala - value} al lider`);
+
+      this.horasSalaLeader += horasSala - value;
+    }
+
+  }
+
+  onSubmit(): void {
+
   }
 
 }
