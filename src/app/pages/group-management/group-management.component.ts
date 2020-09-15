@@ -30,6 +30,8 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
   coworkers: Coworker[];
   leaderCoworker: Coworker;
   horasSalaLeader: number = null;
+  hoursRegister: Map<number, number> = new Map<number, number>();
+  totalHours = 0;
 
   // Total coworkers count
   coworkersCount: number;
@@ -63,8 +65,16 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
     this.dataSource.coworkersSubject.subscribe((coworkers) => {
       this.coworkers = coworkers;
 
+      this.coworkers.forEach(coworker => {
+        this.hoursRegister.set(coworker.id, coworker.horas_sala);
+        this.totalHours += coworker.horas_sala;
+      });
+
       this.leaderCoworker = this.coworkers.find(c => c.id === this.userId);
 
+      if (this.leaderCoworker) {
+        this.horasSalaLeader = this.leaderCoworker.horas_sala;
+      }
     });
   }
 
@@ -93,25 +103,30 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   onCoworkerSelected(row): void { }
 
-  hoursChanged(event, horasSala: number): void {
+  hoursChanged(event, horasSala: number, id: number): void {
 
     let value = 0;
 
     if (event.target.value) {
-      value = event.target.value;
+      value = Number.parseInt(event.target.value, 10);
     }
 
     if (value >= 0) {
-
-      console.log(`el coworker tiene ${value} horas`);
-      console.log(`se le suman ${horasSala - value} al lider`);
-
-      this.horasSalaLeader += horasSala - value;
+      this.hoursRegister.set(id, value);
     }
 
+    let updatedTotal = 0;
+    this.hoursRegister.forEach(el => {
+      updatedTotal += el;
+    });
+
+    const difference = this.totalHours - updatedTotal;
+
+    this.horasSalaLeader = this.leaderCoworker.horas_sala + difference;
   }
 
   onSubmit(): void {
+    console.log(this.hoursRegister);
 
   }
 

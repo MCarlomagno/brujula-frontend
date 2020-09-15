@@ -11,7 +11,7 @@
           <!-- Filter field -->
           <mat-form-field appearance="fill">
             <mat-label>Horas sala</mat-label>
-            <input [value]="leaderCoworker?.horas_sala + horasSalaLeader" matInput id="nombre">
+            <input [value]="horasSalaLeader" matInput id="nombre">
           </mat-form-field>
 
         </div>
@@ -65,7 +65,7 @@
         <td mat-cell *matCellDef="let element" style="text-align: center;">
           <mat-form-field appearance="fill" class="table-width">
             <mat-label>Horas</mat-label>
-            <input matInput type="number" min="0" max="99" (input)="hoursChanged($event,element.horas_sala)" [value]="element.horas_sala">
+            <input matInput type="number" min="0" max="99" (input)="hoursChanged($event,element.horas_sala, element.id)" [value]="element.horas_sala">
           </mat-form-field>
         </td>
       </ng-container>
