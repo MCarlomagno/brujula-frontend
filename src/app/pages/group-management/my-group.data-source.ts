@@ -30,7 +30,7 @@ export class MyGroupDataSource implements DataSource<Coworker> {
 
         this.groupManagementService.getGroupCoworkers(filter, userId, plan, bornDate, sortDirection,
             pageIndex, pageSize).subscribe((result) => {
-                this.coworkersCountSubject.next(result.coworkersCount);
+                this.coworkersCountSubject.next(result.coworkersCount - 1);
                 this.coworkersSubject.next(result.coworkers);
                 this.loadingSubject.next(false);
             },

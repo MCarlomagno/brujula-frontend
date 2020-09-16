@@ -18,6 +18,8 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  preventKeys = [189];
+
   userId: number;
 
   // my group data source
@@ -103,6 +105,12 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   onCoworkerSelected(row): void { }
 
+  onKeyDown($event): void {
+    if (this.preventKeys.includes( $event. keyCode )) {
+      $event.preventDefault();
+    }
+  }
+
   hoursChanged(event, horasSala: number, id: number): void {
 
     let value = 0;
@@ -122,7 +130,15 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
     const difference = this.totalHours - updatedTotal;
 
-    this.horasSalaLeader = this.leaderCoworker.horas_sala + difference;
+    // leader hours sould be always positive
+    if ((this.leaderCoworker.horas_sala + difference) >= 0) {
+      this.horasSalaLeader = this.leaderCoworker.horas_sala + difference;
+    } else {
+      // if the hours exceed the total, then restarts in the initial state
+      event.target.value = horasSala;
+      this.hoursChanged(event, horasSala, id);
+    }
+
   }
 
   onSubmit(): void {
