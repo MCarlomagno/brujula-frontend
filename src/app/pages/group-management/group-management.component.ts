@@ -106,7 +106,7 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
   onCoworkerSelected(row): void { }
 
   onKeyDown($event): void {
-    if (this.preventKeys.includes( $event. keyCode )) {
+    if (this.preventKeys.includes($event.keyCode)) {
       $event.preventDefault();
     }
   }
@@ -142,8 +142,23 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    console.log(this.hoursRegister);
 
+    this.hoursRegister.forEach((hours, id) => {
+
+      if (id !== this.leaderCoworker.id) {
+        const index = this.coworkers.findIndex((cow => cow.id === id));
+        this.coworkers[index].horas_sala = hours;
+      } else {
+        const index = this.coworkers.findIndex((cow => cow.id === id));
+        this.coworkers[index].horas_sala = this.horasSalaLeader;
+      }
+    });
+
+    this.groupManagementService.saveCoworkerHours(this.coworkers).subscribe((result) => {
+      console.log(result);
+    }, (err) => {
+      console.log(err);
+    });
   }
 
 }
