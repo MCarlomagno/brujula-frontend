@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Coworker } from '../models/coworker.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,12 @@ export class GroupManagementService {
         .set('pageNumber', pageNumber.toString())
         .set('pageSize', pageSize.toString())
     });
+  }
+
+  saveCoworkerHours(coworkers: Coworker[]): Observable<any>  {
+    const body = {
+      coworkers
+    };
+    return this.http.post<any>(this.url + `/updateCoworkerHours`, body);
   }
 }
