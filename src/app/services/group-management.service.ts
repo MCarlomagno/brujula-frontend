@@ -36,6 +36,6 @@ export class GroupManagementService {
     const body = {
       coworkers
     };
-    return this.http.post<any>(this.url + `/updateCoworkerHours`, body);
+    return this.http.put<any>(this.url + `/updateCoworkerHours`, body);
   }
 }
