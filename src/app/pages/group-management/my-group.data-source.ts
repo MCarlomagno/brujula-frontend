@@ -5,7 +5,7 @@ import { Coworker } from '../../models/coworker.model';
 
 export class MyGroupDataSource implements DataSource<Coworker> {
     public coworkersSubject = new BehaviorSubject<Coworker[]>([]);
-    private loadingSubject = new BehaviorSubject<boolean>(false);
+    public loadingSubject = new BehaviorSubject<boolean>(false);
     public coworkersCountSubject = new BehaviorSubject<number>(0);
 
     public loading$ = this.loadingSubject.asObservable();

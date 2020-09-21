@@ -8,6 +8,7 @@ import { FormControl } from '@angular/forms';
 import { Grupo } from 'src/app/models/group.model';
 import { Plan } from 'src/app/models/plan.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-group-management',
@@ -51,9 +52,18 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
   // born date form control
   bornDateFormControl = new FormControl(null);
 
-  constructor(private groupManagementService: GroupManagementService, private auth: AuthService) { }
+  // success message
+  successMessage = 'Grupo editado con éxito';
+
+  // error message
+  errorMessage = 'Ocurrió un eror editando al Grupo';
+
+  constructor(private groupManagementService: GroupManagementService,
+              private auth: AuthService,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.totalHours = 0;
     this.userId = this.auth.getUserId();
     this.dataSource = new MyGroupDataSource(this.groupManagementService);
 
@@ -143,21 +153,49 @@ export class GroupManagementComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
 
-    this.hoursRegister.forEach((hours, id) => {
+    this.dataSource = new MyGroupDataSource(this.groupManagementService);
+    this.dataSource.loadingSubject.next(true);
 
-      if (id !== this.leaderCoworker.id) {
-        const index = this.coworkers.findIndex((cow => cow.id === id));
-        this.coworkers[index].horas_sala = hours;
-      } else {
-        const index = this.coworkers.findIndex((cow => cow.id === id));
-        this.coworkers[index].horas_sala = this.horasSalaLeader;
-      }
-    });
+    try {
 
-    this.groupManagementService.saveCoworkerHours(this.coworkers).subscribe((result) => {
-      console.log(result);
-    }, (err) => {
+      this.hoursRegister.forEach((hours, id) => {
+
+        if (id !== this.leaderCoworker.id) {
+          const index = this.coworkers.findIndex((cow => cow.id === id));
+          this.coworkers[index].horas_sala = hours;
+        } else {
+          const index = this.coworkers.findIndex((cow => cow.id === id));
+          this.coworkers[index].horas_sala = this.horasSalaLeader;
+        }
+      });
+
+      this.groupManagementService.saveCoworkerHours(this.coworkers).subscribe((result) => {
+        console.log(result);
+        if (result.success) {
+          this.showSnackbar(this.successMessage);
+          this.ngOnInit();
+        } else {
+          this.showSnackbar(this.errorMessage);
+          this.dataSource.loadingSubject.next(false);
+        }
+      }, (err) => {
+        this.dataSource.loadingSubject.next(false);
+        this.showSnackbar(this.errorMessage);
+        console.log(err);
+      });
+
+    } catch (err) {
+      this.dataSource.loadingSubject.next(false);
+      this.showSnackbar(this.errorMessage);
       console.log(err);
+    }
+
+  }
+
+  showSnackbar(message: string): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 5000,
+      panelClass: ['snackbar']
     });
   }
 
