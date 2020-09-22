@@ -54,6 +54,8 @@ import { StopPropagationDirective } from './directives/stop-propagation.directiv
 import { ForgotPasswordComponent } from './pages/login/forgot-password/forgot-password.component';
 import { MyAccountComponent } from './pages/my-account/my-account.component';
 import { GroupManagementComponent } from './pages/group-management/group-management.component';
+import { BookRoomFormComponent } from './pages/book-room-form/book-room-form.component';
+import { BuyRoomHoursComponent } from './pages/buy-room-hours/buy-room-hours.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -82,7 +84,9 @@ FullCalendarModule.registerPlugins([
     StopPropagationDirective,
     ForgotPasswordComponent,
     MyAccountComponent,
-    GroupManagementComponent
+    GroupManagementComponent,
+    BookRoomFormComponent,
+    BuyRoomHoursComponent
   ],
   imports: [
     BrowserModule,
