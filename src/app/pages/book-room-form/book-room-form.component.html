@@ -49,5 +49,14 @@
       </div>
 
     </form>
+
+
   </div>
+  <div class="calendar-wrapper" [class.hide]="loading">
+    <full-calendar id="calendar" [options]="calendarOptions" #calendar></full-calendar>
+  </div>
+  <div class="button-wrapper">
+    <button class="primary" mat-raised-button> Confirmar </button>
+  </div>
+
 </body>
