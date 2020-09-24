@@ -1,0 +1,62 @@
+<body>
+  <div class="form-wrapper">
+    <form [formGroup]="bookRoomForm" (ngSubmit)="submit()" #formDir="ngForm">
+      <h4 mat-dialog-title>Reservar sala</h4>
+      <!-- Nombre -->
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre" id="nombre">
+        </mat-form-field>
+        <div
+          *ngIf="bookRoomForm.controls.nombre.invalid && (formDir.submitted || bookRoomForm.controls.nombre.dirty || bookRoomForm.controls.nombre.touched)"
+          class="alert white-color">
+          <div *ngIf="bookRoomForm.controls.nombre.errors.required" class="white-color">
+            Nombre requerido
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Apellido -->
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="apellido" id="apellido">
+        </mat-form-field>
+        <div
+          *ngIf="bookRoomForm.controls.apellido.invalid && (formDir.submitted || bookRoomForm.controls.apellido.dirty || bookRoomForm.controls.apellido.touched)"
+          class="alert white-color">
+          <div *ngIf="bookRoomForm.controls.apellido.errors.required" class="white-color">
+            Apellido requerido
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" id="email">
+        </mat-form-field>
+        <div
+          *ngIf="bookRoomForm.controls.email.invalid && (formDir.submitted || bookRoomForm.controls.email.dirty || bookRoomForm.controls.email.touched)"
+          class="alert white-color">
+          <div *ngIf="bookRoomForm.controls.email.errors.required" class="white-color">
+            Email requerido
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+
+  </div>
+  <div class="calendar-wrapper" [class.hide]="loading">
+    <full-calendar id="calendar" [options]="calendarOptions" #calendar></full-calendar>
+  </div>
+  <div class="button-wrapper">
+    <button class="primary" mat-raised-button> Confirmar </button>
+  </div>
+
+</body>

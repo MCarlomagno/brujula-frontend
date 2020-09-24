@@ -11,6 +11,8 @@ import { GroupsComponent } from './pages/groups/groups.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { MyAccountComponent } from './pages/my-account/my-account.component';
 import { GroupManagementComponent } from './pages/group-management/group-management.component';
+import { BookRoomFormComponent } from './pages/book-room-form/book-room-form.component';
+import { BuyRoomHoursComponent } from './pages/buy-room-hours/buy-room-hours.component';
 
 const routes: Routes = [
   {
@@ -51,7 +53,13 @@ const routes: Routes = [
         canActivate: [LeaderGuard],
       },
     ]
-  }
+  }, {
+    path: 'book-room',
+    component: BookRoomFormComponent
+  }, {
+    path: 'buy-room-hours',
+    component: BuyRoomHoursComponent
+  },
 ];
 
 @NgModule({
